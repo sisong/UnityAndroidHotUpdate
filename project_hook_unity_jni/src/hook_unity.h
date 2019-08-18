@@ -5,7 +5,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    void hook_unity_doHook(const char* newApkPath);
+    void hook_unity_doHook(const char* apkPath,const char* newApkPath);
 #ifdef __cplusplus
 }
 #endif
