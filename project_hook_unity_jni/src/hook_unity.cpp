@@ -4,6 +4,7 @@
 #include "hook_unity.h"
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h> //exit
 #include <sys/stat.h>
 #include <fcntl.h>
 #include "../xHook/libxhook/jni/xhook.h"
@@ -12,7 +13,7 @@
 extern "C" {
 #endif
     static const char* kLibUnity="libunity.so";
-#define _IsDebug 1
+    #define _IsDebug 0
 #define LOG_INFO(tag,info)         { __android_log_print(ANDROID_LOG_INFO,\
                                         "HookUnity_LOG",tag "\n",info); }
 #define LOG_INFO2(tag,info0,info1) { __android_log_print(ANDROID_LOG_INFO,\
@@ -24,29 +25,49 @@ extern "C" {
 #define LOG_DEBUG(tag,info)        { if (_IsDebug) LOG_INFO(tag,info); }
 #define LOG_DEBUG2(tag,info0,info1){ if (_IsDebug) LOG_INFO2(tag,info0,info1); }
 
-    static int  g_isHookSuccess =0;
     static const int kMaxPathLen=1023;
+    static const char kDirTag='/';
+    
+    static int  g_isHookSuccess =0;
     static char g_apkPath[kMaxPathLen+1]={0};
     static  int g_apkPathLen=0;
+    static char g_soDir[kMaxPathLen+1]={0};
+    static  int g_soDirLen=0;
     static char g_newApkPath[kMaxPathLen+1]={0};
     static  int g_newApkPathLen=0;
+    static char g_soCacheDir[kMaxPathLen+1]={0};
+    static  int g_soCacheDirLen=0;
     
-    #define MAP_PATH(opath,errValue) \
-        char newPath[kMaxPathLen+1];    \
-        {   if (g_isHookSuccess){       \
-                int olen=strlen(opath); \
-                if ((olen>=g_apkPathLen)&&(0==memcmp(opath,g_apkPath,g_apkPathLen))){ \
-                    if (g_newApkPathLen+(olen-g_apkPathLen)>kMaxPathLen){   \
-                        LOG_ERROR2("MAP_PATH() len %d %s",olen,opath);  return errValue; } \
-                    memcpy(newPath,g_newApkPath,g_newApkPathLen);   \
-                    memcpy(newPath+g_newApkPathLen,opath+g_apkPathLen,olen-g_apkPathLen+1); \
-                    opath=&newPath[0];  \
+    
+    static int isFindFile(const char* filePath){
+        struct stat file_stat;
+        memset(&file_stat,0,sizeof(file_stat));
+        int ret=stat(filePath,&file_stat);
+        return (ret==0)&&((file_stat.st_mode&S_IFREG)!=0);
+    }
+    
+    #define _MAP_PATH_TO(src,dst,opath,errValue,need_isFindFile) \
+        char _newPath[kMaxPathLen+1];   \
+        if (g_isHookSuccess){           \
+            int olen=strlen(opath);     \
+            if ((olen>=src##Len)&&(0==memcmp(opath,src,src##Len))){         \
+                if (dst##Len+(olen-src##Len)>kMaxPathLen)   \
+                    { LOG_ERROR2("MAP_PATH() len %d %s",olen,opath);  return errValue; } \
+                memcpy(_newPath,dst,dst##Len);              \
+                memcpy(_newPath+dst##Len,opath+src##Len,olen-src##Len+1);   \
+                if ((!need_isFindFile)||isFindFile(_newPath)){              \
+                    opath=_newPath;     \
                     LOG_DEBUG("MAP_PATH() to %s",opath);    \
+                }else{                  \
+                    LOG_DEBUG("MAP_PATH() failed to %s",_newPath);          \
                 } } }
+
+    #define MAP_PATH(opath,errValue) _MAP_PATH_TO(g_apkPath,g_newApkPath,opath,errValue,0)
 
     #define CHECK_FUNC(tag,checkedFunc,errValue) { \
         if (checkedFunc==NULL) { LOG_ERROR(tag,"old func is NULL"); return errValue; } }
 
+    
     //stat
     typedef int (* TFuncStat)(const char* path,struct stat *file_stat);
     static TFuncStat old_stat = NULL;
@@ -85,15 +106,17 @@ extern "C" {
         return is_mode? old_open(path,flags,mode) : old_open(path,flags);
     }
     
+    #define MAP_SO_PATH(opath,errValue) _MAP_PATH_TO(g_soDir,g_soCacheDir,opath,errValue,1)
+    
     //dlopen
     typedef void* (*TFuncDlopen)(const char* path,int flags);
     static TFuncDlopen old_dlopen = NULL;
     static void* new_dlopen(const char* path,int flags){
-        LOG_DEBUG2("new_dlopen() %d %s",flags,path);
+        LOG_INFO2("new_dlopen() %d %s",flags,path);
         CHECK_FUNC("new_dlopen() %s",old_dlopen,NULL);
-        if (0==strcmp(path,"/data/app/com.testC.test-IVxbQ4BUDzRbGjNBjoYhuQ==/lib/x86/libil2cpp.so"))
-            path="/data/user/0/com.testC.test/files/newV2.apk/lib/x86/libil2cpp.so";
-        //MAP_PATH(path,NULL);
+        MAP_SO_PATH(path,NULL);
+        LOG_INFO2("old_dlopen() %d %s",flags,path);
+        //chmod(path,0755);
         return old_dlopen(path,flags);
     }
 
@@ -115,33 +138,29 @@ extern "C" {
         return 0;
     }
     
-    void hook_unity_doHook(const char* apkPath,const char* newApkPath){
-        LOG_DEBUG2("hook_unity_doHook() %s %s",apkPath,newApkPath);
+    #define _COPY_PATH(dst,src) {\
+        dst##Len=strlen(src);   \
+        if (dst##Len>kMaxPathLen)   \
+            { LOG_ERROR("hook_unity_doHook() strlen("#src") %d",dst##Len); return; } \
+        memcpy(dst,src,dst##Len+1); }
+    
+    void hook_unity_doHook(const char* apkPath,const char* soDir,
+                           const char* newApkPath,const char* soCacheDir){
+        LOG_INFO2("hook_unity_doHook() %s %s",apkPath,soDir);
+        LOG_INFO2("hook_unity_doHook() %s %s",newApkPath,soCacheDir);
         int isDoHook=0;
-        g_apkPathLen=strlen(apkPath);
-        if (g_apkPathLen>kMaxPathLen)
-            { LOG_ERROR("hook_unity_doHook() apkPathLen %d",g_apkPathLen); return; }
-        g_newApkPathLen=strlen(newApkPath);
-        if (g_newApkPathLen>kMaxPathLen)
-            { LOG_ERROR("hook_unity_doHook() newApkPathLen %d",g_newApkPathLen); return; }
-        if (g_newApkPathLen>0){
-            struct stat file_stat;
-            memset(&file_stat,0,sizeof(file_stat));
-            int ret=stat(newApkPath,&file_stat);
-            isDoHook=(ret==0)&&((file_stat.st_mode&S_IFREG)!=0);
-        }
         
-        if (isDoHook){
-            int ret=hook();
-            if (ret==0){
-                strncpy(g_apkPath,apkPath,kMaxPathLen);
-                strncpy(g_newApkPath,newApkPath,kMaxPathLen);
-                g_isHookSuccess=1;
-                LOG_DEBUG("hook_unity_doHook() %s","success doHook");
-            }
-        }else{
-            LOG_DEBUG("hook_unity_doHook() %s","not doHook");
-        }
+        _COPY_PATH(g_apkPath,apkPath);
+        _COPY_PATH(g_soDir,soDir);
+        _COPY_PATH(g_newApkPath,newApkPath);
+        _COPY_PATH(g_soCacheDir,soCacheDir);
+        
+        isDoHook=(g_newApkPathLen>0)&&isFindFile(newApkPath);
+        if (!isDoHook){ LOG_INFO("hook_unity_doHook() %s","not doHook"); return; }
+        int ret=hook();
+        if (ret!=0) { exit(-1); return; }
+        LOG_INFO("hook_unity_doHook() %s","success to doHook");
+        g_isHookSuccess=1;
     }
 
 #ifdef __cplusplus
