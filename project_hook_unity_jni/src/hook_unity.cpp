@@ -24,8 +24,28 @@ extern "C" {
 #define LOG_DEBUG(tag,info)        { if (_IsDebug) LOG_INFO(tag,info); }
 #define LOG_DEBUG2(tag,info0,info1){ if (_IsDebug) LOG_INFO2(tag,info0,info1); }
 
-#define CHECK_FUNC(tag,checkedFunc,rtValue) { \
-    if (checkedFunc==NULL) { LOG_ERROR(tag,"old func is NULL"); return rtValue; } }
+    static int  g_isHookSuccess =0;
+    static const int kMaxPathLen=1023;
+    static char g_apkPath[kMaxPathLen+1]={0};
+    static  int g_apkPathLen=0;
+    static char g_newApkPath[kMaxPathLen+1]={0};
+    static  int g_newApkPathLen=0;
+    
+    #define MAP_PATH(opath,errValue) \
+        char newPath[kMaxPathLen+1];    \
+        {   if (g_isHookSuccess){       \
+                int olen=strlen(opath); \
+                if ((olen>=g_apkPathLen)&&(0==memcmp(opath,g_apkPath,g_apkPathLen))){ \
+                    if (g_newApkPathLen+(olen-g_apkPathLen)>kMaxPathLen){   \
+                        LOG_ERROR2("MAP_PATH() len %d %s",olen,opath);  return errValue; } \
+                    memcpy(newPath,g_newApkPath,g_newApkPathLen);   \
+                    memcpy(newPath+g_newApkPathLen,opath+g_apkPathLen,olen-g_apkPathLen+1); \
+                    opath=&newPath[0];  \
+                    LOG_DEBUG("MAP_PATH() to %s",opath);    \
+                } } }
+
+    #define CHECK_FUNC(tag,checkedFunc,errValue) { \
+        if (checkedFunc==NULL) { LOG_ERROR(tag,"old func is NULL"); return errValue; } }
 
     //stat
     typedef int (* TFuncStat)(const char* path,struct stat *file_stat);
@@ -33,7 +53,7 @@ extern "C" {
     static int new_stat(const char* path,struct stat* file_stat){
         LOG_DEBUG("new_stat() %s",path);
         CHECK_FUNC("new_stat() %s",old_stat,-1);
-        
+        MAP_PATH(path,-1);
         return old_stat(path,file_stat);
     }
     
@@ -41,9 +61,9 @@ extern "C" {
     typedef FILE* (* TFuncFOpen)(const char* path,const char* mode);
     static TFuncFOpen old_fopen = NULL;
     static FILE* new_fopen(const char* path,const char* mode){
-        LOG_DEBUG2("new_fopen() %s %s",path,mode);
+        LOG_DEBUG2("new_fopen() %s %s",mode,path);
         CHECK_FUNC("new_fopen() %s",old_fopen,NULL);
-        
+        MAP_PATH(path,NULL);
         return old_fopen(path,mode);
     }
     
@@ -59,9 +79,9 @@ extern "C" {
             mode = (mode_t)(va_arg(args, int));
             va_end(args);
         }
-        LOG_DEBUG("new_open() %s",path);
+        LOG_DEBUG2("new_open() %d %s",flags,path);
         CHECK_FUNC("new_open() %s",old_open,-1);
-        
+        MAP_PATH(path,-1);
         return is_mode? old_open(path,flags,mode) : old_open(path,flags);
     }
     
@@ -69,9 +89,11 @@ extern "C" {
     typedef void* (*TFuncDlopen)(const char* path,int flags);
     static TFuncDlopen old_dlopen = NULL;
     static void* new_dlopen(const char* path,int flags){
-        LOG_DEBUG("new_dlopen() %s",path);
+        LOG_DEBUG2("new_dlopen() %d %s",flags,path);
         CHECK_FUNC("new_dlopen() %s",old_dlopen,NULL);
-        
+        if (0==strcmp(path,"/data/app/com.testC.test-IVxbQ4BUDzRbGjNBjoYhuQ==/lib/x86/libil2cpp.so"))
+            path="/data/user/0/com.testC.test/files/newV2.apk/lib/x86/libil2cpp.so";
+        //MAP_PATH(path,NULL);
         return old_dlopen(path,flags);
     }
 
@@ -96,7 +118,13 @@ extern "C" {
     void hook_unity_doHook(const char* apkPath,const char* newApkPath){
         LOG_DEBUG2("hook_unity_doHook() %s %s",apkPath,newApkPath);
         int isDoHook=0;
-        if (strlen(newApkPath)>0){
+        g_apkPathLen=strlen(apkPath);
+        if (g_apkPathLen>kMaxPathLen)
+            { LOG_ERROR("hook_unity_doHook() apkPathLen %d",g_apkPathLen); return; }
+        g_newApkPathLen=strlen(newApkPath);
+        if (g_newApkPathLen>kMaxPathLen)
+            { LOG_ERROR("hook_unity_doHook() newApkPathLen %d",g_newApkPathLen); return; }
+        if (g_newApkPathLen>0){
             struct stat file_stat;
             memset(&file_stat,0,sizeof(file_stat));
             int ret=stat(newApkPath,&file_stat);
@@ -105,8 +133,12 @@ extern "C" {
         
         if (isDoHook){
             int ret=hook();
-            if (ret==0)
+            if (ret==0){
+                strncpy(g_apkPath,apkPath,kMaxPathLen);
+                strncpy(g_newApkPath,newApkPath,kMaxPathLen);
+                g_isHookSuccess=1;
                 LOG_DEBUG("hook_unity_doHook() %s","success doHook");
+            }
         }else{
             LOG_DEBUG("hook_unity_doHook() %s","not doHook");
         }
