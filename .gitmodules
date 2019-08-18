@@ -1,0 +1,3 @@
+[submodule "project_hook_unity_jni/xHook"]
+	path = project_hook_unity_jni/xHook
+	url = https://github.com/iqiyi/xHook.git
