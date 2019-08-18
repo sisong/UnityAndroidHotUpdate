@@ -34,3 +34,4 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+project_hook_unity_jni/build_libs
