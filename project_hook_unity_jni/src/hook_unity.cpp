@@ -51,7 +51,7 @@ extern "C" {
         if (g_isHookSuccess){           \
             int olen=strlen(opath);     \
             if ((olen>=src##Len)&&(0==memcmp(opath,src,src##Len))   \
-                &&((opath[src##Len]=='\0')||(opath[src##Len]=='/'))){       \
+                &&((opath[src##Len]=='\0')||(opath[src##Len]==kDirTag))){   \
                 if (dst##Len+(olen-src##Len)>kMaxPathLen)   \
                     { LOG_ERROR2("MAP_PATH() len %d %s",olen,opath);  return errValue; } \
                 memcpy(_newPath,dst,dst##Len);              \

@@ -9,16 +9,16 @@ extern "C" {
     
     JNIEXPORT void
     Java_com_github_sisong_HookUnity_doHook(JNIEnv* jenv,jobject jobj,
-                                            jstring apkPath,jstring soDir,
-                                            jstring newApkPath,jstring soCacheDir){
+                                            jstring apkPath,jstring libDir,
+                                            jstring newApkPath,jstring libCacheDir){
         const char* cApkPath    = jenv->GetStringUTFChars(apkPath, NULL);
-        const char* cSoDir      = jenv->GetStringUTFChars(soDir, NULL);
+        const char* clibDir     = jenv->GetStringUTFChars(libDir, NULL);
         const char* cNewApkPath = jenv->GetStringUTFChars(newApkPath, NULL);
-        const char* cSoCacheDir = jenv->GetStringUTFChars(soCacheDir, NULL);
-        hook_unity_doHook(cApkPath,cSoDir,cNewApkPath,cSoCacheDir);
-        jenv->ReleaseStringUTFChars(soCacheDir,cSoCacheDir);
+        const char* clibCacheDir= jenv->GetStringUTFChars(libCacheDir, NULL);
+        hook_unity_doHook(cApkPath,clibDir,cNewApkPath,clibCacheDir);
+        jenv->ReleaseStringUTFChars(libCacheDir,clibCacheDir);
         jenv->ReleaseStringUTFChars(newApkPath,cNewApkPath);
-        jenv->ReleaseStringUTFChars(soDir,cSoDir);
+        jenv->ReleaseStringUTFChars(libDir,clibDir);
         jenv->ReleaseStringUTFChars(apkPath,cApkPath);
     }
 
