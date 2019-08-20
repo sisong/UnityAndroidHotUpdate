@@ -1,3 +1,6 @@
 [submodule "project_hook_unity_jni/xHook"]
 	path = project_hook_unity_jni/xHook
 	url = https://github.com/iqiyi/xHook.git
+[submodule "ApkDiffPatch"]
+	path = ApkDiffPatch
+	url = https://github.com/sisong/ApkDiffPatch.git
