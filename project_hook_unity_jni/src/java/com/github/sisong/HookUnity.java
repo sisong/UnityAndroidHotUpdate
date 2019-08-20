@@ -1,7 +1,7 @@
 package com.github.sisong;
 /* customize edit for Unity export android project:
     add this file HookUnity.java to project;
-    add libhookunity.so to project libs;
+    add libhookunity.so to project jniLibs;
     edit file UnityPlayerActivity.java in project;
         add code: import com.github.sisong.HookUnity;
         change code: mUnityPlayer = new UnityPlayer(this);

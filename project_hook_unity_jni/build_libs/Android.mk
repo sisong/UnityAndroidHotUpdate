@@ -17,8 +17,6 @@ Patch_Source_Files := $(Patch_Source_Files:$(LOCAL_PATH)/%=%)
 
 LOCAL_SRC_FILES  :=  $(Patch_Source_Files)
 
-$(info compile files-------------------->)
-$(info $(LOCAL_SRC_FILES))
 
 LOCAL_LDLIBS     := -llog -landroid
 LOCAL_CFLAGS     := -DANDROID_NDK

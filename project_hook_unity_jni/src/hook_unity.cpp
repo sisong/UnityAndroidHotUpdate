@@ -25,7 +25,7 @@ extern "C" {
 #define LOG_DEBUG(tag,info)        { if (_IsDebug) LOG_INFO(tag,info); }
 #define LOG_DEBUG2(tag,info0,info1){ if (_IsDebug) LOG_INFO2(tag,info0,info1); }
 
-    static const int kMaxPathLen=1023;
+    static const int kMaxPathLen=512-1;
     static const char kDirTag='/';
     
     static int  g_isHookSuccess =0;
