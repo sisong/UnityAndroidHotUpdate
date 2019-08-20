@@ -46,11 +46,12 @@ extern "C" {
         return (ret==0)&&((file_stat.st_mode&S_IFREG)!=0);
     }
     
-    #define _MAP_PATH_TO(src,dst,opath,errValue,need_isFindFile) \
+    #define _MAP_PATH_TO(src,dst,opath,errValue,need_isFindFile)    \
         char _newPath[kMaxPathLen+1];   \
         if (g_isHookSuccess){           \
             int olen=strlen(opath);     \
-            if ((olen>=src##Len)&&(0==memcmp(opath,src,src##Len))){         \
+            if ((olen>=src##Len)&&(0==memcmp(opath,src,src##Len))   \
+                &&((opath[src##Len]=='\0')||(opath[src##Len]=='/'))){       \
                 if (dst##Len+(olen-src##Len)>kMaxPathLen)   \
                     { LOG_ERROR2("MAP_PATH() len %d %s",olen,opath);  return errValue; } \
                 memcpy(_newPath,dst,dst##Len);              \
