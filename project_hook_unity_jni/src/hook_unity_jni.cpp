@@ -8,9 +8,9 @@ extern "C" {
 #endif
     
     JNIEXPORT void
-    Java_com_github_sisong_HookUnity_doHook(JNIEnv* jenv,jobject jobj,
-                                            jstring apkPath,jstring libDir,
-                                            jstring newApkPath,jstring libCacheDir){
+    Java_com_github_sisong_HotUnity_doHot(JNIEnv* jenv,jobject jobj,
+                                          jstring apkPath,jstring libDir,
+                                          jstring newApkPath,jstring libCacheDir){
         const char* cApkPath    = jenv->GetStringUTFChars(apkPath, NULL);
         const char* clibDir     = jenv->GetStringUTFChars(libDir, NULL);
         const char* cNewApkPath = jenv->GetStringUTFChars(newApkPath, NULL);

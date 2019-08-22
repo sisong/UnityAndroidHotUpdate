@@ -13,17 +13,15 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+    static const char* kLibMain="libmain.so";
     static const char* kLibUnity="libunity.so";
     
-    #define _IsDebug 1
-#define LOG_INFO(tag,info)         { __android_log_print(ANDROID_LOG_INFO,\
-                                        "HookUnity_LOG",tag "\n",info); }
-#define LOG_INFO2(tag,info0,info1) { __android_log_print(ANDROID_LOG_INFO,\
-                                        "HookUnity_LOG",tag "\n",info0,info1); }
-#define LOG_ERROR(tag,err)         { __android_log_print(ANDROID_LOG_ERROR,\
-                                        "HookUnity_ERROR",tag "\n",err); }
-#define LOG_ERROR2(tag,err0,err1)  { __android_log_print(ANDROID_LOG_ERROR,\
-                                        "HookUnity_ERROR",tag "\n",err0,err1); }
+#define _IsDebug 1
+#define _LogTag "HotUnity"
+#define LOG_INFO(tag,info)         { __android_log_print(ANDROID_LOG_INFO,_LogTag,tag "\n",info); }
+#define LOG_INFO2(tag,info0,info1) { __android_log_print(ANDROID_LOG_INFO,_LogTag,tag "\n",info0,info1); }
+#define LOG_ERROR(tag,err)         { __android_log_print(ANDROID_LOG_ERROR,_LogTag,tag "\n",err); }
+#define LOG_ERROR2(tag,err0,err1)  { __android_log_print(ANDROID_LOG_ERROR,_LogTag,tag "\n",err0,err1); }
 #define LOG_DEBUG(tag,info)        { if (_IsDebug) LOG_INFO(tag,info); }
 #define LOG_DEBUG2(tag,info0,info1){ if (_IsDebug) LOG_INFO2(tag,info0,info1); }
 
@@ -80,10 +78,6 @@ extern "C" {
             if (!IS_MAPED_PATH(opath)) {\
                 int  _null_nouse=0; \
                 _MAP_PATH_TO(g_apkPath,g_newApkPath,opath,errValue,0,_null_nouse); } }
-
-    #define CHECK_FUNC(tag,checkedFunc,errValue) { \
-        if (checkedFunc==NULL) { LOG_ERROR(tag,"old function is NULL"); return errValue; } }
-
     
     //stat
     static int new_stat(const char* path,struct stat* file_stat){
@@ -123,7 +117,7 @@ extern "C" {
         //chmod(path,0755);
         void* result=::dlopen(path,flags);
         if ((result!=errValue)&&isSoDirCanMap)
-            hook_lib(path);//NOTE: hook libli2cpp.so libmono*.so ... , ignore hook error and other path lib
+            hook_lib(path);//NOTE: hook libunity.so libli2cpp.so libmono*.so ... , ignore hook error and other path lib
         return result;
     }
     
@@ -165,9 +159,9 @@ extern "C" {
         _COPY_PATH(g_soCacheDir,soCacheDir);
         
         isDoHook=(g_newApkPathLen>0)&&isFindFile(newApkPath);
-        if (!isDoHook){ LOG_INFO("hook_unity_doHook() %s","not do hook"); return; }
-        int ret=hook_lib(kLibUnity);
-        if (ret!=0) { exit(-1); return; }
+        if (!isDoHook) { LOG_INFO("hook_unity_doHook() %s","not do hook"); return; }
+        int ret=hook_lib(kLibMain);   if (ret!=0) { exit(-1); return; }
+            ret=hook_lib(kLibUnity);  if (ret!=0) { exit(-1); return; }
         g_isHookSuccess=1;
     }
 

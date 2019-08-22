@@ -1,7 +1,7 @@
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := hookunity
+LOCAL_MODULE := hotunity
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH) \
 					../xHook/libxhook/jni 
