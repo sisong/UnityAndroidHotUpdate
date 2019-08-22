@@ -2,9 +2,10 @@
 //  main.cpp
 //  HotCacheLibDemo
 //
-//  Created by housisong on 2019/8/20.
+//  Created by sisong on 2019/8/20.
 //  Copyright © 2019 sisong. All rights reserved.
 //
+#include "../../src/hot_cache_lib.h"
 
 #include <iostream>
 

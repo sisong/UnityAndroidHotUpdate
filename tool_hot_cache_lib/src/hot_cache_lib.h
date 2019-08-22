@@ -9,17 +9,18 @@ extern "C" {
     enum hot_cache_lib_result_t{
         kCacheLib_ok =0,
         kCacheLib_fail_fileError,
+        kCacheLib_fail_abiError,
+        kCacheLib_fail_unzipError,
         kCacheLib_fail_UnityVersion,
         kCacheLib_fail_SoVersion
     };
     
     // can used by: build apk update setting or after get the newVersionApk
-    int hot_cache_lib_test(const char* apkPath,const char* newApkPath,
-                           const char* arch_abi);
+    int hot_cache_lib_test(const char* apkPath,const char* newApkPath,const char* arch_abi);
 
     // can used by: after get the newVersionApk
-    int hot_cache_lib(const char* apkPath,const char* newApkPath,
-                      const char* arch_abi,const char* cacheLibFilesDir);
+    int hot_cache_lib(const char* apkPath,const char* newApkPath,const char* arch_abi,
+                      const char* cacheLibFilesDir,int isTestBeforeCache=1);
     
 #ifdef __cplusplus
 }

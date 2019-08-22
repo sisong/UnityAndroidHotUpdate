@@ -8,6 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		D637FD00230BC4D7002300CA /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D637FCFF230BC4D7002300CA /* main.cpp */; };
+		D637FD0D230BC574002300CA /* hot_cache_lib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D637FD0B230BC574002300CA /* hot_cache_lib.cpp */; };
+		D637FD16230D2DF3002300CA /* Zipper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D637FD15230D2DF3002300CA /* Zipper.cpp */; };
+		D637FD1A230D2E3A002300CA /* deflate.c in Sources */ = {isa = PBXBuildFile; fileRef = D637FD19230D2E3A002300CA /* deflate.c */; };
+		D637FD1D230D2EA7002300CA /* adler32.c in Sources */ = {isa = PBXBuildFile; fileRef = D637FD1B230D2EA7002300CA /* adler32.c */; };
+		D637FD1E230D2EA7002300CA /* crc32.c in Sources */ = {isa = PBXBuildFile; fileRef = D637FD1C230D2EA7002300CA /* crc32.c */; };
+		D637FD20230D2EC5002300CA /* inflate.c in Sources */ = {isa = PBXBuildFile; fileRef = D637FD1F230D2EC4002300CA /* inflate.c */; };
+		D637FD22230D2EDD002300CA /* file_for_patch.c in Sources */ = {isa = PBXBuildFile; fileRef = D637FD21230D2EDD002300CA /* file_for_patch.c */; };
+		D637FD28230D3093002300CA /* zutil.c in Sources */ = {isa = PBXBuildFile; fileRef = D637FD27230D3093002300CA /* zutil.c */; };
+		D637FD2A230D30B9002300CA /* patch.c in Sources */ = {isa = PBXBuildFile; fileRef = D637FD29230D30B9002300CA /* patch.c */; };
+		D637FD2C230D3111002300CA /* inffast.c in Sources */ = {isa = PBXBuildFile; fileRef = D637FD2B230D3111002300CA /* inffast.c */; };
+		D637FD2E230D3141002300CA /* inftrees.c in Sources */ = {isa = PBXBuildFile; fileRef = D637FD2D230D3140002300CA /* inftrees.c */; };
+		D637FD30230D318D002300CA /* trees.c in Sources */ = {isa = PBXBuildFile; fileRef = D637FD2F230D318D002300CA /* trees.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +37,20 @@
 /* Begin PBXFileReference section */
 		D637FCFC230BC4D7002300CA /* HotCacheLibDemo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HotCacheLibDemo; sourceTree = BUILT_PRODUCTS_DIR; };
 		D637FCFF230BC4D7002300CA /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		D637FD0B230BC574002300CA /* hot_cache_lib.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hot_cache_lib.cpp; sourceTree = "<group>"; };
+		D637FD0C230BC574002300CA /* hot_cache_lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hot_cache_lib.h; sourceTree = "<group>"; };
+		D637FD14230D2DF3002300CA /* Zipper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Zipper.h; path = ../../../ApkDiffPatch/src/patch/Zipper.h; sourceTree = "<group>"; };
+		D637FD15230D2DF3002300CA /* Zipper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Zipper.cpp; path = ../../../ApkDiffPatch/src/patch/Zipper.cpp; sourceTree = "<group>"; };
+		D637FD19230D2E3A002300CA /* deflate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = deflate.c; path = ../../../ApkDiffPatch/zlib1.2.11/deflate.c; sourceTree = "<group>"; };
+		D637FD1B230D2EA7002300CA /* adler32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = adler32.c; path = ../../../ApkDiffPatch/zlib1.2.11/adler32.c; sourceTree = "<group>"; };
+		D637FD1C230D2EA7002300CA /* crc32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = crc32.c; path = ../../../ApkDiffPatch/zlib1.2.11/crc32.c; sourceTree = "<group>"; };
+		D637FD1F230D2EC4002300CA /* inflate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = inflate.c; path = ../../../ApkDiffPatch/zlib1.2.11/inflate.c; sourceTree = "<group>"; };
+		D637FD21230D2EDD002300CA /* file_for_patch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = file_for_patch.c; path = ../../../ApkDiffPatch/HDiffPatch/file_for_patch.c; sourceTree = "<group>"; };
+		D637FD27230D3093002300CA /* zutil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = zutil.c; path = ../../../ApkDiffPatch/zlib1.2.11/zutil.c; sourceTree = "<group>"; };
+		D637FD29230D30B9002300CA /* patch.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = patch.c; path = ../../../ApkDiffPatch/HDiffPatch/libHDiffPatch/HPatch/patch.c; sourceTree = "<group>"; };
+		D637FD2B230D3111002300CA /* inffast.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = inffast.c; path = ../../../ApkDiffPatch/zlib1.2.11/inffast.c; sourceTree = "<group>"; };
+		D637FD2D230D3140002300CA /* inftrees.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = inftrees.c; path = ../../../ApkDiffPatch/zlib1.2.11/inftrees.c; sourceTree = "<group>"; };
+		D637FD2F230D318D002300CA /* trees.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = trees.c; path = ../../../ApkDiffPatch/zlib1.2.11/trees.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,7 +67,9 @@
 		D637FCF3230BC4D7002300CA = {
 			isa = PBXGroup;
 			children = (
-				D637FCFE230BC4D7002300CA /* HotCacheLibDemo */,
+				D637FD13230D2DDE002300CA /* zip */,
+				D637FD0A230BC574002300CA /* src */,
+				D637FCFF230BC4D7002300CA /* main.cpp */,
 				D637FCFD230BC4D7002300CA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,12 +82,41 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D637FCFE230BC4D7002300CA /* HotCacheLibDemo */ = {
+		D637FD0A230BC574002300CA /* src */ = {
 			isa = PBXGroup;
 			children = (
-				D637FCFF230BC4D7002300CA /* main.cpp */,
+				D637FD0B230BC574002300CA /* hot_cache_lib.cpp */,
+				D637FD0C230BC574002300CA /* hot_cache_lib.h */,
 			);
-			path = HotCacheLibDemo;
+			name = src;
+			path = ../../src;
+			sourceTree = "<group>";
+		};
+		D637FD13230D2DDE002300CA /* zip */ = {
+			isa = PBXGroup;
+			children = (
+				D637FD18230D2E12002300CA /* zlib */,
+				D637FD15230D2DF3002300CA /* Zipper.cpp */,
+				D637FD14230D2DF3002300CA /* Zipper.h */,
+				D637FD29230D30B9002300CA /* patch.c */,
+				D637FD21230D2EDD002300CA /* file_for_patch.c */,
+			);
+			name = zip;
+			sourceTree = "<group>";
+		};
+		D637FD18230D2E12002300CA /* zlib */ = {
+			isa = PBXGroup;
+			children = (
+				D637FD1B230D2EA7002300CA /* adler32.c */,
+				D637FD1C230D2EA7002300CA /* crc32.c */,
+				D637FD19230D2E3A002300CA /* deflate.c */,
+				D637FD2B230D3111002300CA /* inffast.c */,
+				D637FD1F230D2EC4002300CA /* inflate.c */,
+				D637FD2D230D3140002300CA /* inftrees.c */,
+				D637FD2F230D318D002300CA /* trees.c */,
+				D637FD27230D3093002300CA /* zutil.c */,
+			);
+			name = zlib;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -118,7 +175,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D637FD2A230D30B9002300CA /* patch.c in Sources */,
+				D637FD28230D3093002300CA /* zutil.c in Sources */,
+				D637FD20230D2EC5002300CA /* inflate.c in Sources */,
+				D637FD2E230D3141002300CA /* inftrees.c in Sources */,
+				D637FD0D230BC574002300CA /* hot_cache_lib.cpp in Sources */,
+				D637FD16230D2DF3002300CA /* Zipper.cpp in Sources */,
 				D637FD00230BC4D7002300CA /* main.cpp in Sources */,
+				D637FD1E230D2EA7002300CA /* crc32.c in Sources */,
+				D637FD30230D318D002300CA /* trees.c in Sources */,
+				D637FD1A230D2E3A002300CA /* deflate.c in Sources */,
+				D637FD22230D2EDD002300CA /* file_for_patch.c in Sources */,
+				D637FD2C230D3111002300CA /* inffast.c in Sources */,
+				D637FD1D230D2EA7002300CA /* adler32.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,6 +238,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
+					"_IS_USED_MULTITHREAD=0",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -180,6 +250,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -217,12 +288,15 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
-				COPY_PHASE_STRIP = NO;
+				COPY_PHASE_STRIP = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_POSTPROCESSING = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "_IS_USED_MULTITHREAD=0";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -232,6 +306,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				OTHER_CFLAGS = "";
 				SDKROOT = macosx;
 			};
 			name = Release;
