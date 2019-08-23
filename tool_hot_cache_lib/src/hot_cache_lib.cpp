@@ -114,12 +114,15 @@ extern "C" {
     static bool cacheAFile(UnZipper* apk,int fi,const char* dstDir){
         const char* fileName=UnZipper_file_nameBegin(apk,fi);
         const int fileNameLen=UnZipper_file_nameLen(apk,fi);
+        //get namePos no dir
+        int namePos=0;
+        for (int i=0;i<fileNameLen;++i) { if (fileName[i]==kDirTag) namePos=i+1; }
         char dstPath[kMaxPathLen+1];
-        if (!getPath(dstDir,fileName,fileNameLen,dstPath,kMaxPathLen+1)) return false;
+        if (!getPath(dstDir,fileName+namePos,fileNameLen-namePos,dstPath,kMaxPathLen+1)) return false;
         
         hpatch_TFileStreamOutput file;
         hpatch_TFileStreamOutput_init(&file);
-        if (!hpatch_TFileStreamOutput_open(&file,dstPath,-1)) return false;
+        if (!hpatch_TFileStreamOutput_open(&file,dstPath,-1)) return false; //can't create new dir
         bool result=UnZipper_fileData_decompressTo(apk,fi,&file.base,0);
         if (result) result=hpatch_TFileStreamOutput_flush(&file);
         assert(file.out_length==UnZipper_file_uncompressedSize(apk,fi));
@@ -135,9 +138,8 @@ extern "C" {
     //      libhotunity.so
     
     #define _rt_err(errValue) { result=errValue; break; }
-    static int do_hot_cache_lib(const char* apkPath,const char* newApkPath,
-                                const char* arch_abi,const char* cacheLibFilesDir,
-                                int isCheckBeforeCache){
+    static int do_hot_cache_lib(const char* arch_abi,const char* apkPath,const char* newApkPath,
+                                const char* cacheLibFilesDir,int isCheckBeforeCache){
         UnZipper oldApk;
         UnZipper newApk;
         UnZipper_init(&oldApk);
@@ -154,14 +156,29 @@ extern "C" {
             const int libDirLen=(int)strlen(libDir);
             
             if (isCheckBeforeCache){
-                char _fileName[kMaxPathLen+1];
-                #define checkLibChange(_libName) { \
-                    if (!getPath(libDir,_libName,strlen(_libName),_fileName,kMaxPathLen+1)) \
-                        _rt_err(kCacheLib_fileError); \
-                    if (isChangedFileByName(&newApk,&oldApk,_fileName)) \
-                        _rt_err(kCacheLib_libChangedError); }
-                
-                checkLibChange("libmain.so");
+                char fileName[kMaxPathLen+1];
+                {   //check mono il2cpp mode can't cross load
+                    const char* libName="libil2cpp.so";
+                    if (!getPath(libDir,libName,(int)strlen(libName),fileName,kMaxPathLen+1))
+                        _rt_err(kCacheLib_fileError);
+                    const int fileNameLen=(int)strlen(fileName);
+                    const int new_fi=findFileInZip(&newApk,fileName,fileNameLen);
+                    const int old_fi=findFileInZip(&oldApk,fileName,fileNameLen);
+                    //libil2cpp.so file must both have or both none
+                    if (((new_fi>=0)&&(old_fi<0))||((new_fi<0)&&(old_fi>=0)))
+                        _rt_err(kCacheLib_monoIl2cppCrossError);
+                }
+                {   //check some lib file can't changed
+                    #define checkLibChange(_libName) { \
+                        if (!getPath(libDir,_libName,(int)strlen(_libName),fileName,kMaxPathLen+1)) \
+                            _rt_err(kCacheLib_fileError); \
+                        if (isChangedFileByName(&newApk,&oldApk,fileName)) \
+                            _rt_err(kCacheLib_libChangedError); }
+                    
+                    // libmain.so file must same
+                    checkLibChange("libmain.so");
+                    //NOTE: adding your need check lib
+                }
             }
             
             if (0!=cacheLibFilesDir){
@@ -177,18 +194,18 @@ extern "C" {
         }while(0);
         UnZipper_close(&newApk);
         UnZipper_close(&oldApk);
-        return -1;
+        return result;
     }
     
     
-    int hot_cache_lib_check(const char* apkPath,const char* newApkPath,const char* arch_abi){
-        return do_hot_cache_lib(apkPath,newApkPath,arch_abi,0,1);
+    int hot_cache_lib_check(const char* arch_abi,const char* apkPath,const char* newApkPath){
+        return do_hot_cache_lib(arch_abi,apkPath,newApkPath,0,1);
     }
     
-    int hot_cache_lib(const char* apkPath,const char* newApkPath,const char* arch_abi,
+    int hot_cache_lib(const char* arch_abi,const char* apkPath,const char* newApkPath,
                       const char* cacheLibFilesDir){
         if (cacheLibFilesDir==0) return kCacheLib_fileError;
-        return do_hot_cache_lib(apkPath,newApkPath,arch_abi,cacheLibFilesDir,0);
+        return do_hot_cache_lib(arch_abi,apkPath,newApkPath,cacheLibFilesDir,0);
     }
     
 #ifdef __cplusplus

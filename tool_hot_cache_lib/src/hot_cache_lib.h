@@ -11,15 +11,16 @@ extern "C" {
         kCacheLib_fileError,
         kCacheLib_abiError,
         kCacheLib_unzipError,
-        kCacheLib_libChangedError,
+        kCacheLib_monoIl2cppCrossError,
+        kCacheLib_libChangedError, // now it's libmain.so changed
     };
     
     // can used by: build apk update setting or after get the newVersionApk
     //   now only check libmain.so
-    int hot_cache_lib_check(const char* apkPath,const char* newApkPath,const char* arch_abi);
+    int hot_cache_lib_check(const char* arch_abi,const char* apkPath,const char* newApkPath);
 
     // can used by: after get the newVersionApk
-    int hot_cache_lib(const char* apkPath,const char* newApkPath,const char* arch_abi,
+    int hot_cache_lib(const char* arch_abi,const char* apkPath,const char* newApkPath,
                       const char* cacheLibFilesDir);
     
 #ifdef __cplusplus

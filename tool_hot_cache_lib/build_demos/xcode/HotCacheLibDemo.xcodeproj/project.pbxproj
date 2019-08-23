@@ -51,6 +51,7 @@
 		D637FD2B230D3111002300CA /* inffast.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = inffast.c; path = ../../../ApkDiffPatch/zlib1.2.11/inffast.c; sourceTree = "<group>"; };
 		D637FD2D230D3140002300CA /* inftrees.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = inftrees.c; path = ../../../ApkDiffPatch/zlib1.2.11/inftrees.c; sourceTree = "<group>"; };
 		D637FD2F230D318D002300CA /* trees.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = trees.c; path = ../../../ApkDiffPatch/zlib1.2.11/trees.c; sourceTree = "<group>"; };
+		D637FD3A23101EDD002300CA /* android_ndk_jni_mk */ = {isa = PBXFileReference; lastKnownFileType = folder; name = android_ndk_jni_mk; path = ../android_ndk_jni_mk; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,9 +68,10 @@
 		D637FCF3230BC4D7002300CA = {
 			isa = PBXGroup;
 			children = (
-				D637FD13230D2DDE002300CA /* zip */,
+				D637FD13230D2DDE002300CA /* ziper */,
 				D637FD0A230BC574002300CA /* src */,
 				D637FCFF230BC4D7002300CA /* main.cpp */,
+				D637FD3A23101EDD002300CA /* android_ndk_jni_mk */,
 				D637FCFD230BC4D7002300CA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -92,7 +94,7 @@
 			path = ../../src;
 			sourceTree = "<group>";
 		};
-		D637FD13230D2DDE002300CA /* zip */ = {
+		D637FD13230D2DDE002300CA /* ziper */ = {
 			isa = PBXGroup;
 			children = (
 				D637FD18230D2E12002300CA /* zlib */,
@@ -101,7 +103,7 @@
 				D637FD29230D30B9002300CA /* patch.c */,
 				D637FD21230D2EDD002300CA /* file_for_patch.c */,
 			);
-			name = zip;
+			name = ziper;
 			sourceTree = "<group>";
 		};
 		D637FD18230D2E12002300CA /* zlib */ = {
@@ -227,7 +229,6 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
-				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -288,7 +289,6 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
-				COPY_PHASE_STRIP = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEPLOYMENT_POSTPROCESSING = YES;
