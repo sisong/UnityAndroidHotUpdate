@@ -3,20 +3,19 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := hotunity
 
-LOCAL_C_INCLUDES := $(LOCAL_PATH) \
-					../xHook/libxhook/jni 
+XHOOK_PATH := $(LOCAL_PATH)/../xHook/libxhook/jni
+xHook_Files := \
+        $(XHOOK_PATH)/xhook.c   \
+        $(XHOOK_PATH)/xh_core.c \
+        $(XHOOK_PATH)/xh_elf.c  \
+        $(XHOOK_PATH)/xh_log.c  \
+        $(XHOOK_PATH)/xh_util.c \
+        $(XHOOK_PATH)/xh_version.c
 
-xHook_Files := xhook.c xh_core.c xh_elf.c xh_log.c xh_util.c xh_version.c
-Lib_Files := $(foreach f, $(xHook_Files), $(shell find $(LOCAL_PATH)/../xHook/libxhook/jni -name $f))
+Src_Files := $(LOCAL_PATH)/../src/hook_unity_jni.cpp \
+             $(LOCAL_PATH)/../src/hook_unity.cpp
 
-Src_Files := ../src/hook_unity_jni.cpp \
-				 ../src/hook_unity.cpp
-
-Patch_Source_Files := $(Src_Files) $(Lib_Files)
-Patch_Source_Files := $(Patch_Source_Files:$(LOCAL_PATH)/%=%)
-
-LOCAL_SRC_FILES  :=  $(Patch_Source_Files)
-
+LOCAL_SRC_FILES  := $(Src_Files) $(xHook_Files)
 
 LOCAL_LDLIBS     := -llog -landroid
 LOCAL_CFLAGS     := -DANDROID_NDK

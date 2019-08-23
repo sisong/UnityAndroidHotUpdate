@@ -14,7 +14,8 @@ import android.util.Log;
  */
 
 public class HotUnity{
-    public static native void doHot(String apkPath,String libDir,String newApkPath,String libCacheDir);
+    private static native void doHot(String apkPath,String libDir,String newApkPath,String libCacheDir);
+    
     public static void hotUnity(Context app){
         String apkPath=app.getPackageResourcePath();
         String libDir=app.getApplicationInfo().nativeLibraryDir;
@@ -24,7 +25,7 @@ public class HotUnity{
         System.loadLibrary("main"); //can't mapPathLoadLib
         mapPathLoadLib(libCacheDir,"unity");
         mapPathLoadLib(libCacheDir,"hotunity");
-        //note: You can load other your lib by mapPathLoadLib, when lib have newVersion;
+        //note: You can load other your lib(not unity's) by mapPathLoadLib, can use newVersion lib;
         doHot(apkPath,libDir,newApkPath,libCacheDir);
     }
     
