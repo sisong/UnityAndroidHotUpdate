@@ -10,7 +10,7 @@ UnityAndroidHotUpdate provide a way to hot update Unity app on Android, realize 
 [HDiffPatch]: https://github.com/sisong/HDiffPatch
 [bsdiff]: http://www.daemonology.net/bsdiff/
 [archive-patcher]: https://github.com/andrewhayden/archive-patcher
-[v2版及以上签名]: https://source.android.com/security/apksigning/v2
+[v2+ sign]: https://source.android.com/security/apksigning/v2
 
    
   todo:
