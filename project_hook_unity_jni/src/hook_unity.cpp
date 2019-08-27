@@ -15,6 +15,7 @@ extern "C" {
 #endif
     static const char* kLibMain="libmain.so";
     static const char* kLibUnity="libunity.so";
+    static int         kLibUnityLen=11;//strlen(kLibUnity);
     
 #define _IsDebug 1
 #define _LogTag "HotUnity"
@@ -46,38 +47,45 @@ extern "C" {
         return (ret==0)&&((file_stat.st_mode&S_IFREG)!=0);
     }
     
-    #define _MAP_PATH_TO(src,dst,opath,errValue,need_isFindFile,isCanMap)   \
+    #define __MAP_PATH_TO(src,clipLen,isAddDirTag,dst,opath,errValue,need_isFindFile,isCanMap) \
+    if (g_isHookSuccess){           \
         int olen=strlen(opath);     \
         if ((olen>=src##Len)&&(0==memcmp(opath,src,src##Len))   \
-            &&((opath[src##Len]=='\0')||(opath[src##Len]==kDirTag))){   \
-            if (dst##Len+(olen-src##Len)>kMaxPathLen)   \
+            &&((opath[src##Len]=='\0')||(opath[src##Len]==kDirTag))){ \
+            if (dst##Len+(olen-clipLen)+isAddDirTag>kMaxPathLen)\
                 { LOG_ERROR2("MAP_PATH() len %d %s",olen,opath);  return errValue; } \
             isCanMap=1;             \
             memcpy(_newPath,dst,dst##Len);              \
-            memcpy(_newPath+dst##Len,opath+src##Len,olen-src##Len+1);   \
-            if ((!need_isFindFile)||isFindFile(_newPath)){              \
+            if (isAddDirTag) _newPath[dst##Len]=kDirTag;\
+            memcpy(_newPath+dst##Len+isAddDirTag,opath+clipLen,olen-clipLen+1); \
+            if ((!need_isFindFile)||isFindFile(_newPath)){      \
                 opath=&_newPath[0]; \
                 LOG_DEBUG("MAP_PATH() to %s",opath);    \
             }else{                  \
-                LOG_DEBUG("MAP_PATH() not found %s",_newPath);      \
-            } }
+                LOG_DEBUG("MAP_PATH() not found %s",_newPath);  \
+            } } }
+
+    #define _MAP_PATH_TO(src,dst,opath,errValue,need_isFindFile,isCanMap)   \
+        __MAP_PATH_TO(src,src##Len,0,dst,opath,errValue,need_isFindFile,isCanMap)
 
     #define IS_MAPED_PATH(opath) (opath==&_newPath[0])
     
     #define MAP_PATH(opath,errValue)    \
         char _newPath[kMaxPathLen+1];   \
-        if (g_isHookSuccess){           \
-            int  _null_nouse=0;         \
-            _MAP_PATH_TO(g_apkPath,g_newApkPath,opath,errValue,0,_null_nouse);  }
+        int  _null_no_use=0;            \
+        _MAP_PATH_TO(g_apkPath,g_newApkPath,opath,errValue,0,_null_no_use); \
+        if (!IS_MAPED_PATH(opath))      \
+            _MAP_PATH_TO(g_soDir,g_soCacheDir,opath,errValue,1,_null_no_use);
     
     #define MAP_SO_PATH(opath,errValue) \
         char _newPath[kMaxPathLen+1];   \
         int  isSoDirCanMap=0;           \
-        if (g_isHookSuccess){           \
-            _MAP_PATH_TO(g_soDir,g_soCacheDir,opath,errValue,1,isSoDirCanMap); \
-            if (!IS_MAPED_PATH(opath)) {\
-                int  _null_nouse=0; \
-                _MAP_PATH_TO(g_apkPath,g_newApkPath,opath,errValue,0,_null_nouse); } }
+        int  _null_no_use=0;            \
+        _MAP_PATH_TO(g_soDir,g_soCacheDir,opath,errValue,1,isSoDirCanMap); \
+        if (!IS_MAPED_PATH(opath)) {    \
+            __MAP_PATH_TO(kLibUnity,0,1,g_soCacheDir,opath,errValue,1,_null_no_use); } \
+        if (!IS_MAPED_PATH(opath)) {    \
+            _MAP_PATH_TO(g_apkPath,g_newApkPath,opath,errValue,0,_null_no_use); }
     
     //stat
     static int new_stat(const char* path,struct stat* file_stat){
@@ -114,10 +122,11 @@ extern "C" {
         void* const errValue=NULL;
         LOG_INFO2("new_dlopen() %d %s",flags,path);
         MAP_SO_PATH(path,errValue);
-        //chmod(path,0755);
+        
         void* result=::dlopen(path,flags);
+        LOG_DEBUG2("dlopen() result 0x%08x %s",(unsigned int)(size_t)result,path);
         if ((result!=errValue)&&isSoDirCanMap)
-            hook_lib(path);//NOTE: hook libunity.so libli2cpp.so libmono*.so ... , ignore hook error and other path lib
+            hook_lib(path);//NOTE: hook libunity.so libli2cpp.so libmono*.so...,ignore other path lib and hook result
         return result;
     }
     
