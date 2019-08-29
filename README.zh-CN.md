@@ -51,13 +51,13 @@ diff&patch方案选择了[ApkDiffPatch]方案，该方案可能不能支持这�
  将```com/github/sisong/HotUnity.java```文件复制到项目源代码的java相应路径中； (可以在这个文件中添加你需要支持热更的.so，这会立即加载可能存在的新版本库)   
  在项目的UnityPlayerActivity.java文件中```import com.github.sisong.HotUnity;```，并且在```mUnityPlayer = new UnityPlayer(this);```代码前添加代码```HotUnity.hotUnity(this);```   
 * 打包项目（你可以把这个导出、修改、打包的过程在Unity中利用编辑器扩展自动化下来；后续本仓库会更新到Demo中），并安装到设备上； 应该能够正常运行; 现在你需要测试“热”更新到一个新版本；   
-* 手工热更新测试过程：假设有了修改过的新版本apk命名成hot.apk,放置到```getApplicationContext().getFilesDir().getPath()```目录的HotUpdate子目录下（一般设备上路径```/data/data/<appid>/files/HotUpdate/```）； 将hot.apk中```lib/<本测试设备abi>/```中的.so文件解压后直接放置到```HotUpdate/hot.apk_lib/```目录下（可以只放置有修改过的.so文件）； 重新运行设备上安装的app，你应该可以看到，已经运行的是新版本！   
+* 手工热更新测试过程：假设有了修改过的新版本apk命名成update.apk,放置到```getApplicationContext().getFilesDir().getPath()```目录的HotUpdate子目录下（一般设备上路径```/data/data/<appid>/files/HotUpdate/```）； 将update.apk中```lib/<本测试设备abi>/```中的.so文件解压后直接放置到```HotUpdate/update.apk_lib/```目录下（可以只放置有修改过的.so文件）； 重新运行设备上安装的app，你应该可以看到，已经运行的是新版本！   
 
 
 ## 如何在正式app里自动化上面的手工测试过程
   app热更应该是一个程序自动化的过程，它将代替我们上面的手工测试过程；本方案提供了一种可选实现路径；   
 * 假设有了新版本，我可以用diff工具生成新旧版本之间的补丁；将版本升级信息和补丁文件放到服务器上；   
-* 客户运行app时检查到升级信息并下载到相应的补丁文件，app用patch算法将本机最新apk和补丁生成新版本apk(HotUpdate/hot.apk),然后调用hot_cache_lib函数(项目在```tool_hot_cache_lib```目录里，生成libhotcachelib.so)来缓存apk中有修改过的.so文件； 
+* 客户运行app时检查到升级信息并下载到相应的补丁文件，app用patch算法将本机最新apk和补丁生成新版本apk(HotUpdate/update.apk),然后调用hot_cache_lib函数(项目在```tool_hot_cache_lib```目录里，生成libhotcachelib.so)来缓存apk中有修改过的.so文件； 
 * 判断2个apk是否可以热更新的函数hot_cache_lib_check也在```tool_hot_cache_lib```里，当然以这个函数为准并不完全可靠，这只是检查了热更的必要条件；   
 * 生成apk间的补丁和在设备上合并，可以使用[ApkDiffPatch]项目; diff程序如果不想自己编译，可以在[releases](https://github.com/sisong/ApkDiffPatch/releases)下载到；patch过程需要在用户设备上执行，生成libapkpatch.so的项目在```ApkDiffPatch/builds/android_ndk_jni_mk```目录里；   
 * 注意：ApkDiffPatch针对zip进行了特别的优化，一般比[bsdiff]和[HDiffPatch]生成更小的补丁，其ZipDiff工具对输入的apk文件有特别的要求，如果apk有[v2版及以上签名]，那需要apk用库提供的ApkNormalized工具进行过标准化，然后再用AndroidSDK#apksigner对apk进行签名；所有对用户发布的apk都需要经过这个处理，这是为了patch时能够原样还原apk；（经过这个处理过程的apk,也兼容谷歌Play商店的补丁大小优化方案[archive-patcher]）   
