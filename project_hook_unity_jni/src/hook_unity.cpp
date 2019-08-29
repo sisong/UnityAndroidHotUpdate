@@ -177,7 +177,7 @@ extern "C" {
     
     static bool loadUnityLib(const char* libName,bool isMustLoad,bool isMustHookOk){
         const bool errValue=false;
-        const int flags= RTLD_GLOBAL|RTLD_NOW;
+        const int flags= RTLD_NOW;
         char libPath[kMaxPathLen+1];
         const int nameLen=(int)strlen(libName);
         if (g_soDirLen+1+nameLen>kMaxPathLen)
@@ -194,10 +194,10 @@ extern "C" {
         if (!loadUnityLib(libName,isMustLoad,isMustHookOk)) return false; }
     
     static bool loadUnityLibs(){
-        _LOAD_LIB(kLibMain,true,true);   //if new version libmain.so, maybe fail on some device?
-        _LOAD_LIB(kLibUnity,true,true);
+        if (!hook_lib(kLibMain)) return false; //loaded in java code,only need hook
+        _LOAD_LIB(kLibUnity,true,true);    // pre-load for il2cpp and mono
         _LOAD_LIB(kLibIL2cpp,false,false); // pre-load for il2cpp
-        //test found : not need pre-load lib for mono libs
+        //test found : not need pre-load libs for mono
         return true;
     }
     

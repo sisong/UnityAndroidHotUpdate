@@ -10,7 +10,7 @@ import android.util.Log;
     2. add libhotunity.so to project jniLibs;
     3. edit file UnityPlayerActivity.java in project;
         add code: `import com.github.sisong.HotUnity;`
-        add code: `HotUnity.hotUnity(this);` before `mUnityPlayer = new UnityPlayer(this);`
+        add code: `HotUnity.hotUnity(this);` after `mUnityPlayer = new UnityPlayer(this);`
  */
 
 public class HotUnity{
@@ -22,6 +22,7 @@ public class HotUnity{
         String newApkPath=app.getFilesDir().getPath() + "/HotUpdate/update.apk";
         String libCacheDir=newApkPath+"_lib";
         
+        System.loadLibrary("main");
         mapPathLoadLib(libCacheDir,"hotunity");
         //note: You can load other your lib(not unity's) by mapPathLoadLib, can use newVersion lib;
         
