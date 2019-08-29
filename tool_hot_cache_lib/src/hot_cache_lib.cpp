@@ -111,7 +111,9 @@ extern "C" {
         return !isSameFileData(newApk,new_fi,oldApk,old_fi);
     }
     
-    static bool cacheAFile(UnZipper* apk,int fi,const char* dstDir){
+    static bool cacheLibFile(UnZipper* apk,int fi,const char* dstDir){
+        hpatch_makeNewDir(dstDir);
+        
         const char* fileName=UnZipper_file_nameBegin(apk,fi);
         const int fileNameLen=UnZipper_file_nameLen(apk,fi);
         //get namePos no dir
@@ -127,6 +129,8 @@ extern "C" {
         if (result) result=hpatch_TFileStreamOutput_flush(&file);
         assert(file.out_length==UnZipper_file_uncompressedSize(apk,fi));
         hpatch_TFileStreamOutput_close(&file);
+        if (result)
+            hpatch_setIsExecuteFile(dstPath);
         return result;
     }
     
@@ -185,7 +189,7 @@ extern "C" {
                 int newFileCount=UnZipper_fileCount(&newApk);
                 for (int i=0; i<newFileCount; ++i) {
                     if (isLibFile(&newApk,i,libDir,libDirLen)&&isChangedFile(&newApk,i,&oldApk)){
-                        if (!cacheAFile(&newApk,i,cacheLibFilesDir))
+                        if (!cacheLibFile(&newApk,i,cacheLibFilesDir))
                             _rt_err(kCacheLib_unzipError);
                     }
                 }

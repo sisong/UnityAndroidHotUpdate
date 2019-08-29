@@ -10,7 +10,7 @@ import android.util.Log;
     2. add libhotunity.so to project jniLibs;
     3. edit file UnityPlayerActivity.java in project;
         add code: `import com.github.sisong.HotUnity;`
-        add code: `HotUnity.hotUnity(this);` before `mUnityPlayer = new UnityPlayer(this);`
+        add code: `HotUnity.hotUnity(this);` after `mUnityPlayer = new UnityPlayer(this);`
  */
 
 public class HotUnity{
@@ -19,26 +19,28 @@ public class HotUnity{
     public static void hotUnity(Context app){
         String apkPath=app.getPackageResourcePath();
         String libDir=app.getApplicationInfo().nativeLibraryDir;
-        String newApkPath=app.getFilesDir().getPath() + "/HotUpdate/hot.apk";
+        String newApkPath=app.getFilesDir().getPath() + "/HotUpdate/update.apk";
         String libCacheDir=newApkPath+"_lib";
         
-        System.loadLibrary("main"); //can't mapPathLoadLib
-        mapPathLoadLib(libCacheDir,"unity");
+        System.loadLibrary("main");
         mapPathLoadLib(libCacheDir,"hotunity");
         //note: You can load other your lib(not unity's) by mapPathLoadLib, can use newVersion lib;
+        
         doHot(apkPath,libDir,newApkPath,libCacheDir);
     }
     
-    private static void mapPathLoadLib(String libCacheDir,String libName){
-        String libSoName=System.mapLibraryName(libName);
-        String cachedLibPath=libCacheDir+"/"+libSoName;
+    private static void mapPathLoadLib(String libCacheDir, String libName){
+        String cachedLibPath=getLibPath(libCacheDir,libName);
         if (pathIsExists(cachedLibPath)) {
             Log.w("HotUnity", "java MAP_PATH() to "+cachedLibPath);
             System.load(cachedLibPath);
-        }else {
+        } else {
             Log.w("HotUnity", "java MAP_PATH() not found "+cachedLibPath);
             System.loadLibrary(libName);
         }
+    }
+    private static String getLibPath(String dir,String libName){
+        return dir+"/"+System.mapLibraryName(libName);
     }
     private static boolean pathIsExists(String path) {
         File file = new File(path);

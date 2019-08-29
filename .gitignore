@@ -34,6 +34,6 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
-project_hook_unity_jni/build_libs
+project_hook_unity_jni/build_libs/libs
 tool_hot_cache_lib/build_demos/android_ndk_jni_mk/libs
 tool_hot_cache_lib/build_demos/android_ndk_jni_mk/obj
