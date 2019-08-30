@@ -1,7 +1,7 @@
 # UnityAndroidHotUpdate
 ![](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)   
 [[README 中文版](README.zh-CN.md)]   
-UnityAndroidHotUpdate provide a way to hot update Unity app on Android, realize simple and run fast; it hooked C file API call by unity's lib.   
+UnityAndroidHotUpdate provide a way to hot update Unity app on Android, implement simple and run fast,do't interfere with project develop; it hooked C file API call by unity's lib.   
 ( dependent libraries [ApkDiffPatch], [xHook]. )      
 
 [ApkDiffPatch]: https://github.com/sisong/ApkDiffPatch
