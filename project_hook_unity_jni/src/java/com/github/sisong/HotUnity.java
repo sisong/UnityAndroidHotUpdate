@@ -10,7 +10,7 @@ import android.util.Log;
     2. add libhotunity.so to project jniLibs;
     3. edit file UnityPlayerActivity.java in project;
         add code: `import com.github.sisong.HotUnity;`
-        add code: `HotUnity.hotUnity(this);` after `mUnityPlayer = new UnityPlayer(this);`
+        add code: `HotUnity.hotUnity(this);` before `mUnityPlayer = new UnityPlayer(this);`
  */
 
 public class HotUnity{
