@@ -1,5 +1,7 @@
 # UnityAndroidHotUpdate
-[![release](https://img.shields.io/github/v/release/sisong/UnityAndroidHotUpdate?color=blue)](https://github.com/sisong/HDiffPatch/releases)  [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)  [![+issue Welcome](https://img.shields.io/github/issues-raw/sisong/UnityAndroidHotUpdate?color=green&label=%2Bissue%20welcome)](https://github.com/sisong/UnityAndroidHotUpdate/issues)   
+[![release tag](https://img.shields.io/github/v/tag/sisong/UnityAndroidHotUpdate?label=release%20tag)](https://github.com/sisong/UnityAndroidHotUpdate/releases) 
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) 
+[![+issue Welcome](https://img.shields.io/github/issues-raw/sisong/UnityAndroidHotUpdate?color=green&label=%2Bissue%20welcome)](https://github.com/sisong/UnityAndroidHotUpdate/issues)   
    
 [[README English](README.en.md)]  
 提供了一个在Android上“热更”新Unity开发的app的方案，实现简单，运行快；不依赖其他语言(lua,js等)不干涉项目开发过程；它通过直接加载新版本apk文件来实现的。   
