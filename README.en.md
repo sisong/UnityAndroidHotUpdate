@@ -34,7 +34,7 @@ This solution will not disturb your Unity project development, not need other pr
 Not need to download the complete apk file, you just need to download the difference between the existing version and the latest version; then you can create the latest version apk file on device;   
 You can select [ApkDiffPatch] for apk file diff&patch, it can generate very small patch package; for example, just some simple code changes, the patch package size about hundreds of KB.     
 * **Development environment and compatibility**   
-Test used Unity2017, Unity2018, Unity2019;   
+Test used Unity5.6, Unity2017, Unity2018, Unity2019;   
 Test used mono and il2cpp backend;   
 Test on armeabi-v7a arm64-v8a and x86 device;   
 Test supported Andorid4.1+, but only supported Andorid5+ when using Unity2017 + il2cpp backend;   
