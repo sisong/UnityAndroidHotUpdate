@@ -5,7 +5,7 @@
    
 [[README English](README.en.md)]  
 提供了一个在Android上“热更”新Unity开发的app的方案，实现简单，运行快；不依赖其他语言(lua,js等)不干涉项目开发过程；它通过直接加载新版本apk文件来实现的。   
-( 依赖的库 [ApkDiffPatch], [xHook]. )      
+( 依赖的库 [ApkDiffPatch], [xHook]. )   
 
 [ApkDiffPatch]: https://github.com/sisong/ApkDiffPatch
 [xHook]: https://github.com/iqiyi/xHook
@@ -17,31 +17,33 @@
 
 
 ## 该方案的效果
-  Android用户在使用app过程中，更新逻辑可以在后台完成下载新版本的任务，当app重新启动后用户看到的是新版本的app(不需要系统安装); 这里的“热更”就是指不需要经过系统的重新安装就拥有了新版本!
+  Android用户在使用app过程中，更新逻辑可以在后台完成下载新版本的任务，当app重新启动后用户看到的是新版本的app(不需要系统安装); 这里的“热更”就是指不需要经过系统的重新安装就拥有了新版本!   
 
 
 ## 热更原理
   Android程序在安装后,apk文件存放在```getApplicationContext().getPackageResourcePath()```;并将其中相应abi的库文件解压存放到了```getApplicationContext().getApplicationInfo().nativeLibraryDir```,其中包括libmain.so,libunity.so,libil2cpp.so or libmono*.so,等;   
   本方案会在app运行中，将更新到的新版本apk存放到```getApplicationContext().getFilesDir().getPath()```的更新路径,并将apk中本机abi并发生了改变的库文件解压到更新路径; 当app重启后用hook和java层代码配合,将unity相关库访问apk文件和lib路径的c文件访问函数映射到访问我们准备好的新的apk文件和lib路径。   
-  ( Hook Unity库的C文件API来实现热更的思路来源于[UnityAndroidIl2cppPatchDemo]，感谢，这里做了一些简化。 )
+  ( Hook Unity库的C文件API来实现热更的思路来源于[UnityAndroidIl2cppPatchDemo]，感谢，这里做了一些简化。 )   
 
 
 ## 特性
-* **简单快速**  
+* **简单快速**   
 原理和实现简单，并且支持代码和资源的热更新;同时支持il2cpp与mono这2种代码打包方式，支持libunity.so、libmono.so等库文件变动；(当前热更不支持libmain.so改动)   
 接入项目简单，项目代码量小，也容易修改定制;（本文后面有接入项目说明）   
-热更新后app执行速度不受影响，不像使用插件化方案后遇到的速度慢和Activity兼容等问题；  
-这是一个几乎不改变Unity开发流程的方案，不需要引入额外的语言(如lua或js等)，也不要一个额外的中间层解释器(如ILRuntime)、动态加载反射、手工绑定等工作。  
+热更新后app执行速度不受影响，不像使用插件化方案后遇到的速度慢和Activity兼容等问题；   
+这是一个几乎不改变Unity开发流程的方案，不需要引入额外的语言(如lua或js等)，也不要一个额外的中间层解释器(如ILRuntime)、动态加载反射、手工绑定等工作。   
 * **下载流量小**   
 不需要下载完整的apk文件，而只需要下载已有版本和最新版本之间的差异就可以了；然后在用户本地合成新的apk文件；   
 这里选择用的[ApkDiffPatch]方案，可以生成非常小的补丁；比如只是一些简单代码修改，补丁一般在百k级别。     
 * **运行环境和兼容性**   
 在Unity2017、Unity2018、Unity2019的多个版本上测试过；   
-测试支持Andorid5--Andorid9的系统；使用mono后端打包的app支持Andorid4.1及以上；
+测试过分别使用mono代码后端和il2cpp代码后端；   
+测试过armeabi-v7a、arm64-v8a和x86的设备；   
+一般支持Andorid4.1及以上的系统,但使用Unity2017和il2cpp代码后端时只支持Andorid5及以上；   
 在发布使用的Unity版本不变(libmain.so也不会变)和没有新增.so库文件的情况下，一般都可以兼容；   
 项目的常规.so库可以添加到允许更新的库列表中提前加载从而兼容热更(在HotUnity.java文件中添加,参见接入项目说明)；   
 测试过用相同的unity版本新建了一个最简单的app，也可以更新到一个已有的复杂的游戏app；   
-当然某些涉及权限、特殊第三方业务等是否兼容还需要更多测试。  
+当然某些涉及权限、特殊第三方业务等是否兼容还需要更多测试。   
 
 
 ## 如何接入你的项目测试
@@ -57,11 +59,11 @@
 ## 如何在正式app里自动化热更
   app热更应该是一个程序自动化的过程，它将代替我们上面的手工测试过程；（本方案提供了一种可选实现路径，你可以自己想办法在客户端拿到新版本apk就行）   
 * 假设开发了新版本，我可以用diff工具生成新旧版本之间的补丁；将版本升级信息和补丁文件放到服务器上；   
-* 客户运行app时检查到升级信息并下载到相应的补丁文件，app用patch算法将本机最新apk和补丁生成新版本apk(即HotUpdate/update.apk), 然后调用hot_cache_lib函数(项目在```tool_hot_cache_lib```目录里，生成libhotcachelib.so)来缓存apk中有修改过的.so文件； 
+* 客户运行app时检查到升级信息并下载到相应的补丁文件，app用patch算法将本机最新apk和补丁生成新版本apk(即HotUpdate/update.apk), 然后调用hot_cache_lib函数(项目在```tool_hot_cache_lib```目录里，生成libhotcachelib.so)来缓存apk中有修改过的.so文件；   
 * 判断2个apk是否可以热更新的函数hot_cache_lib_check也在```tool_hot_cache_lib```里，当然以这个函数为准并不完全可靠，这只是检查了热更的必要条件；   
 * 生成apk间的补丁和在设备上合并，可以使用[ApkDiffPatch]项目; diff程序如果不想自己编译，可以在[releases](https://github.com/sisong/ApkDiffPatch/releases)下载到；patch过程需要在用户设备上执行，生成libapkpatch.so的项目在```ApkDiffPatch/builds/android_ndk_jni_mk```目录里；   
 * 注意：ApkDiffPatch针对zip进行了特别的优化，一般比[bsdiff]和[HDiffPatch]生成更小的补丁，其ZipDiff工具对输入的apk文件有特别的要求，如果apk有[v2版及以上签名]，那需要用库提供的ApkNormalized工具对apk进行标准化，然后再用AndroidSDK#apksigner对apk重新进行签名；所有对用户发布的apk都需要经过这个处理，这是为了patch时能够原样还原apk；（经过这个处理过的apk,也兼容谷歌Play商店的补丁大小优化方案[archive-patcher]）   
-* 实践中建议可以将libhotcachelib.so、libapkpatch.so的代码都合并编译到libhotunity.so一个文件中；
+* 实践中建议可以将libhotcachelib.so、libapkpatch.so的代码都合并编译到libhotunity.so一个文件中；   
 
 
 ## 推荐一个多版本更新流程（较复杂的示例,考虑了支持需要重新安装的情况）
@@ -91,16 +93,16 @@ v5 -> (假设放弃了对v0的补丁) ; v0: download(v5) -> v5 + install(v5)
       diff(v3,v5) -> pat35 ; v3: patch(v3,download(pat35)) -> v5 + install(v5)
       diff(v4,v5) -> pat45 ; v4: patch(v4,download(pat45)) -> v5 + cache_lib(v5)
 ```
-这个新版本和补丁的发布过程，需要自动化；并且自动测试补丁的正确性并检查配置是否能够热更新等。  
+这个新版本和补丁的发布过程，需要自动化；并且自动测试补丁的正确性并检查配置是否能够热更新等。   
 
 
 ## 已知缺点   
 * 切换升级Unity版本后无法热更，新apk需要安装，相同Unity版本才能继续热更；    
-* 不能随意切换il2cpp与mono代码打包方式，否则无法热更新，apk需要重新安装；  
-* 使用il2cpp代码后端时，现在不支持在Android4系统上热更，apk需要重新安装；   
-* 方案只能支持android，无法应用到iOS上；（PC上Unity开发的app需要支持差异更新可以考虑使用[HDiffPatch]之类支持目录间diff和patch的方案就可以了） 
+* 不能随意切换il2cpp与mono代码打包方式，否则无法热更新，apk需要重新安装；   
+* 使用Unity2017+il2cpp代码后端时，现在不支持在Android4系统上热更，apk需要重新安装；   
+* 方案只能支持android，无法应用到iOS上；（PC上Unity开发的app需要支持差异更新可以考虑使用[HDiffPatch]之类支持目录间diff和patch的方案就可以了）   
 * diff&patch方案选择了[ApkDiffPatch]方案，该方案可能不能支持这种情况：apk必须要支持[v2版及以上签名]发布，但签名权又不在自己手中，而在渠道手中，并且造成了无法进行版本控制和diff的；   
 * 得到的新apk文件和库缓存会长期占用磁盘空间；一个实践方案是：固定Unity版本，初始版本用一个最小化的apk(或者obb分离模式)，后续更新后才是完整版本；(另一个可能的改进方案是使用虚拟apk的概念：将没有改变的entry文件利用hook将访问映射到原apk文件里，补丁逻辑也需要另外实现；类似的实现参见[UnityAndroidIl2cppPatchDemo])。   
    
    
-by housisong@gmail.com
+by housisong@gmail.com   

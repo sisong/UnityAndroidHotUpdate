@@ -35,7 +35,9 @@ Not need to download the complete apk file, you just need to download the differ
 You can select [ApkDiffPatch] for apk file diff&patch, it can generate very small patch package; for example, just some simple code changes, the patch package size about hundreds of KB.     
 * **Development environment and compatibility**   
 Test used Unity2017, Unity2018, Unity2019;   
-Test supports Andorid5--Andorid9, supports Andorid4.1+ when app used mono backend;   
+Test used mono and il2cpp backend;   
+Test on armeabi-v7a arm64-v8a and x86 device;   
+Test supported Andorid4.1+, but only supported Andorid5+ when using Unity2017 + il2cpp backend;   
 It is generally compatible, if the version of Unity unchanged (libmain.so will not change) and no new .so library files been added;   
 The project's other .so libraries can be added to the list of libraries that are allowed to be advance load, for compatible with the hot update (added in the HotUnity.java file, see the description of improt project);   
 Tested to create a simple app with the same Unity version, and successfully hot updated to an existing complex game app;   
@@ -45,8 +47,8 @@ Of course, those involving permissions or third-party services, etc., their comp
 ## How to import into your Unity project for testing
 * Export project:  select Gradle and export project in your Unity project, and then modify it and do packaging by Android Studio;   
 * Modify the exported project:   
-add libhotunity.so(rebuild in path ```project_hook_unity_jni```) to project jniLibs;
-add ```com/github/sisong/HotUnity.java``` to project; (You can add the .so in this file that need hot update, which will be loaded if exist new version;)
+add libhotunity.so(rebuild in path ```project_hook_unity_jni```) to project jniLibs;   
+add ```com/github/sisong/HotUnity.java``` to project; (You can add the .so in this file that need hot update, which will be loaded if exist new version;)   
 edit file UnityPlayerActivity.java in project; add code: ```import com.github.sisong.HotUnity;```, and add code: ```HotUnity.hotUnity(this);``` before ```mUnityPlayer = new UnityPlayer(this);```   
 * Package the test project by Android Studio (you can automate the process of exporting modifying and packaging in Unity with the editor extension), the app should be able to running normally
  on the device; now you need test the app "hot" update to a new version;   
@@ -60,7 +62,7 @@ edit file UnityPlayerActivity.java in project; add code: ```import com.github.si
 * The function hot_cache_lib_check that determines whether 2 apks can be hot updated, it is also in ```tool_hot_cache_lib```; of course, this function is not completely reliable, this is only check necessary;   
 * Generate patch file between apks and merge it on device, you can use the [ApkDiffPatch]; if you want test diff application, you can download it at [releases](https://github.com/sisong/ApkDiffPatch/releases); The patch process needs to be executed on the user device. The project that generates libapkpatch.so is in the ```ApkDiffPatch/builds/android_ndk_jni_mk``` directory;   
 * Note: ApkDiffPatch is specially optimized for zip file. Generally, it generates smaller patch file size than [bsdiff] or [HDiffPatch]; The ZipDiff tool has special requirements for the input apk file, if the apk has [v2+ sign], then you need to normalized the apk files by the ApkNormalized tool; Then use AndroidSDK#apksigner to re-sign the apk; All the apks released for user need to done this process, this is to byte by byte restore the apk when patching;  (apk after this processed, it is also compatible with the patch size optimization scheme [archive-patcher] of the Google Play Store)   
-* In practice, it is recommended to compile the code of libhotcachelib.so and libapkpatch.so into a file of libhotunity.so;
+* In practice, it is recommended to compile the code of libhotcachelib.so and libapkpatch.so into a file of libhotunity.so;   
 
 
 ## Recommend a process for multi version update
@@ -96,7 +98,7 @@ This new version and patch release process needs to be automated, and test wheth
 ## Defect   
 * After changed the Unity version, apk can't be hot update, the new apk needs to be installed, and the same Unity version can continue to hot update;    
 * Can not switch between il2cpp and mono backend apks by hot update, the new apk needs to be installed;   
-* When apk using il2cpp backend, it is not currently supported on Android4, the new apk needs to be installed;   
+* When apk using Unity2017 + il2cpp backend, it is not currently supported on Android4, the new apk needs to be installed;   
 * The solution can only support Android and can't be applied on iOS; (The app developed by Unity run on PC, if needs difference update, you can using [HDiffPatch] to diff&patch between directory.)   
 * The diff&patch algorithm selected [ApkDiffPatch], which may not support this situation: apk must support [v2+ sign], but released apk cannot be signed by self, then it is impossible to version control and diff;   
 * The new apk file and cached .so files take up disk space;  A recommended solution: fixed Unity version, initial version with a minimized apk (or obb split mode), subsequent updates are the full version; (Another possible improvement is to use the concept of virtual apk: Use hook to map the access to the original apk file when file API access unchanged entry files  in virtual apk; the patch process also requires a new implementation; a similar implementation see [UnityAndroidIl2cppPatchDemo].)   
