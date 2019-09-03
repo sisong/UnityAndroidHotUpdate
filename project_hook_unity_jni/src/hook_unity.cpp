@@ -15,7 +15,7 @@ extern "C" {
 #endif
     static const char* kLibMain="libmain.so";
     static const char* kLibUnity="libunity.so";
-    static int         kLibUnityLen=11;//strlen(kLibUnity);
+    static const int   kLibUnityLen=11;//strlen(kLibUnity);
     //for il2cpp
     static const char* kLibIL2cpp="libil2cpp.so";
     
@@ -128,18 +128,33 @@ extern "C" {
         return result;
     }
     
+#if (_IsDebug>=2)
+    void _DEBUG_log_libmaps(){
+        const char* path="/proc/self/maps";
+        FILE* fp=fopen(path,"r");
+        char line[kMaxPathLen+1]={0};
+        while(fgets(line,sizeof(line)-1, fp)){
+            LOG_DEBUG(" lib maps : %s\n",line);
+        }
+        fclose(fp);
+    }
+#else
+    #define _DEBUG_log_libmaps()
+#endif
     
     //dlopen
     static bool hook_lib(const char* libPath);
     static void* my_new_dlopen(const char* path,int flags,bool isMustLoad,bool isMustHookOk){
         void* const errValue=NULL;
-        LOG_INFO2("new_dlopen() %d %s",flags,path);
+        LOG_DEBUG2("new_dlopen() %d %s",flags,path);
         MAP_SO_PATH(path,errValue);
         if ((!isMustLoad)&&(!isFindFile(path)))
             return errValue;
         
         void* result=::dlopen(path,flags);
-        LOG_DEBUG2("dlopen() result 0x%08x %s",(unsigned int)(size_t)result,path);
+        LOG_INFO2("dlopen() result 0x%08x %s",(unsigned int)(size_t)result,path);
+        _DEBUG_log_libmaps();
+        
         if ((result!=errValue)&&isSoDirCanMap){
             bool ret=hook_lib(path);
             if ((!ret)&&isMustHookOk)
@@ -158,9 +173,11 @@ extern "C" {
             LOG_ERROR2("hook_lib() failed to find function:%s in %s",#symbol,lib); return errValue; } }
 
     static bool hook_lib(const char* libPath){
+        LOG_INFO("hook_lib() to hook %s",libPath);
         libPath=getFileName(libPath);
-        
-        //xhook_enable_debug(1);
+#if (_IsDebug>=2)
+        xhook_enable_debug(1);
+#endif
         const bool errValue=false;
         HOOK(libPath,errValue,stat);
         HOOK(libPath,errValue,fopen);
@@ -170,7 +187,6 @@ extern "C" {
             LOG_ERROR("hook_lib() failed to hook %s",libPath);
             return errValue; }
         xhook_clear();
-        LOG_INFO("hook_lib() success to hook %s",libPath);
         return true;
     }
     
@@ -212,8 +228,8 @@ extern "C" {
     
     void hook_unity_doHook(const char* apkPath,const char* soDir,
                            const char* newApkPath,const char* soCacheDir){
-        LOG_INFO2("hook_unity_doHook() %s %s",apkPath,soDir);
-        LOG_INFO2("hook_unity_doHook() %s %s",newApkPath,soCacheDir);
+        LOG_INFO2("hook_unity_doHook() from: %s  %s",apkPath,soDir);
+        LOG_INFO2("hook_unity_doHook() to: %s  %s",newApkPath,soCacheDir);
         
         _COPY_PATH(g_apkPath,apkPath);
         _COPY_PATH(g_soDir,soDir);
