@@ -1,12 +1,13 @@
-# UnityAndroidHotUpdate
+# [UnityAndroidHotUpdate]
 [![release tag](https://img.shields.io/github/v/tag/sisong/UnityAndroidHotUpdate?label=release%20tag)](https://github.com/sisong/UnityAndroidHotUpdate/releases) 
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) 
 [![+issue Welcome](https://img.shields.io/github/issues-raw/sisong/UnityAndroidHotUpdate?color=green&label=%2Bissue%20welcome)](https://github.com/sisong/UnityAndroidHotUpdate/issues)   
    
 [[README English](README.en.md)]  
-提供了一个在Android上“热更”新Unity开发的app的方案，实现简单，运行快；不依赖其他语言(lua,js等)不干涉项目开发过程；它通过直接加载新版本apk文件来实现的。   
+提供了一个在Android上热更新Unity开发的app的方案，支持代码和资源；不依赖其他语言(lua,js等)不干涉项目开发过程；它通过直接加载新版本apk文件来实现的。   
 ( 依赖的库 [ApkDiffPatch], [xHook]. )   
 
+[UnityAndroidHotUpdate]: https://github.com/sisong/UnityAndroidHotUpdate
 [ApkDiffPatch]: https://github.com/sisong/ApkDiffPatch
 [xHook]: https://github.com/iqiyi/xHook
 [UnityAndroidIl2cppPatchDemo]: https://github.com/noodle1983/UnityAndroidIl2cppPatchDemo
@@ -52,7 +53,7 @@
  将libhotunity.so文件(重新build项目在```project_hook_unity_jni```目录里，注意abi路径对应)复制到项目的jniLibs下的相应子目录中；   
  将```com/github/sisong/HotUnity.java```文件复制到项目源代码的java相应路径中； (可以在这个文件中添加你需要支持热更的.so，这会立即加载可能存在的新版本库)   
  在项目的UnityPlayerActivity.java文件中```import com.github.sisong.HotUnity;```，并且在```mUnityPlayer = new UnityPlayer(this);```代码之前添加代码```HotUnity.hotUnity(this);```   
-* 用Android Studio打包测试项目（你可以把这个导出、修改、打包的过程在Unity中利用编辑器扩展自动化下来；后续本仓库会更新到Demo中），app在设备上应该能够正常运行; 现在你需要测试“热”更新到一个新版本；   
+* 用Android Studio打包测试项目（你可以把这个导出、修改、打包的过程在Unity中利用编辑器扩展自动化下来；后续本仓库会更新到Demo中），app在设备上应该能够正常运行; 现在你需要测试热更新到一个新版本；   
 * 手工热更新测试过程：假设有了修改过的新版本apk命名成update.apk,放置到```getApplicationContext().getFilesDir().getPath()```目录的HotUpdate子目录下（一般设备上路径```/data/data/<appid>/files/HotUpdate/```）； 将update.apk包中```lib/<本测试设备abi>/```中的*.so文件解压后直接放置到```HotUpdate/update.apk_lib/```目录下（可以只放置有修改过的.so文件）； 重新运行设备上安装的app，你应该可以看到，已经运行的是新版本！   
 
 

@@ -1,12 +1,13 @@
-# UnityAndroidHotUpdate
+# [UnityAndroidHotUpdate]
 [![release tag](https://img.shields.io/github/v/tag/sisong/UnityAndroidHotUpdate?label=release%20tag)](https://github.com/sisong/UnityAndroidHotUpdate/releases) 
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) 
 [![+issue Welcome](https://img.shields.io/github/issues-raw/sisong/UnityAndroidHotUpdate?color=green&label=%2Bissue%20welcome)](https://github.com/sisong/UnityAndroidHotUpdate/issues)   
    
 [[README 中文版](README.md)]   
-provide a way to hot update Unity app on Android, implement simple and run fast, not need lua js or IL runtime etc..., will not disturb your project development; just loading the new version apk file to achieve.   
+provide a way to hot update Unity app on Android, support code & resources, not need lua js or IL runtime etc..., will not disturb your project development; just loading the new version apk file to achieve.   
 ( dependent libraries [ApkDiffPatch], [xHook]. )   
 
+[UnityAndroidHotUpdate]: https://github.com/sisong/UnityAndroidHotUpdate
 [ApkDiffPatch]: https://github.com/sisong/ApkDiffPatch
 [xHook]: https://github.com/iqiyi/xHook
 [UnityAndroidIl2cppPatchDemo]: https://github.com/noodle1983/UnityAndroidIl2cppPatchDemo
