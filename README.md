@@ -1,12 +1,13 @@
-# UnityAndroidHotUpdate
+# [UnityAndroidHotUpdate]
 [![release tag](https://img.shields.io/github/v/tag/sisong/UnityAndroidHotUpdate?label=release%20tag)](https://github.com/sisong/UnityAndroidHotUpdate/releases) 
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) 
 [![+issue Welcome](https://img.shields.io/github/issues-raw/sisong/UnityAndroidHotUpdate?color=green&label=%2Bissue%20welcome)](https://github.com/sisong/UnityAndroidHotUpdate/issues)   
    
 [[README English](README.en.md)]  
-提供了一个在Android上“热更”新Unity开发的app的方案，实现简单，运行快；不依赖其他语言(lua,js等)不干涉项目开发过程；它通过直接加载新版本apk文件来实现的。   
+提供了一个在Android上热更新Unity开发的app的方案，支持代码和资源；不依赖其他语言(lua,js等)不干涉项目开发过程；它通过直接加载新版本apk文件来实现的。   
 ( 依赖的库 [ApkDiffPatch], [xHook]. )   
 
+[UnityAndroidHotUpdate]: https://github.com/sisong/UnityAndroidHotUpdate
 [ApkDiffPatch]: https://github.com/sisong/ApkDiffPatch
 [xHook]: https://github.com/iqiyi/xHook
 [UnityAndroidIl2cppPatchDemo]: https://github.com/noodle1983/UnityAndroidIl2cppPatchDemo
@@ -39,7 +40,7 @@
 在Unity5.6、Unity2017、Unity2018、Unity2019的多个版本上测试过；   
 测试过分别使用mono代码后端和il2cpp代码后端；   
 测试过armeabi-v7a、arm64-v8a和x86的设备；   
-一般支持Andorid4.1及以上的系统,但使用Unity5.6或Unity2017和il2cpp代码后端时只支持Andorid5及以上；   
+一般支持Andorid4.1及以上的系统了；但使用Unity5.6或Unity2017和il2cpp代码后端时可能只支持Andorid5及以上,你需要测试；   
 在发布使用的Unity版本不变(libmain.so也不会变)和没有新增.so库文件的情况下，一般都可以兼容；   
 项目的常规.so库可以添加到允许更新的库列表中提前加载从而兼容热更(在HotUnity.java文件中添加,参见接入项目说明)；   
 测试过用相同的unity版本新建了一个最简单的app，也可以更新到一个已有的复杂的游戏app；   
@@ -52,7 +53,7 @@
  将libhotunity.so文件(重新build项目在```project_hook_unity_jni```目录里，注意abi路径对应)复制到项目的jniLibs下的相应子目录中；   
  将```com/github/sisong/HotUnity.java```文件复制到项目源代码的java相应路径中； (可以在这个文件中添加你需要支持热更的.so，这会立即加载可能存在的新版本库)   
  在项目的UnityPlayerActivity.java文件中```import com.github.sisong.HotUnity;```，并且在```mUnityPlayer = new UnityPlayer(this);```代码之前添加代码```HotUnity.hotUnity(this);```   
-* 用Android Studio打包测试项目（你可以把这个导出、修改、打包的过程在Unity中利用编辑器扩展自动化下来；后续本仓库会更新到Demo中），app在设备上应该能够正常运行; 现在你需要测试“热”更新到一个新版本；   
+* 用Android Studio打包测试项目（你可以把这个导出、修改、打包的过程在Unity中利用编辑器扩展自动化下来；后续本仓库会更新到Demo中），app在设备上应该能够正常运行; 现在你需要测试热更新到一个新版本；   
 * 手工热更新测试过程：假设有了修改过的新版本apk命名成update.apk,放置到```getApplicationContext().getFilesDir().getPath()```目录的HotUpdate子目录下（一般设备上路径```/data/data/<appid>/files/HotUpdate/```）； 将update.apk包中```lib/<本测试设备abi>/```中的*.so文件解压后直接放置到```HotUpdate/update.apk_lib/```目录下（可以只放置有修改过的.so文件）； 重新运行设备上安装的app，你应该可以看到，已经运行的是新版本！   
 
 
@@ -98,8 +99,7 @@ v5 -> (假设放弃了对v0的补丁) ; v0: download(v5) -> v5 + install(v5)
 
 ## 已知缺点   
 * 切换升级Unity版本后无法热更，新apk需要安装，相同Unity版本才能继续热更；    
-* 不能随意切换il2cpp与mono代码打包方式，否则无法热更新，apk需要重新安装；   
-* 使用Unity5.6或Unity2017+il2cpp代码后端时，现在不支持在Android4系统上热更，apk需要重新安装；   
+* 不能随意切换il2cpp与mono代码打包方式，否则无法热更新，apk需要重新安装；    
 * 方案只能支持android，无法应用到iOS上；（PC上Unity开发的app需要支持差异更新可以考虑使用[HDiffPatch]之类支持目录间diff和patch的方案就可以了）   
 * diff&patch方案选择了[ApkDiffPatch]方案，该方案可能不能支持这种情况：apk必须要支持[v2版及以上签名]发布，但签名权又不在自己手中，而在渠道手中，并且造成了无法进行版本控制和diff的；   
 * 得到的新apk文件和库缓存会长期占用磁盘空间；一个实践方案是：固定Unity版本，初始版本用一个最小化的apk(或者obb分离模式)，后续更新后才是完整版本；(另一个可能的改进方案是使用虚拟apk的概念：将没有改变的entry文件利用hook将访问映射到原apk文件里，补丁逻辑也需要另外实现；类似的实现参见[UnityAndroidIl2cppPatchDemo])。   

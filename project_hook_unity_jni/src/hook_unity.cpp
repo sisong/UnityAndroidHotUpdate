@@ -7,7 +7,7 @@
 #include <stdlib.h> //exit
 #include <sys/stat.h>
 #include <fcntl.h>
-#include "../xHook/libxhook/jni/xhook.h"
+#include "../xHook/libxhook/jni/xh_core.h"
 #include <android/log.h>
 #include <dlfcn.h> // dlopen
 #ifdef __cplusplus
@@ -19,16 +19,13 @@ extern "C" {
     //for il2cpp
     static const char* kLibIL2cpp="libil2cpp.so";
     
-#define _IsDebug 1
-#define _LogTag "HotUnity"
-#define LOG_INFO(tag,info)         { __android_log_print(ANDROID_LOG_INFO,_LogTag,tag "\n",info); }
-#define LOG_INFO2(tag,info0,info1) { __android_log_print(ANDROID_LOG_INFO,_LogTag,tag "\n",info0,info1); }
-#define LOG_ERROR(tag,err)         { __android_log_print(ANDROID_LOG_ERROR,_LogTag,tag "\n",err); }
-#define LOG_ERROR2(tag,err0,err1)  { __android_log_print(ANDROID_LOG_ERROR,_LogTag,tag "\n",err0,err1); }
-#define LOG_DEBUG(tag,info)        { if (_IsDebug) LOG_INFO(tag,info); }
-#define LOG_DEBUG2(tag,info0,info1){ if (_IsDebug) LOG_INFO2(tag,info0,info1); }
+    #define _IsDebug 0
+    #define _LogTag "HotUnity"
+    #define LOG_INFO(fmt,args...)       __android_log_print(ANDROID_LOG_INFO,_LogTag,fmt, ##args)
+    #define LOG_ERROR(fmt,args...)      __android_log_print(ANDROID_LOG_ERROR,_LogTag,fmt, ##args)
+    #define LOG_DEBUG(fmt,args...)      do { if (_IsDebug) LOG_INFO(fmt, ##args); } while(0)
 
-    static const int kMaxPathLen=512-1;
+    static const int  kMaxPathLen=512-1;
     static const char kDirTag='/';
     
     static bool g_isMapPath =false;
@@ -51,53 +48,72 @@ extern "C" {
         return filePath+(i+1);
     }
     
-    static bool isFindFile(const char* filePath){
-        struct stat file_stat;
-        memset(&file_stat,0,sizeof(file_stat));
-        int ret=stat(filePath,&file_stat);
-        return (ret==0)&&((file_stat.st_mode&S_IFREG)!=0);
+    static bool pathIsExists(const char* path){
+        struct stat path_stat;
+        memset(&path_stat,0,sizeof(path_stat));
+        int ret=stat(path,&path_stat);
+        return (ret==0)&&( (path_stat.st_mode&(S_IFREG|S_IFDIR))!=0 );
     }
     
+    static bool appendPath(char* dstPath,int dstPathSize,
+                           const char* dir,int dirLen,const char*subPath,int subPathLen){
+        if (dirLen+1+subPathLen+1>dstPathSize){
+            LOG_ERROR("appendPath() error len  %s + %s",dir,subPath);
+            return false;
+        }
+        memcpy(dstPath,dir,dirLen);
+        dstPath+=dirLen;
+        int dirTagCount= (((dirLen>0)&&(dir[dirLen-1]==kDirTag))?1:0)
+                        +(((subPathLen>0)&&(subPath[0]==kDirTag))?1:0);
+        switch (dirTagCount) {
+            case 2:{ ++subPath; --subPathLen; } break;
+            case 0:{ if ((dirLen>0)&&(subPathLen>0)) { dstPath[0]=kDirTag; ++dstPath; } } break;
+        }
+        memcpy(dstPath,subPath,subPathLen);
+        dstPath[subPathLen]='\0';
+        return true;
+    }
     
-    #define __MAP_PATH_TO(src,clipLen,isAddDirTag,dst,opath,errValue,need_isFindFile,isCanMap) \
-    if (g_isMapPath){              \
-        int olen=strlen(opath);     \
-        if ((olen>=src##Len)&&(0==memcmp(opath,src,src##Len))   \
-            &&((opath[src##Len]=='\0')||(opath[src##Len]==kDirTag))){ \
-            if (dst##Len+(olen-clipLen)+isAddDirTag>kMaxPathLen)\
-                { LOG_ERROR2("MAP_PATH() len %d %s",olen,opath);  return errValue; } \
-            isCanMap=true;          \
-            memcpy(_newPath,dst,dst##Len);              \
-            if (isAddDirTag) _newPath[dst##Len]=kDirTag;\
-            memcpy(_newPath+dst##Len+isAddDirTag,opath+clipLen,olen-clipLen+1); \
-            if ((!need_isFindFile)||isFindFile(_newPath)){      \
-                opath=&_newPath[0]; \
-                LOG_DEBUG("MAP_PATH() to %s",opath);    \
-            }else{                  \
-                LOG_DEBUG("MAP_PATH() not found %s",_newPath);  \
-            } } }
-
-    #define _MAP_PATH_TO(src,dst,opath,errValue,need_isFindFile,isCanMap)   \
-        __MAP_PATH_TO(src,src##Len,0,dst,opath,errValue,need_isFindFile,isCanMap)
-
-    #define IS_MAPED_PATH(opath) (opath==&_newPath[0])
+    static const char* map_path(const char* src,int srcLen,
+                                const char* dst,int dstLen,
+                                const char* path,int pathLen,char* newPath,const int newPathSize,
+                                bool needPathIsExists,bool* isCanMap=NULL,int clipLen=-1){
+        const char* const errValue=NULL;
+        if (isCanMap) *isCanMap=false;
+        if (!g_isMapPath) return path;
+        if ((pathLen<srcLen)||(0!=memcmp(path,src,srcLen))) return path;
+        if ((path[srcLen]!='\0')&&(path[srcLen]!=kDirTag)) return path;
+        
+        if (isCanMap) *isCanMap=true;
+        if (clipLen<0) clipLen=srcLen;
+        if (!appendPath(newPath,newPathSize,dst,dstLen,path+clipLen,pathLen-clipLen)) return errValue;
+        
+        if ((!needPathIsExists)||pathIsExists(newPath)){
+            LOG_DEBUG("map_path() to %s",newPath);
+            return newPath;
+        }else{
+            LOG_DEBUG("map_path() not found %s",newPath);
+            return path;
+        }
+    }
     
+    static const char* map_path(const char* path,char* newPath,const int newPathSize,bool* isSoDirCanMap){
+        const int pathLen=strlen(path);
+        path=map_path(g_apkPath,g_apkPathLen,g_newApkPath,g_newApkPathLen,
+                      path,pathLen,newPath,newPathSize,false,NULL,-1);
+        if ((path==NULL)||(path==newPath)) return path;
+        path=map_path(g_soDir,g_soDirLen,g_soCacheDir,g_soCacheDirLen,
+                      path,pathLen,newPath,newPathSize,true,isSoDirCanMap,-1);
+        if ((path==NULL)||(path==newPath)) return path;
+        return map_path(kLibUnity,kLibUnityLen,g_soCacheDir,g_soCacheDirLen,
+                        path,pathLen,newPath,newPathSize,true,NULL,0);
+    }
+
     #define MAP_PATH(opath,errValue)    \
         char _newPath[kMaxPathLen+1];   \
-        bool _null_no_use=false;        \
-        _MAP_PATH_TO(g_apkPath,g_newApkPath,opath,errValue,0,_null_no_use); \
-        if (!IS_MAPED_PATH(opath))      \
-            _MAP_PATH_TO(g_soDir,g_soCacheDir,opath,errValue,1,_null_no_use);
-    
-    #define MAP_SO_PATH(opath,errValue) \
-        char _newPath[kMaxPathLen+1];   \
         bool isSoDirCanMap=false;       \
-        int  _null_no_use=false;        \
-        _MAP_PATH_TO(g_soDir,g_soCacheDir,opath,errValue,1,isSoDirCanMap); \
-        if (!IS_MAPED_PATH(opath)) {    \
-            __MAP_PATH_TO(kLibUnity,0,1,g_soCacheDir,opath,errValue,1,_null_no_use); } \
-        if (!IS_MAPED_PATH(opath)) {    \
-            _MAP_PATH_TO(g_apkPath,g_newApkPath,opath,errValue,0,_null_no_use); }
+        opath=map_path(opath,_newPath,sizeof(_newPath),&isSoDirCanMap); \
+        if (opath==NULL) return errValue;
     
     //stat
     static int new_stat(const char* path,struct stat* file_stat){
@@ -110,7 +126,7 @@ extern "C" {
     //fopen
     static FILE* new_fopen(const char* path,const char* mode){
         FILE* const errValue=NULL;
-        LOG_DEBUG2("new_fopen() %s %s",mode,path);
+        LOG_DEBUG("new_fopen() %s %s",mode,path);
         MAP_PATH(path,errValue);
         return ::fopen(path,mode);
     }
@@ -118,7 +134,7 @@ extern "C" {
     //open
     static int new_open(const char *path, int flags, ...){
         const int errValue=-1;
-        LOG_DEBUG2("new_open() %d %s",flags,path);
+        LOG_DEBUG("new_open() %d %s",flags,path);
         MAP_PATH(path,errValue);
         
         va_list args;
@@ -129,10 +145,10 @@ extern "C" {
     }
     
 #if (_IsDebug>=2)
-    void _DEBUG_log_libmaps(){
+    static void _DEBUG_log_libmaps(){
         const char* path="/proc/self/maps";
         FILE* fp=fopen(path,"r");
-        char line[kMaxPathLen+1]={0};
+        char line[(kMaxPathLen+1)*2]={0};
         while(fgets(line,sizeof(line)-1, fp)){
             LOG_DEBUG(" lib maps : %s\n",line);
         }
@@ -146,13 +162,13 @@ extern "C" {
     static bool hook_lib(const char* libPath);
     static void* my_new_dlopen(const char* path,int flags,bool isMustLoad,bool isMustHookOk){
         void* const errValue=NULL;
-        LOG_DEBUG2("new_dlopen() %d %s",flags,path);
-        MAP_SO_PATH(path,errValue);
-        if ((!isMustLoad)&&(!isFindFile(path)))
+        LOG_DEBUG("new_dlopen() %d %s",flags,path);
+        MAP_PATH(path,errValue);
+        if ((!isMustLoad)&&(!pathIsExists(path)))
             return errValue;
         
         void* result=::dlopen(path,flags);
-        LOG_INFO2("dlopen() result 0x%08x %s",(unsigned int)(size_t)result,path);
+        LOG_INFO("dlopen() result 0x%08x %s",(unsigned int)(size_t)result,path);
         _DEBUG_log_libmaps();
         
         if ((result!=errValue)&&isSoDirCanMap){
@@ -169,50 +185,43 @@ extern "C" {
     
 
     #define HOOK(lib,errValue,symbol){ \
-        if (0!=xhook_register(lib,#symbol,(void*)new_##symbol,NULL)){ \
-            LOG_ERROR2("hook_lib() failed to find function:%s in %s",#symbol,lib); return errValue; } }
+        if (0!=xh_core_register(lib,#symbol,(void*)new_##symbol,NULL)){ \
+            LOG_ERROR("hook_lib() failed to find function:%s in %s",#symbol,lib); return errValue; } }
 
     static bool hook_lib(const char* libPath){
         LOG_INFO("hook_lib() to hook %s",libPath);
         libPath=getFileName(libPath);
 #if (_IsDebug>=2)
-        xhook_enable_debug(1);
+        xh_core_enable_debug(1);
 #endif
         const bool errValue=false;
         HOOK(libPath,errValue,stat);
         HOOK(libPath,errValue,fopen);
         HOOK(libPath,errValue,open);
         HOOK(libPath,errValue,dlopen);
-        if(0 != xhook_refresh(0)){
+        if(0!= xh_core_refresh(0)){
             LOG_ERROR("hook_lib() failed to hook %s",libPath);
-            return errValue; }
-        xhook_clear();
+            return errValue;
+        }
+        xh_core_clear();
         return true;
     }
     
     
     static bool loadUnityLib(const char* libName,bool isMustLoad,bool isMustHookOk){
-        const bool errValue=false;
-        const int flags= RTLD_NOW;
         char libPath[kMaxPathLen+1];
-        const int nameLen=(int)strlen(libName);
-        if (g_soDirLen+1+nameLen>kMaxPathLen)
-            { LOG_ERROR2("loadUnityLib() len %d %s",nameLen,libName);  return errValue; }
-        memcpy(libPath,g_soDir,g_soDirLen);
-        libPath[g_soDirLen]=kDirTag;
-        memcpy(libPath+g_soDirLen+1,libName,nameLen+1);
+        if (!appendPath(libPath,sizeof(libPath),
+                        g_soDir,g_soDirLen,libName,(int)strlen(libName))) return false;
         
+        const int flags= RTLD_NOW;
         void* result=my_new_dlopen(libPath,flags,isMustLoad,isMustHookOk);
         return (result!=NULL)||(!isMustLoad);
     }
     
-    #define  _LOAD_LIB(libName,isMustLoad,isMustHookOk) { \
-        if (!loadUnityLib(libName,isMustLoad,isMustHookOk)) return false; }
-    
     static bool loadUnityLibs(){
         if (!hook_lib(kLibMain)) return false; //loaded in java code,only need hook
-        _LOAD_LIB(kLibUnity,true,true);    // pre-load for il2cpp and mono
-        _LOAD_LIB(kLibIL2cpp,false,false); // pre-load for il2cpp
+        if (!loadUnityLib(kLibUnity,true,true)) return false; // pre-load for il2cpp and mono
+        if (!loadUnityLib(kLibIL2cpp,false,false)) return false; // pre-load for il2cpp
         //test found : not need pre-load libs for mono
         return true;
     }
@@ -228,15 +237,16 @@ extern "C" {
     
     void hook_unity_doHook(const char* apkPath,const char* soDir,
                            const char* newApkPath,const char* soCacheDir){
-        LOG_INFO2("hook_unity_doHook() from: %s  %s",apkPath,soDir);
-        LOG_INFO2("hook_unity_doHook() to: %s  %s",newApkPath,soCacheDir);
+        LOG_INFO("hook_unity_doHook() from: %s  %s",apkPath,soDir);
+        LOG_INFO("hook_unity_doHook() to: %s  %s",newApkPath,soCacheDir);
         
         _COPY_PATH(g_apkPath,apkPath);
         _COPY_PATH(g_soDir,soDir);
         _COPY_PATH(g_newApkPath,newApkPath);
         _COPY_PATH(g_soCacheDir,soCacheDir);
         
-        bool isDoHook=(g_newApkPathLen>0)&&isFindFile(newApkPath);
+        bool isDoHook=(g_newApkPathLen>0)&&pathIsExists(g_newApkPath)
+                    &&(g_soCacheDirLen>0)&&pathIsExists(g_soCacheDir);
         if (!isDoHook) { LOG_INFO("hook_unity_doHook() %s","not do hook"); return; }
         g_isMapPath=true;
         if (!loadUnityLibs()) _ERR_RETURN();

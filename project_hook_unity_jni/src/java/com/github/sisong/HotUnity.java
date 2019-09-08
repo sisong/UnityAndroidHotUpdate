@@ -32,10 +32,10 @@ public class HotUnity{
     private static void mapPathLoadLib(String libCacheDir, String libName){
         String cachedLibPath=getLibPath(libCacheDir,libName);
         if (pathIsExists(cachedLibPath)) {
-            Log.w("HotUnity", "java MAP_PATH() to "+cachedLibPath);
+            Log.w("HotUnity", "java map_path() to "+cachedLibPath);
             System.load(cachedLibPath);
         } else {
-            Log.w("HotUnity", "java MAP_PATH() not found "+cachedLibPath);
+            Log.w("HotUnity", "java map_path() not found "+cachedLibPath);
             System.loadLibrary(libName);
         }
     }
