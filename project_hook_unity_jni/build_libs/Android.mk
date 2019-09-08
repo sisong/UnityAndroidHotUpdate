@@ -5,7 +5,6 @@ LOCAL_MODULE := hotunity
 
 XHOOK_PATH := $(LOCAL_PATH)/../xHook/libxhook/jni
 xHook_Files := \
-        $(XHOOK_PATH)/xhook.c   \
         $(XHOOK_PATH)/xh_core.c \
         $(XHOOK_PATH)/xh_elf.c  \
         $(XHOOK_PATH)/xh_log.c  \

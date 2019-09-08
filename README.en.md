@@ -38,7 +38,7 @@ You can select [ApkDiffPatch] for apk file diff&patch, it can generate very smal
 Test used Unity5.6, Unity2017, Unity2018, Unity2019;   
 Test used mono and il2cpp backend;   
 Test on armeabi-v7a arm64-v8a and x86 device;   
-Test supported Andorid4.1+, but only supported Andorid5+ when using Unity5.6 or Unity2017 + il2cpp backend;   
+Test supported Andorid4.1+; but maybe only supported Andorid5+ when using Unity5.6 or Unity2017 + il2cpp backend, you need tests;   
 It is generally compatible, if the version of Unity unchanged (libmain.so will not change) and no new .so library files been added;   
 The project's other .so libraries can be added to the list of libraries that are allowed to be advance load, for compatible with the hot update (added in the HotUnity.java file, see the description of improt project);   
 Tested to create a simple app with the same Unity version, and successfully hot updated to an existing complex game app;   
@@ -99,7 +99,6 @@ This new version and patch release process needs to be automated, and test wheth
 ## Defect   
 * After changed the Unity version, apk can't be hot update, the new apk needs to be installed, and the same Unity version can continue to hot update;    
 * Can not switch between il2cpp and mono backend apks by hot update, the new apk needs to be installed;   
-* When apk using Unity5.6 or Unity2017 + il2cpp backend, it is not currently supported on Android4, the new apk needs to be installed;   
 * The solution can only support Android and can't be applied on iOS; (The app developed by Unity run on PC, if needs difference update, you can using [HDiffPatch] to diff&patch between directory.)   
 * The diff&patch algorithm selected [ApkDiffPatch], which may not support this situation: apk must support [v2+ sign], but released apk cannot be signed by self, then it is impossible to version control and diff;   
 * The new apk file and cached .so files take up disk space;  A recommended solution: fixed Unity version, initial version with a minimized apk (or obb split mode), subsequent updates are the full version; (Another possible improvement is to use the concept of virtual apk: Use hook to map the access to the original apk file when file API access unchanged entry files  in virtual apk; the patch process also requires a new implementation; a similar implementation see [UnityAndroidIl2cppPatchDemo].)   

@@ -40,7 +40,7 @@
 在Unity5.6、Unity2017、Unity2018、Unity2019的多个版本上测试过；   
 测试过分别使用mono代码后端和il2cpp代码后端；   
 测试过armeabi-v7a、arm64-v8a和x86的设备；   
-一般支持Andorid4.1及以上的系统,但使用Unity5.6或Unity2017和il2cpp代码后端时只支持Andorid5及以上；   
+一般支持Andorid4.1及以上的系统了；但使用Unity5.6或Unity2017和il2cpp代码后端时可能只支持Andorid5及以上,你需要测试；   
 在发布使用的Unity版本不变(libmain.so也不会变)和没有新增.so库文件的情况下，一般都可以兼容；   
 项目的常规.so库可以添加到允许更新的库列表中提前加载从而兼容热更(在HotUnity.java文件中添加,参见接入项目说明)；   
 测试过用相同的unity版本新建了一个最简单的app，也可以更新到一个已有的复杂的游戏app；   
@@ -99,8 +99,7 @@ v5 -> (假设放弃了对v0的补丁) ; v0: download(v5) -> v5 + install(v5)
 
 ## 已知缺点   
 * 切换升级Unity版本后无法热更，新apk需要安装，相同Unity版本才能继续热更；    
-* 不能随意切换il2cpp与mono代码打包方式，否则无法热更新，apk需要重新安装；   
-* 使用Unity5.6或Unity2017+il2cpp代码后端时，现在不支持在Android4系统上热更，apk需要重新安装；   
+* 不能随意切换il2cpp与mono代码打包方式，否则无法热更新，apk需要重新安装；    
 * 方案只能支持android，无法应用到iOS上；（PC上Unity开发的app需要支持差异更新可以考虑使用[HDiffPatch]之类支持目录间diff和patch的方案就可以了）   
 * diff&patch方案选择了[ApkDiffPatch]方案，该方案可能不能支持这种情况：apk必须要支持[v2版及以上签名]发布，但签名权又不在自己手中，而在渠道手中，并且造成了无法进行版本控制和diff的；   
 * 得到的新apk文件和库缓存会长期占用磁盘空间；一个实践方案是：固定Unity版本，初始版本用一个最小化的apk(或者obb分离模式)，后续更新后才是完整版本；(另一个可能的改进方案是使用虚拟apk的概念：将没有改变的entry文件利用hook将访问映射到原apk文件里，补丁逻辑也需要另外实现；类似的实现参见[UnityAndroidIl2cppPatchDemo])。   

@@ -8,14 +8,13 @@ public class Move : MonoBehaviour {
 	void Start () {
 		
 	}
-    
-    float TranslateSpeed = 0.1f;
-    float TranslateSpeedTime =0;
+
+    float TranslateSpeedTime =1.5f;
     // Update is called once per frame
     void Update(){
-        TranslateSpeedTime += 0.1f;
-        transform.Translate(Vector3.forward * TranslateSpeed);
-        if (TranslateSpeedTime > 20.0f){
+        TranslateSpeedTime += Time.deltaTime;
+        transform.Translate(Vector3.forward * Time.deltaTime*5);
+        if (TranslateSpeedTime > 3.0f){
             transform.Rotate(0, 180, 0);
             TranslateSpeedTime = 0f;
         }
