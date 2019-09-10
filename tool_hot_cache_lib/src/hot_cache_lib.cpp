@@ -9,10 +9,8 @@
 extern "C" {
 #endif
     // https://developer.android.com/ndk/guides/abis
-    
-    #define _IsDebug 0
 
-    static const int kMaxPathLen=512-1;
+    static const int  kMaxPathLen=512-1;
     static const char kDirTag='/';
     
     #define _D_ABI(abi_name,abi_tag) static const char* k_##abi_name = abi_tag
