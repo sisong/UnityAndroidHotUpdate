@@ -11,9 +11,7 @@
 
 int main(int argc, const char * argv[]) {
     if (argc!=1+4) return -1;
-    int result=hot_cache_lib_check(argv[1],argv[2],argv[3]);
-    std::cout << "hot_cache_lib_check() return: "<<result<<"\n";
-    result=hot_cache_lib(argv[1],argv[2],argv[3],argv[4]);
+    int result=hot_cache_lib(argv[1],argv[2],argv[3],argv[4]);
     if (result==kCacheLib_ok)
         std::cout << "hot_cache_lib() ok!\n";
     else

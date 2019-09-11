@@ -10,16 +10,9 @@
 		D637FD00230BC4D7002300CA /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D637FCFF230BC4D7002300CA /* main.cpp */; };
 		D637FD0D230BC574002300CA /* hot_cache_lib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D637FD0B230BC574002300CA /* hot_cache_lib.cpp */; };
 		D637FD16230D2DF3002300CA /* Zipper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D637FD15230D2DF3002300CA /* Zipper.cpp */; };
-		D637FD1A230D2E3A002300CA /* deflate.c in Sources */ = {isa = PBXBuildFile; fileRef = D637FD19230D2E3A002300CA /* deflate.c */; };
-		D637FD1D230D2EA7002300CA /* adler32.c in Sources */ = {isa = PBXBuildFile; fileRef = D637FD1B230D2EA7002300CA /* adler32.c */; };
-		D637FD1E230D2EA7002300CA /* crc32.c in Sources */ = {isa = PBXBuildFile; fileRef = D637FD1C230D2EA7002300CA /* crc32.c */; };
-		D637FD20230D2EC5002300CA /* inflate.c in Sources */ = {isa = PBXBuildFile; fileRef = D637FD1F230D2EC4002300CA /* inflate.c */; };
 		D637FD22230D2EDD002300CA /* file_for_patch.c in Sources */ = {isa = PBXBuildFile; fileRef = D637FD21230D2EDD002300CA /* file_for_patch.c */; };
-		D637FD28230D3093002300CA /* zutil.c in Sources */ = {isa = PBXBuildFile; fileRef = D637FD27230D3093002300CA /* zutil.c */; };
 		D637FD2A230D30B9002300CA /* patch.c in Sources */ = {isa = PBXBuildFile; fileRef = D637FD29230D30B9002300CA /* patch.c */; };
-		D637FD2C230D3111002300CA /* inffast.c in Sources */ = {isa = PBXBuildFile; fileRef = D637FD2B230D3111002300CA /* inffast.c */; };
-		D637FD2E230D3141002300CA /* inftrees.c in Sources */ = {isa = PBXBuildFile; fileRef = D637FD2D230D3140002300CA /* inftrees.c */; };
-		D637FD30230D318D002300CA /* trees.c in Sources */ = {isa = PBXBuildFile; fileRef = D637FD2F230D318D002300CA /* trees.c */; };
+		D6D0B83F232765E900E4FDD0 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D0B83E232765E900E4FDD0 /* libz.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,17 +34,10 @@
 		D637FD0C230BC574002300CA /* hot_cache_lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hot_cache_lib.h; sourceTree = "<group>"; };
 		D637FD14230D2DF3002300CA /* Zipper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Zipper.h; path = ../../../ApkDiffPatch/src/patch/Zipper.h; sourceTree = "<group>"; };
 		D637FD15230D2DF3002300CA /* Zipper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Zipper.cpp; path = ../../../ApkDiffPatch/src/patch/Zipper.cpp; sourceTree = "<group>"; };
-		D637FD19230D2E3A002300CA /* deflate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = deflate.c; path = ../../../ApkDiffPatch/zlib1.2.11/deflate.c; sourceTree = "<group>"; };
-		D637FD1B230D2EA7002300CA /* adler32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = adler32.c; path = ../../../ApkDiffPatch/zlib1.2.11/adler32.c; sourceTree = "<group>"; };
-		D637FD1C230D2EA7002300CA /* crc32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = crc32.c; path = ../../../ApkDiffPatch/zlib1.2.11/crc32.c; sourceTree = "<group>"; };
-		D637FD1F230D2EC4002300CA /* inflate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = inflate.c; path = ../../../ApkDiffPatch/zlib1.2.11/inflate.c; sourceTree = "<group>"; };
 		D637FD21230D2EDD002300CA /* file_for_patch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = file_for_patch.c; path = ../../../ApkDiffPatch/HDiffPatch/file_for_patch.c; sourceTree = "<group>"; };
-		D637FD27230D3093002300CA /* zutil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = zutil.c; path = ../../../ApkDiffPatch/zlib1.2.11/zutil.c; sourceTree = "<group>"; };
 		D637FD29230D30B9002300CA /* patch.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = patch.c; path = ../../../ApkDiffPatch/HDiffPatch/libHDiffPatch/HPatch/patch.c; sourceTree = "<group>"; };
-		D637FD2B230D3111002300CA /* inffast.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = inffast.c; path = ../../../ApkDiffPatch/zlib1.2.11/inffast.c; sourceTree = "<group>"; };
-		D637FD2D230D3140002300CA /* inftrees.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = inftrees.c; path = ../../../ApkDiffPatch/zlib1.2.11/inftrees.c; sourceTree = "<group>"; };
-		D637FD2F230D318D002300CA /* trees.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = trees.c; path = ../../../ApkDiffPatch/zlib1.2.11/trees.c; sourceTree = "<group>"; };
 		D637FD3A23101EDD002300CA /* android_ndk_jni_mk */ = {isa = PBXFileReference; lastKnownFileType = folder; name = android_ndk_jni_mk; path = ../android_ndk_jni_mk; sourceTree = "<group>"; };
+		D6D0B83E232765E900E4FDD0 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6D0B83F232765E900E4FDD0 /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,6 +60,7 @@
 				D637FCFF230BC4D7002300CA /* main.cpp */,
 				D637FD3A23101EDD002300CA /* android_ndk_jni_mk */,
 				D637FCFD230BC4D7002300CA /* Products */,
+				D6D0B83D232765E900E4FDD0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -97,7 +85,6 @@
 		D637FD13230D2DDE002300CA /* ziper */ = {
 			isa = PBXGroup;
 			children = (
-				D637FD18230D2E12002300CA /* zlib */,
 				D637FD15230D2DF3002300CA /* Zipper.cpp */,
 				D637FD14230D2DF3002300CA /* Zipper.h */,
 				D637FD29230D30B9002300CA /* patch.c */,
@@ -106,19 +93,12 @@
 			name = ziper;
 			sourceTree = "<group>";
 		};
-		D637FD18230D2E12002300CA /* zlib */ = {
+		D6D0B83D232765E900E4FDD0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D637FD1B230D2EA7002300CA /* adler32.c */,
-				D637FD1C230D2EA7002300CA /* crc32.c */,
-				D637FD19230D2E3A002300CA /* deflate.c */,
-				D637FD2B230D3111002300CA /* inffast.c */,
-				D637FD1F230D2EC4002300CA /* inflate.c */,
-				D637FD2D230D3140002300CA /* inftrees.c */,
-				D637FD2F230D318D002300CA /* trees.c */,
-				D637FD27230D3093002300CA /* zutil.c */,
+				D6D0B83E232765E900E4FDD0 /* libz.tbd */,
 			);
-			name = zlib;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -178,18 +158,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D637FD2A230D30B9002300CA /* patch.c in Sources */,
-				D637FD28230D3093002300CA /* zutil.c in Sources */,
-				D637FD20230D2EC5002300CA /* inflate.c in Sources */,
-				D637FD2E230D3141002300CA /* inftrees.c in Sources */,
 				D637FD0D230BC574002300CA /* hot_cache_lib.cpp in Sources */,
 				D637FD16230D2DF3002300CA /* Zipper.cpp in Sources */,
 				D637FD00230BC4D7002300CA /* main.cpp in Sources */,
-				D637FD1E230D2EA7002300CA /* crc32.c in Sources */,
-				D637FD30230D318D002300CA /* trees.c in Sources */,
-				D637FD1A230D2E3A002300CA /* deflate.c in Sources */,
 				D637FD22230D2EDD002300CA /* file_for_patch.c in Sources */,
-				D637FD2C230D3111002300CA /* inffast.c in Sources */,
-				D637FD1D230D2EA7002300CA /* adler32.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

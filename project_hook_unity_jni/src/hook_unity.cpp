@@ -219,8 +219,8 @@ extern "C" {
     }
     
     static bool loadUnityLibs(){
-        if (!hook_lib(kLibMain)) return false; //loaded in java code,only need hook
-        if (!loadUnityLib(kLibUnity,true,true)) return false; // pre-load for il2cpp and mono
+        if (!hook_lib(kLibMain)) return false; // loaded in java, only hook
+        if (!hook_lib(kLibUnity)) return false; // loaded in java, only hook
         if (!loadUnityLib(kLibIL2cpp,false,false)) return false; // pre-load for il2cpp
         //test found : not need pre-load libs for mono
         return true;
