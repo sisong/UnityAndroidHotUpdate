@@ -35,7 +35,7 @@ extern "C" {
             hpatch_TStreamOutput _codeStream;
             mem_as_hStreamOutput(&_codeStream,code.data(),code_end);
             check(UnZipper_fileData_decompressTo(srcZip,srcFileIndex,&_codeStream),
-                  kFixUnityJar_inputJarFileError);
+                  kFixUnityJar_decompressError);
         }
         {//edit
             //find one only

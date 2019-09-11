@@ -11,6 +11,7 @@ extern "C" {
         kFixUnityJar_inputJarFileError,
         kFixUnityJar_outputJarFileError,
         kFixUnityJar_classFileError,
+        kFixUnityJar_decompressError,
         kFixUnityJar_fixClassError
     };
     

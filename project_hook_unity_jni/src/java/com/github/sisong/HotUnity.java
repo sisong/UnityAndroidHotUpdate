@@ -22,7 +22,8 @@ public class HotUnity{
         String newApkPath=app.getFilesDir().getPath() + "/HotUpdate/update.apk";
         String libCacheDir=newApkPath+"_lib";
         
-        System.loadLibrary("main");
+        mapPathLoadLib(libCacheDir,"main");
+        mapPathLoadLib(libCacheDir,"unity");
         mapPathLoadLib(libCacheDir,"hotunity");
         //note: You can load other your lib(not unity's) by mapPathLoadLib, can use newVersion lib;
         

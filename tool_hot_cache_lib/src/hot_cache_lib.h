@@ -8,20 +8,21 @@ extern "C" {
     
     enum hot_cache_lib_result_t{
         kCacheLib_ok =0,
-        kCacheLib_fileError,
+        kCacheLib_inputFileError,
         kCacheLib_abiError,
-        kCacheLib_unzipError,
-        kCacheLib_monoIl2cppCrossError,
-        kCacheLib_libChangedError, // now it's libmain.so changed
+        kCacheLib_mkDirError,
+        kCacheLib_outputFileError,
+        kCacheLib_decompressError,
     };
     
-    // can used by: build apk update setting or after get the newVersionApk
-    //   now only check libmain.so
-    int hot_cache_lib_check(const char* arch_abi,const char* apkPath,const char* newApkPath);
-
+#   ifdef __ANDROID__
+#       define HOT_CACHE_EXPORT __attribute__((visibility("default")))
+#   else
+#       define HOT_CACHE_EXPORT
+#   endif
     // can used by: after get the newVersionApk
     int hot_cache_lib(const char* arch_abi,const char* apkPath,const char* newApkPath,
-                      const char* cacheLibFilesDir);
+                      const char* cacheLibFilesDir) HOT_CACHE_EXPORT;
     
 #ifdef __cplusplus
 }
