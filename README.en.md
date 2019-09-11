@@ -23,11 +23,11 @@ provide a way to hot update Unity app on Android, support code & resources, not 
 ## Theory of hot update
   When installing the Android app, the apk file is stored in path ```getApplicationContext().getPackageResourcePath()```, and the native abi library files are decompressed and stored in path ```getApplicationContext().getApplicationInfo().nativeLibraryDir``` , including libmain.so, libunity.so, libil2cpp.so or libmono*.so, etc...   
   This solution will store the updated version apk file to the update path in ```getApplicationContext().getFilesDir().getPath()```, and decompress the changed local abi library files from apk to the update path; When the app restarts, use the hook and java layer code to intercept the c file API in Unity's library files, map access path from the apk file and library files to the new apk file and new library files.   
-
+(The idea Hook Unity library's C file API to implement hot update, comes from [UnityAndroidIl2cppPatchDemo], thanks.)   
 
 ## Feature
 * **Implement simple and run fast**   
-The theory and implement are simple, and support hot update of code and resources; support il2cpp and mono two code backend, support libunity.so, libmono.so and other library files changes; (currently does not support libmain.so changes)    
+The theory and implement are simple, and support hot update of code and resources; support il2cpp and mono two code backend, support libunity.so, libmono.so and other library files changes; support libmain.so little(RELEASE) version changes, not support Unity main(MAJOR & MINOR) version changes;    
 Solution import into project is simple, and it's source code is less, easy to modify by yourself; (the description of import project is at after of this document.)   
 After the hot update, the execution performance of the app is not affected, unlike the slow performance and Activity compatibility problems after using the plugin (or virtual) apk solution;   
 This solution will not disturb your Unity project development, not need other program language or constraints, such as lua js or IL runtime etc...   
@@ -39,9 +39,9 @@ Test used Unity5.6, Unity2017, Unity2018, Unity2019;
 Test used mono and il2cpp backend;   
 Test on armeabi-v7a arm64-v8a and x86 device;   
 Test supported Andorid4.1+; but maybe only supported Andorid5+ when using Unity5.6 or Unity2017 + il2cpp backend, you need tests;   
-It is generally compatible, if the version of Unity unchanged (libmain.so will not change) and no new .so library files been added;   
+It is generally compatible, if the main(MAJOR & MINOR) version of Unity unchanged (jni lib's API will not change) and no new .so library files been added;   
 The project's other .so libraries can be added to the list of libraries that are allowed to be advance load, for compatible with the hot update (added in the HotUnity.java file, see the description of improt project);   
-Tested to create a simple app with the same Unity version, and successfully hot updated to an existing complex game app;   
+Tested to create a simple app with the same Unity main version, and successfully hot updated to an existing complex game app;   
 Of course, those involving permissions or third-party services, etc., their compatibility need more testing.   
 
 
@@ -51,8 +51,8 @@ Of course, those involving permissions or third-party services, etc., their comp
 add libhotunity.so(rebuild in path ```project_hook_unity_jni```) to project jniLibs;   
 add ```com/github/sisong/HotUnity.java``` to project; (You can add the .so in this file that need hot update, which will be loaded if exist new version;)   
 edit file UnityPlayerActivity.java in project; add code: ```import com.github.sisong.HotUnity;```, and add code: ```HotUnity.hotUnity(this);``` before ```mUnityPlayer = new UnityPlayer(this);```   
-* Package the test project by Android Studio (you can automate the process of exporting modifying and packaging in Unity with the editor extension), the app should be able to running normally
- on the device; now you need test the app "hot" update to a new version;   
+* If you need to support upgrading little(RELEASE) version of Unity, you need to use the FixUnityJar(code in path ```project_fix_unity_jar/fix_unity_jar```) program to modify the file unity-classes.jar in the export project, and add libnull.so(rebuild in path ```project_fix_unity_jar/null_lib ```) to project jniLibs;   
+* Package the test project by Android Studio (you can automate the process of exporting modifying and packaging in Unity with the editor extension), the app should be able to running normally on the device; now you need test the app "hot" update to a new version;   
 * Manual hot update test process: you have a new version app named update.apk, placed it in the HotUpdate subdirectory of the ```getApplicationContext().getFilesDir().getPath()``` (device path ```/data/data/<appid>/files/HotUpdate/```); Decompress the *.so file in ```lib/<this test device abi>/``` from update.apk, and place it in the directory ```HotUpdate/update.apk_lib/``` (can also dispose only changed .so file); restart the app on the device, you should be able to see that the new version is already running!   
 
 
@@ -60,7 +60,6 @@ edit file UnityPlayerActivity.java in project; add code: ```import com.github.si
   (this info provides an way, but you can get the new version apk on device by your way)   
 * We have a new version apk, I can use the diff tool to generate patch between the old and new versions; put the version upgrade info and patch files on the server;   
 * When the app running, it checks the upgrade info and download the patch file; the app call patch algorithm to generate a new version apk(ie HotUpdate/update.apk) using the latest apk and patch file; then call hot_cache_lib function (project in ```tool_hot_cache_lib``` directory, can generate libhotcachelib.so) to cache the changed .so files in the new version apk; 
-* The function hot_cache_lib_check that determines whether 2 apks can be hot updated, it is also in ```tool_hot_cache_lib```; of course, this function is not completely reliable, this is only check necessary;   
 * Generate patch file between apks and merge it on device, you can use the [ApkDiffPatch]; if you want test diff application, you can download it at [releases](https://github.com/sisong/ApkDiffPatch/releases); The patch process needs to be executed on the user device. The project that generates libapkpatch.so is in the ```ApkDiffPatch/builds/android_ndk_jni_mk``` directory;   
 * Note: ApkDiffPatch is specially optimized for zip file. Generally, it generates smaller patch file size than [bsdiff] or [HDiffPatch]; The ZipDiff tool has special requirements for the input apk file, if the apk has [v2+ sign], then you need to normalized the apk files by the ApkNormalized tool; Then use AndroidSDK#apksigner to re-sign the apk; All the apks released for user need to done this process, this is to byte by byte restore the apk when patching;  (apk after this processed, it is also compatible with the patch size optimization scheme [archive-patcher] of the Google Play Store)   
 * In practice, it is recommended to compile the code of libhotcachelib.so and libapkpatch.so into a file of libhotunity.so;   
@@ -97,7 +96,7 @@ This new version and patch release process needs to be automated, and test wheth
 
 
 ## Defect   
-* After changed the Unity version, apk can't be hot update, the new apk needs to be installed, and the same Unity version can continue to hot update;    
+* After changed the Unity main(MAJOR & MINOR) version, apk can't be hot update, the new apk needs to be installed, and the same Unity main version can continue to hot update;    
 * Can not switch between il2cpp and mono backend apks by hot update, the new apk needs to be installed;   
 * The solution can only support Android and can't be applied on iOS; (The app developed by Unity run on PC, if needs difference update, you can using [HDiffPatch] to diff&patch between directory.)   
 * The diff&patch algorithm selected [ApkDiffPatch], which may not support this situation: apk must support [v2+ sign], but released apk cannot be signed by self, then it is impossible to version control and diff;   
