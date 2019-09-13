@@ -85,6 +85,7 @@
 		D65C6A09232A0F8200A3C89C /* patch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = patch.c; sourceTree = "<group>"; };
 		D65C6A0A232A0F8200A3C89C /* patch_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = patch_private.h; sourceTree = "<group>"; };
 		D65C6A0B232A0F8200A3C89C /* patch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = patch.h; sourceTree = "<group>"; };
+		D65C6A11232A89BB00A3C89C /* VirtualZipIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VirtualZipIO.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,9 +134,9 @@
 		D65C69D9232A0E5900A3C89C /* ApkDiffPatch */ = {
 			isa = PBXGroup;
 			children = (
-				D65C69F7232A0F0D00A3C89C /* hpatch */,
 				D65C69EB232A0EF400A3C89C /* lzma.xcodeproj */,
 				D65C69F1232A0EF400A3C89C /* zlib.xcodeproj */,
+				D65C69F7232A0F0D00A3C89C /* hpatch */,
 				D65C69DA232A0EA100A3C89C /* patch */,
 			);
 			name = ApkDiffPatch;
@@ -144,17 +145,18 @@
 		D65C69DA232A0EA100A3C89C /* patch */ = {
 			isa = PBXGroup;
 			children = (
+				D65C6A11232A89BB00A3C89C /* VirtualZipIO.h */,
 				D65C69DB232A0EA100A3C89C /* Zipper.h */,
-				D65C69DC232A0EA100A3C89C /* Patcher.h */,
-				D65C69DD232A0EA100A3C89C /* patch_types.h */,
-				D65C69DE232A0EA100A3C89C /* OldStream.cpp */,
-				D65C69DF232A0EA100A3C89C /* ZipDiffData.cpp */,
-				D65C69E0232A0EA100A3C89C /* NewStream.cpp */,
 				D65C69E1232A0EA100A3C89C /* Zipper.cpp */,
-				D65C69E2232A0EA100A3C89C /* OldStream.h */,
+				D65C69DC232A0EA100A3C89C /* Patcher.h */,
 				D65C69E3232A0EA100A3C89C /* Patcher.cpp */,
+				D65C69DD232A0EA100A3C89C /* patch_types.h */,
+				D65C69E2232A0EA100A3C89C /* OldStream.h */,
+				D65C69DE232A0EA100A3C89C /* OldStream.cpp */,
 				D65C69E4232A0EA100A3C89C /* ZipDiffData.h */,
+				D65C69DF232A0EA100A3C89C /* ZipDiffData.cpp */,
 				D65C69E5232A0EA100A3C89C /* NewStream.h */,
+				D65C69E0232A0EA100A3C89C /* NewStream.cpp */,
 			);
 			name = patch;
 			path = ../../../ApkDiffPatch/src/patch;
@@ -367,6 +369,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
+					"_IS_NEED_VIRTUAL_ZIP=1",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -421,6 +424,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "_IS_NEED_VIRTUAL_ZIP=1";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;

@@ -5,6 +5,7 @@
 #include <assert.h>
 #include "../../ApkDiffPatch/src/patch/Zipper.h"
 #include "../../ApkDiffPatch/HDiffPatch/file_for_patch.h"
+#include "../../ApkDiffPatch/src/patch/VirtualZipIO.h"
 
 
 // https://developer.android.com/ndk/guides/abis
@@ -100,6 +101,14 @@ static bool libIsInDir(const UnZipper* apk,int fi,const char* cacheSoDir){
 }
 
 
+static const char* getFileName(const char* filePath,int pathLen){
+    int i=pathLen-1;
+    for (;i>=0;--i) {
+        if (filePath[i]==kDirTag) break;
+    }
+    return filePath+(i+1);
+}
+
 enum TLibCacheType {
     kTLibCache_inApk =0,
     kTLibCache_inBaseSoDir,
@@ -113,8 +122,8 @@ struct TLibCacheInfo {
 
 #define _rt_err(errValue) { result=errValue; break; }
 
-int getSoMapList(const char* apkPath,const char* baseSoDir,const char* hotSoDir,const char* arch_abi,
-                 TLibCacheInfo** out_soMapList,int* out_soMapListCount){
+static int getSoMapList(const char* apkPath,const char* baseSoDir,const char* hotSoDir,
+                        const char* arch_abi, TLibCacheInfo** out_soMapList,int* out_soMapListCount){
     //find all so files in hotSoDir or baseSoDir and cached from apk;
     int result=kVApkPatch_ok;
     TLibCacheInfo* soMapList=0;
@@ -160,6 +169,70 @@ int getSoMapList(const char* apkPath,const char* baseSoDir,const char* hotSoDir,
     return result;
 }
 
+struct t_IVirtualZip_in{
+    IVirtualZip_in  base;
+    int             soMapListCount;
+    TLibCacheInfo*  soMapList;
+    const char*     baseSoDir;
+    const char*     hotSoDir;
+    TZipEntryData*           _entryList;
+    hpatch_TFileStreamInput* _fileStreamList;
+};
+static uint32_t t_IVirtualZip_getCrc32(const struct IVirtualZip_in* virtual_in,const UnZipper* apk,
+                                       int fileIndex, const TZipEntryData* entryData){
+    return UnZipper_file_crc32(apk,fileIndex);
+}
+
+static bool t_IVirtualZip_beginVirtual(struct IVirtualZip_in* _self,const UnZipper* apk,
+                                       TZipEntryData* out_entryDatas[]){
+    t_IVirtualZip_in* self=(t_IVirtualZip_in*)_self->virtualImport;
+    assert(self->_entryList==0);
+    const int apkFileCount=UnZipper_fileCount(apk);
+    size_t _memSize=(sizeof(TZipEntryData)+sizeof(hpatch_TFileStreamInput))*self->soMapListCount;
+    self->_entryList=(TZipEntryData*)malloc(_memSize);
+    memset(self->_entryList,0,_memSize);
+    self->_fileStreamList=(hpatch_TFileStreamInput*)&self->_entryList[self->soMapListCount];
+    //open files (note: no ctrl max file's handle)
+    for (int i=0; i<self->soMapListCount; ++i) {
+        int fIndex=self->soMapList[i].indexInApk;
+        if (fIndex>=apkFileCount) return false; //error
+        const char* fileDir=self->soMapList[i].type==kTLibCache_inHotSoDir?self->hotSoDir:self->baseSoDir;
+        const char* _fileName=UnZipper_file_nameBegin(apk,fIndex);
+        int         fileNameLen=UnZipper_file_nameLen(apk,fIndex);
+        const char* fileName=getFileName(_fileName,fileNameLen);
+        fileNameLen-=(_fileName-fileName);
+        char filePath[kMaxPathLen+1];
+        if (!getPath(fileDir,fileName,fileNameLen,filePath,sizeof(filePath))) return false;
+        if (!hpatch_TFileStreamInput_open(&self->_fileStreamList[i],filePath)) return false;
+    }
+    
+    for (int i=0; i<self->soMapListCount; ++i) {
+        self->_entryList[i].isCompressed=false;
+        self->_entryList[i].dataStream=&self->_fileStreamList[i].base;
+        self->_entryList[i].uncompressedSize=(ZipFilePos_t)self->_entryList[i].dataStream->streamSize;
+        int fIndex=self->soMapList[i].indexInApk;
+        out_entryDatas[fIndex]=&self->_entryList[i];
+    }
+    return false;
+}
+static bool t_IVirtualZip_endVirtual(IVirtualZip_in* _self){
+    if (_self==0) return true;
+    t_IVirtualZip_in* self=(t_IVirtualZip_in*)_self->virtualImport;
+    bool result=true;
+    if (self->_fileStreamList){
+        for (int i=0; i<self->soMapListCount; ++i) {
+            if (!hpatch_TFileStreamInput_close(&self->_fileStreamList[i]))
+                result=false;
+        }
+    }
+    if (self->_entryList){
+        free(self->_entryList);
+        self->_entryList=0;
+    }
+    return result;
+}
+
+
 int virtual_apk_patch(const char* baseApk,const char* baseSoDir,
                       const char* hotApk,const char* hotSoDir,
                       const char* diffData,const char* arch_abi,
@@ -168,18 +241,27 @@ int virtual_apk_patch(const char* baseApk,const char* baseSoDir,
     const char* curApk=baseApk;
     if (fileIsExists(hotApk)) curApk=hotApk;
     
-    TLibCacheInfo* in_soMapList=0;
-    int            in_soMapListCount=0;
+    //virtual_in
+    t_IVirtualZip_in virtual_in;
+    memset(&virtual_in,0,sizeof(virtual_in));
     int result=getSoMapList(curApk,baseSoDir,hotSoDir,arch_abi,
-                            &in_soMapList,&in_soMapListCount);
-    if (result!=kVApkPatch_ok) return result;
+                            &virtual_in.soMapList,&virtual_in.soMapListCount);
+    if (result!=kVApkPatch_ok) return result; //error
+    if (virtual_in.soMapListCount>0){
+        virtual_in.baseSoDir=baseSoDir;
+        virtual_in.hotSoDir=hotSoDir;
+        virtual_in.base.virtualImport=&virtual_in;
+        virtual_in.base.getCrc32=t_IVirtualZip_getCrc32;
+        virtual_in.base.beginVirtual=t_IVirtualZip_beginVirtual;
+        virtual_in.base.endVirtual=t_IVirtualZip_endVirtual;
+    }
     
     do{
-        //tod:
         
-        
+        //todo:
     }while(0);
-    if (in_soMapList) free(in_soMapList);
+    if (virtual_in.soMapList) free(virtual_in.soMapList);
+    assert(virtual_in._entryList==0);
     return result;
 }
 
