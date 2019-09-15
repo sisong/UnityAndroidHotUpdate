@@ -86,6 +86,7 @@
 		D65C6A0A232A0F8200A3C89C /* patch_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = patch_private.h; sourceTree = "<group>"; };
 		D65C6A0B232A0F8200A3C89C /* patch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = patch.h; sourceTree = "<group>"; };
 		D65C6A11232A89BB00A3C89C /* VirtualZipIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VirtualZipIO.h; sourceTree = "<group>"; };
+		D65C6A21232E5F0100A3C89C /* file_for_dirDiff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = file_for_dirDiff.h; path = ../../../ApkDiffPatch/HDiffPatch/dirDiffPatch/dir_diff/file_for_dirDiff.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,6 +188,7 @@
 				D65C6A00232A0F6900A3C89C /* compress_plugin_demo.h */,
 				D65C6A01232A0F6900A3C89C /* decompress_plugin_demo.h */,
 				D65C69FE232A0F6900A3C89C /* file_for_patch.c */,
+				D65C6A1E232E5E3300A3C89C /* dir_diff */,
 				D65C69F8232A0F6900A3C89C /* libParallel */,
 			);
 			name = hpatch;
@@ -222,6 +224,14 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D65C6A1E232E5E3300A3C89C /* dir_diff */ = {
+			isa = PBXGroup;
+			children = (
+				D65C6A21232E5F0100A3C89C /* file_for_dirDiff.h */,
+			);
+			name = dir_diff;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -358,7 +368,6 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
-				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -370,6 +379,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 					"_IS_NEED_VIRTUAL_ZIP=1",
+					"_IS_NEED_FIXED_ZLIB_VERSION=1",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -418,13 +428,15 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
-				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = "_IS_NEED_VIRTUAL_ZIP=1";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"_IS_NEED_VIRTUAL_ZIP=1",
+					"_IS_NEED_FIXED_ZLIB_VERSION=1",
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
