@@ -7,16 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D637FD00230BC4D7002300CA /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D637FCFF230BC4D7002300CA /* main.cpp */; };
-		D637FD0D230BC574002300CA /* hot_cache_lib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D637FD0B230BC574002300CA /* hot_cache_lib.cpp */; };
-		D637FD16230D2DF3002300CA /* Zipper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D637FD15230D2DF3002300CA /* Zipper.cpp */; };
-		D637FD22230D2EDD002300CA /* file_for_patch.c in Sources */ = {isa = PBXBuildFile; fileRef = D637FD21230D2EDD002300CA /* file_for_patch.c */; };
-		D637FD2A230D30B9002300CA /* patch.c in Sources */ = {isa = PBXBuildFile; fileRef = D637FD29230D30B9002300CA /* patch.c */; };
-		D6D0B83F232765E900E4FDD0 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D0B83E232765E900E4FDD0 /* libz.tbd */; };
+		D6D0B8372327437900E4FDD0 /* fix_unity_jar_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6D0B8352327437900E4FDD0 /* fix_unity_jar_main.cpp */; };
+		D6D0B8382327437900E4FDD0 /* fix_unity_jar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6D0B8362327437900E4FDD0 /* fix_unity_jar.cpp */; };
+		D6D0B83C232764D500E4FDD0 /* Zipper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6D0B83A232764D500E4FDD0 /* Zipper.cpp */; };
+		D6D0B8422327679B00E4FDD0 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D0B8412327679B00E4FDD0 /* libz.tbd */; };
+		D6D0B844232767BD00E4FDD0 /* file_for_patch.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D0B843232767BC00E4FDD0 /* file_for_patch.c */; };
+		D6D0B846232767E400E4FDD0 /* patch.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D0B845232767E300E4FDD0 /* patch.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		D637FCFA230BC4D7002300CA /* CopyFiles */ = {
+		D6D0B8242327427D00E4FDD0 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -28,75 +28,73 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		D637FCFC230BC4D7002300CA /* HotCacheLibDemo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HotCacheLibDemo; sourceTree = BUILT_PRODUCTS_DIR; };
-		D637FCFF230BC4D7002300CA /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		D637FD0B230BC574002300CA /* hot_cache_lib.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hot_cache_lib.cpp; sourceTree = "<group>"; };
-		D637FD0C230BC574002300CA /* hot_cache_lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hot_cache_lib.h; sourceTree = "<group>"; };
-		D637FD14230D2DF3002300CA /* Zipper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Zipper.h; path = ../../../ApkDiffPatch/src/patch/Zipper.h; sourceTree = "<group>"; };
-		D637FD15230D2DF3002300CA /* Zipper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Zipper.cpp; path = ../../../ApkDiffPatch/src/patch/Zipper.cpp; sourceTree = "<group>"; };
-		D637FD21230D2EDD002300CA /* file_for_patch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = file_for_patch.c; path = ../../../ApkDiffPatch/HDiffPatch/file_for_patch.c; sourceTree = "<group>"; };
-		D637FD29230D30B9002300CA /* patch.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = patch.c; path = ../../../ApkDiffPatch/HDiffPatch/libHDiffPatch/HPatch/patch.c; sourceTree = "<group>"; };
-		D637FD3A23101EDD002300CA /* android_ndk_jni_mk */ = {isa = PBXFileReference; lastKnownFileType = folder; name = android_ndk_jni_mk; path = ../android_ndk_jni_mk; sourceTree = "<group>"; };
-		D6D0B83E232765E900E4FDD0 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		D6D0B8262327427D00E4FDD0 /* FixUnityJar */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FixUnityJar; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6D0B8342327437900E4FDD0 /* fix_unity_jar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fix_unity_jar.h; sourceTree = "<group>"; };
+		D6D0B8352327437900E4FDD0 /* fix_unity_jar_main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fix_unity_jar_main.cpp; sourceTree = "<group>"; };
+		D6D0B8362327437900E4FDD0 /* fix_unity_jar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fix_unity_jar.cpp; sourceTree = "<group>"; };
+		D6D0B83A232764D500E4FDD0 /* Zipper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Zipper.cpp; path = ../../../../../ApkDiffPatch/src/patch/Zipper.cpp; sourceTree = "<group>"; };
+		D6D0B83B232764D500E4FDD0 /* Zipper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Zipper.h; path = ../../../../../ApkDiffPatch/src/patch/Zipper.h; sourceTree = "<group>"; };
+		D6D0B8412327679B00E4FDD0 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		D6D0B843232767BC00E4FDD0 /* file_for_patch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = file_for_patch.c; path = ../../../../../ApkDiffPatch/HDiffPatch/file_for_patch.c; sourceTree = "<group>"; };
+		D6D0B845232767E300E4FDD0 /* patch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = patch.c; path = ../../../../../ApkDiffPatch/HDiffPatch/libHDiffPatch/HPatch/patch.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		D637FCF9230BC4D7002300CA /* Frameworks */ = {
+		D6D0B8232327427D00E4FDD0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D6D0B83F232765E900E4FDD0 /* libz.tbd in Frameworks */,
+				D6D0B8422327679B00E4FDD0 /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D637FCF3230BC4D7002300CA = {
+		D6D0B81D2327427D00E4FDD0 = {
 			isa = PBXGroup;
 			children = (
-				D637FD13230D2DDE002300CA /* ziper */,
-				D637FD0A230BC574002300CA /* src */,
-				D637FCFF230BC4D7002300CA /* main.cpp */,
-				D637FD3A23101EDD002300CA /* android_ndk_jni_mk */,
-				D637FCFD230BC4D7002300CA /* Products */,
-				D6D0B83D232765E900E4FDD0 /* Frameworks */,
+				D6D0B839232764B700E4FDD0 /* zipper */,
+				D6D0B8332327437900E4FDD0 /* src */,
+				D6D0B8272327427D00E4FDD0 /* Products */,
+				D6D0B8402327679B00E4FDD0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
-		D637FCFD230BC4D7002300CA /* Products */ = {
+		D6D0B8272327427D00E4FDD0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D637FCFC230BC4D7002300CA /* HotCacheLibDemo */,
+				D6D0B8262327427D00E4FDD0 /* FixUnityJar */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D637FD0A230BC574002300CA /* src */ = {
+		D6D0B8332327437900E4FDD0 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				D637FD0B230BC574002300CA /* hot_cache_lib.cpp */,
-				D637FD0C230BC574002300CA /* hot_cache_lib.h */,
+				D6D0B8342327437900E4FDD0 /* fix_unity_jar.h */,
+				D6D0B8352327437900E4FDD0 /* fix_unity_jar_main.cpp */,
+				D6D0B8362327437900E4FDD0 /* fix_unity_jar.cpp */,
 			);
 			name = src;
 			path = ../../src;
 			sourceTree = "<group>";
 		};
-		D637FD13230D2DDE002300CA /* ziper */ = {
+		D6D0B839232764B700E4FDD0 /* zipper */ = {
 			isa = PBXGroup;
 			children = (
-				D637FD15230D2DF3002300CA /* Zipper.cpp */,
-				D637FD14230D2DF3002300CA /* Zipper.h */,
-				D637FD29230D30B9002300CA /* patch.c */,
-				D637FD21230D2EDD002300CA /* file_for_patch.c */,
+				D6D0B83A232764D500E4FDD0 /* Zipper.cpp */,
+				D6D0B83B232764D500E4FDD0 /* Zipper.h */,
+				D6D0B845232767E300E4FDD0 /* patch.c */,
+				D6D0B843232767BC00E4FDD0 /* file_for_patch.c */,
 			);
-			name = ziper;
+			path = zipper;
 			sourceTree = "<group>";
 		};
-		D6D0B83D232765E900E4FDD0 /* Frameworks */ = {
+		D6D0B8402327679B00E4FDD0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D6D0B83E232765E900E4FDD0 /* libz.tbd */,
+				D6D0B8412327679B00E4FDD0 /* libz.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -104,71 +102,71 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D637FCFB230BC4D7002300CA /* HotCacheLibDemo */ = {
+		D6D0B8252327427D00E4FDD0 /* FixUnityJar */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D637FD03230BC4D7002300CA /* Build configuration list for PBXNativeTarget "HotCacheLibDemo" */;
+			buildConfigurationList = D6D0B82D2327427D00E4FDD0 /* Build configuration list for PBXNativeTarget "FixUnityJar" */;
 			buildPhases = (
-				D637FCF8230BC4D7002300CA /* Sources */,
-				D637FCF9230BC4D7002300CA /* Frameworks */,
-				D637FCFA230BC4D7002300CA /* CopyFiles */,
+				D6D0B8222327427D00E4FDD0 /* Sources */,
+				D6D0B8232327427D00E4FDD0 /* Frameworks */,
+				D6D0B8242327427D00E4FDD0 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = HotCacheLibDemo;
-			productName = HotCacheLibDemo;
-			productReference = D637FCFC230BC4D7002300CA /* HotCacheLibDemo */;
+			name = FixUnityJar;
+			productName = FixUnityJar;
+			productReference = D6D0B8262327427D00E4FDD0 /* FixUnityJar */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		D637FCF4230BC4D7002300CA /* Project object */ = {
+		D6D0B81E2327427D00E4FDD0 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 1030;
 				ORGANIZATIONNAME = sisong;
 				TargetAttributes = {
-					D637FCFB230BC4D7002300CA = {
+					D6D0B8252327427D00E4FDD0 = {
 						CreatedOnToolsVersion = 10.3;
 					};
 				};
 			};
-			buildConfigurationList = D637FCF7230BC4D7002300CA /* Build configuration list for PBXProject "HotCacheLibDemo" */;
+			buildConfigurationList = D6D0B8212327427D00E4FDD0 /* Build configuration list for PBXProject "FixUnityJar" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = D637FCF3230BC4D7002300CA;
-			productRefGroup = D637FCFD230BC4D7002300CA /* Products */;
+			mainGroup = D6D0B81D2327427D00E4FDD0;
+			productRefGroup = D6D0B8272327427D00E4FDD0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D637FCFB230BC4D7002300CA /* HotCacheLibDemo */,
+				D6D0B8252327427D00E4FDD0 /* FixUnityJar */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		D637FCF8230BC4D7002300CA /* Sources */ = {
+		D6D0B8222327427D00E4FDD0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D637FD2A230D30B9002300CA /* patch.c in Sources */,
-				D637FD0D230BC574002300CA /* hot_cache_lib.cpp in Sources */,
-				D637FD16230D2DF3002300CA /* Zipper.cpp in Sources */,
-				D637FD00230BC4D7002300CA /* main.cpp in Sources */,
-				D637FD22230D2EDD002300CA /* file_for_patch.c in Sources */,
+				D6D0B8372327437900E4FDD0 /* fix_unity_jar_main.cpp in Sources */,
+				D6D0B83C232764D500E4FDD0 /* Zipper.cpp in Sources */,
+				D6D0B844232767BD00E4FDD0 /* file_for_patch.c in Sources */,
+				D6D0B846232767E400E4FDD0 /* patch.c in Sources */,
+				D6D0B8382327437900E4FDD0 /* fix_unity_jar.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		D637FD01230BC4D7002300CA /* Debug */ = {
+		D6D0B82B2327427D00E4FDD0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -212,6 +210,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 					"_IS_USED_MULTITHREAD=0",
+					"_IS_NEED_FIXED_ZLIB_VERSION=0",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -223,12 +222,11 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "";
 				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
-		D637FD02230BC4D7002300CA /* Release */ = {
+		D6D0B82C2327427D00E4FDD0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -268,7 +266,10 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = "_IS_USED_MULTITHREAD=0";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"_IS_USED_MULTITHREAD=0",
+					"_IS_NEED_FIXED_ZLIB_VERSION=0",
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -278,12 +279,11 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				OTHER_CFLAGS = "";
 				SDKROOT = macosx;
 			};
 			name = Release;
 		};
-		D637FD04230BC4D7002300CA /* Debug */ = {
+		D6D0B82E2327427D00E4FDD0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -291,7 +291,7 @@
 			};
 			name = Debug;
 		};
-		D637FD05230BC4D7002300CA /* Release */ = {
+		D6D0B82F2327427D00E4FDD0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -302,25 +302,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D637FCF7230BC4D7002300CA /* Build configuration list for PBXProject "HotCacheLibDemo" */ = {
+		D6D0B8212327427D00E4FDD0 /* Build configuration list for PBXProject "FixUnityJar" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D637FD01230BC4D7002300CA /* Debug */,
-				D637FD02230BC4D7002300CA /* Release */,
+				D6D0B82B2327427D00E4FDD0 /* Debug */,
+				D6D0B82C2327427D00E4FDD0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D637FD03230BC4D7002300CA /* Build configuration list for PBXNativeTarget "HotCacheLibDemo" */ = {
+		D6D0B82D2327427D00E4FDD0 /* Build configuration list for PBXNativeTarget "FixUnityJar" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D637FD04230BC4D7002300CA /* Debug */,
-				D637FD05230BC4D7002300CA /* Release */,
+				D6D0B82E2327427D00E4FDD0 /* Debug */,
+				D6D0B82F2327427D00E4FDD0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = D637FCF4230BC4D7002300CA /* Project object */;
+	rootObject = D6D0B81E2327427D00E4FDD0 /* Project object */;
 }

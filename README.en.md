@@ -28,7 +28,7 @@ provide a way to hot update Unity app on Android, support code & resources, not 
 ## Feature
 * **Implement simple and run fast**   
 The theory and implement are simple, and support hot update of code and resources; support il2cpp and mono two code backend, support libunity.so, libmono.so and other library files changes; support libmain.so little(RELEASE) version changes, not support Unity main(MAJOR & MINOR) version changes;    
-Solution import into project is simple, and it's source code is less, easy to modify by yourself; (the description of import project is at after of this document.)   
+Solution import into project is simple, easy to modify by yourself; (the description of import project is at back of this document.)   
 After the hot update, the execution performance of the app is not affected, unlike the slow performance and Activity compatibility problems after using the plugin (or virtual) apk solution;   
 This solution will not disturb your Unity project development, not need other program language or constraints, such as lua js or IL runtime etc...   
 * **The patch package by downloaded is small**   
@@ -51,18 +51,17 @@ Of course, those involving permissions or third-party services, etc., their comp
 add libhotunity.so(rebuild in path ```project_hook_unity_jni```) to project jniLibs;   
 add ```com/github/sisong/HotUnity.java``` to project; (You can add the .so in this file that need hot update, which will be loaded if exist new version;)   
 edit file UnityPlayerActivity.java in project; add code: ```import com.github.sisong.HotUnity;```, and add code: ```HotUnity.hotUnity(this);``` before ```mUnityPlayer = new UnityPlayer(this);```   
-* If you need to support upgrading little(RELEASE) version of Unity, you need to use the FixUnityJar(code in path ```project_fix_unity_jar/fix_unity_jar```) program to modify the file unity-classes.jar in the export project, and add libnull.so(rebuild in path ```project_fix_unity_jar/null_lib ```) to project jniLibs;   
+* If you need to support upgrading little(RELEASE) version of Unity, you need to use the FixUnityJar program(code in path ```project_fix_unity_jar/fix_unity_jar```) to modify the file unity-classes.jar in the export project, and add libnull.so(rebuild in path ```project_fix_unity_jar/null_lib ```) to project jniLibs;   
 * Package the test project by Android Studio (you can automate the process of exporting modifying and packaging in Unity with the editor extension), the app should be able to running normally on the device; now you need test the app "hot" update to a new version;   
 * Manual hot update test process: you have a new version app named update.apk, placed it in the HotUpdate subdirectory of the ```getApplicationContext().getFilesDir().getPath()``` (device path ```/data/data/<appid>/files/HotUpdate/```); Decompress the *.so file in ```lib/<this test device abi>/``` from update.apk, and place it in the directory ```HotUpdate/update.apk_lib/``` (can also dispose only changed .so file); restart the app on the device, you should be able to see that the new version is already running!   
 
 
 ## How to automate hot update by app
-  (this info provides an way, but you can get the new version apk on device by your way)   
+  (the following info provides an optional way to do this)   
 * We have a new version apk, I can use the diff tool to generate patch between the old and new versions; put the version upgrade info and patch files on the server;   
-* When the app running, it checks the upgrade info and download the patch file; the app call patch algorithm to generate a new version apk(ie HotUpdate/update.apk) using the latest apk and patch file; then call hot_cache_lib function (project in ```tool_hot_cache_lib``` directory, can generate libhotcachelib.so) to cache the changed .so files in the new version apk; 
-* Generate patch file between apks and merge it on device, you can use the [ApkDiffPatch]; if you want test diff application, you can download it at [releases](https://github.com/sisong/ApkDiffPatch/releases); The patch process needs to be executed on the user device. The project that generates libapkpatch.so is in the ```ApkDiffPatch/builds/android_ndk_jni_mk``` directory;   
+* When the app running, it checks the upgrade info and download the patch file; the app call patch algorithm to generate a new version apk(ie ```HotUpdate/update.apk```) using the latest apk and patch file; At the same time, choose to cache the changed .so files in this new apk to the ```HotUpdate/update.apk_lib/``` path; If you need a "cold" re-install choose not to cache .so files;   
+* Generate patch file between apks and merge it on device, used the [ApkDiffPatch]; if you want test diff program, you can download it at [releases](https://github.com/sisong/ApkDiffPatch/releases); The patch process needs to be executed on the user device. provided function virtualApkPatch() in java, and native function virtual_apk_patch() can be used in C#.   
 * Note: ApkDiffPatch is specially optimized for zip file. Generally, it generates smaller patch file size than [bsdiff] or [HDiffPatch]; The ZipDiff tool has special requirements for the input apk file, if the apk has [v2+ sign], then you need to normalized the apk files by the ApkNormalized tool; Then use AndroidSDK#apksigner to re-sign the apk; All the apks released for user need to done this process, this is to byte by byte restore the apk when patching;  (apk after this processed, it is also compatible with the patch size optimization scheme [archive-patcher] of the Google Play Store)   
-* In practice, it is recommended to compile the code of libhotcachelib.so and libapkpatch.so into a file of libhotunity.so;   
 
 
 ## Recommend a process for multi version update
@@ -70,13 +69,12 @@ edit file UnityPlayerActivity.java in project; add code: ```import com.github.si
 v0 -> new install(v0)
 
 v1 -> diff(v0,v1) -> pat01 ; v0: patch(v0,download(pat01)) -> v1 + cache_lib(v1)
-      ( if error on patch then: download(v1) -> v1 + cache_lib(v1)
-        if error on cache_lib then: install(v1)  )
+      ( if error on patch then: download(v1) -> v1 + install(v1) )
 
 v2 -> diff(v0,v2) -> pat02 ; v0: patch(v0,download(pat02)) -> v2 + cache_lib(v2)
       diff(v1,v2) -> pat12 ; v1: patch(v1,download(pat12)) -> v2 + cache_lib(v2)
 
-v3 -> (if no patch for v0) ; v0: download(v3) -> v3 + cache_lib(v3)
+v3 -> (if no patch for v0) ; v0: download(v3) -> v3 + install(v3)
       diff(v1,v3) -> pat13 ; v1: patch(v1,download(pat13)) -> v3 + cache_lib(v3)
       diff(v2,v3) -> pat23 ; v2: patch(v2,download(pat23)) -> v3 + cache_lib(v3)
 
@@ -92,7 +90,7 @@ v5 -> (if no patch for v0) ; v0: download(v5) -> v5 + install(v5)
       diff(v3,v5) -> pat35 ; v3: patch(v3,download(pat35)) -> v5 + install(v5)
       diff(v4,v5) -> pat45 ; v4: patch(v4,download(pat45)) -> v5 + cache_lib(v5)
 ```
-This new version and patch release process needs to be automated, and test whether the patch files is correct, generate configuration by check can be hot updated, etc...   
+This new version and patch release process needs to be automated: normalized apk, re-signing, creating patches, generate config, etc...   
 
 
 ## Defect   

@@ -2,7 +2,6 @@
 [Tt]emp/
 [Oo]bj/
 [Bb]uild/
-[Bb]uilds/
 Assets/AssetStoreTools*
 
 # Visual Studio cache directory
@@ -38,3 +37,5 @@ project_hook_unity_jni/build_libs/libs
 tool_hot_cache_lib/build_demos/android_ndk_jni_mk/libs
 tool_hot_cache_lib/build_demos/android_ndk_jni_mk/obj
 project_fix_unity_jar/null_lib/libs
+# xcode
+xcshareddata

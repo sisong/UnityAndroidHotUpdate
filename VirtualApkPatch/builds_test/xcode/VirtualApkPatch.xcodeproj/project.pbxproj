@@ -1,0 +1,487 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D65C69D423293AFA00A3C89C /* virtual_apk_patch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D65C69D123293AFA00A3C89C /* virtual_apk_patch.cpp */; };
+		D65C69D7232A065600A3C89C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D65C69D6232A065600A3C89C /* main.cpp */; };
+		D65C69E6232A0EA100A3C89C /* OldStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D65C69DE232A0EA100A3C89C /* OldStream.cpp */; };
+		D65C69E7232A0EA100A3C89C /* ZipDiffData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D65C69DF232A0EA100A3C89C /* ZipDiffData.cpp */; };
+		D65C69E8232A0EA100A3C89C /* NewStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D65C69E0232A0EA100A3C89C /* NewStream.cpp */; };
+		D65C69E9232A0EA100A3C89C /* Zipper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D65C69E1232A0EA100A3C89C /* Zipper.cpp */; };
+		D65C69EA232A0EA100A3C89C /* Patcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D65C69E3232A0EA100A3C89C /* Patcher.cpp */; };
+		D65C6A02232A0F6900A3C89C /* parallel_channel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D65C69F9232A0F6900A3C89C /* parallel_channel.cpp */; };
+		D65C6A03232A0F6900A3C89C /* parallel_import.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D65C69FB232A0F6900A3C89C /* parallel_import.cpp */; };
+		D65C6A05232A0F6900A3C89C /* file_for_patch.c in Sources */ = {isa = PBXBuildFile; fileRef = D65C69FE232A0F6900A3C89C /* file_for_patch.c */; };
+		D65C6A0C232A0F8200A3C89C /* patch.c in Sources */ = {isa = PBXBuildFile; fileRef = D65C6A09232A0F8200A3C89C /* patch.c */; };
+		D65C6A0E232A0FBB00A3C89C /* liblzma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D65C69F0232A0EF400A3C89C /* liblzma.a */; };
+		D65C6A0F232A0FBB00A3C89C /* libzlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D65C69F6232A0EF400A3C89C /* libzlib.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D65C69EF232A0EF400A3C89C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D65C69EB232A0EF400A3C89C /* lzma.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D68B02C7205A4409001F3C40;
+			remoteInfo = lzma;
+		};
+		D65C69F5232A0EF400A3C89C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D65C69F1232A0EF400A3C89C /* zlib.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D6888897204688D30042E2B3;
+			remoteInfo = zlib;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D65C69C323293AB300A3C89C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		D65C69C523293AB300A3C89C /* VirtualApkPatch */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = VirtualApkPatch; sourceTree = BUILT_PRODUCTS_DIR; };
+		D65C69D123293AFA00A3C89C /* virtual_apk_patch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = virtual_apk_patch.cpp; sourceTree = "<group>"; };
+		D65C69D223293AFA00A3C89C /* virtual_apk_patch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = virtual_apk_patch.h; sourceTree = "<group>"; };
+		D65C69D6232A065600A3C89C /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		D65C69DB232A0EA100A3C89C /* Zipper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Zipper.h; sourceTree = "<group>"; };
+		D65C69DC232A0EA100A3C89C /* Patcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Patcher.h; sourceTree = "<group>"; };
+		D65C69DD232A0EA100A3C89C /* patch_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = patch_types.h; sourceTree = "<group>"; };
+		D65C69DE232A0EA100A3C89C /* OldStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OldStream.cpp; sourceTree = "<group>"; };
+		D65C69DF232A0EA100A3C89C /* ZipDiffData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ZipDiffData.cpp; sourceTree = "<group>"; };
+		D65C69E0232A0EA100A3C89C /* NewStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NewStream.cpp; sourceTree = "<group>"; };
+		D65C69E1232A0EA100A3C89C /* Zipper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Zipper.cpp; sourceTree = "<group>"; };
+		D65C69E2232A0EA100A3C89C /* OldStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OldStream.h; sourceTree = "<group>"; };
+		D65C69E3232A0EA100A3C89C /* Patcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Patcher.cpp; sourceTree = "<group>"; };
+		D65C69E4232A0EA100A3C89C /* ZipDiffData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipDiffData.h; sourceTree = "<group>"; };
+		D65C69E5232A0EA100A3C89C /* NewStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewStream.h; sourceTree = "<group>"; };
+		D65C69EB232A0EF400A3C89C /* lzma.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = lzma.xcodeproj; path = ../../../ApkDiffPatch/builds/xcode/lzma.xcodeproj; sourceTree = "<group>"; };
+		D65C69F1232A0EF400A3C89C /* zlib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = zlib.xcodeproj; path = ../../../ApkDiffPatch/builds/xcode/zlib.xcodeproj; sourceTree = "<group>"; };
+		D65C69F9232A0F6900A3C89C /* parallel_channel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = parallel_channel.cpp; sourceTree = "<group>"; };
+		D65C69FA232A0F6900A3C89C /* parallel_import.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parallel_import.h; sourceTree = "<group>"; };
+		D65C69FB232A0F6900A3C89C /* parallel_import.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = parallel_import.cpp; sourceTree = "<group>"; };
+		D65C69FC232A0F6900A3C89C /* parallel_channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parallel_channel.h; sourceTree = "<group>"; };
+		D65C69FE232A0F6900A3C89C /* file_for_patch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = file_for_patch.c; path = ../../../ApkDiffPatch/HDiffPatch/file_for_patch.c; sourceTree = "<group>"; };
+		D65C6A00232A0F6900A3C89C /* compress_plugin_demo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = compress_plugin_demo.h; path = ../../../ApkDiffPatch/HDiffPatch/compress_plugin_demo.h; sourceTree = "<group>"; };
+		D65C6A01232A0F6900A3C89C /* decompress_plugin_demo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = decompress_plugin_demo.h; path = ../../../ApkDiffPatch/HDiffPatch/decompress_plugin_demo.h; sourceTree = "<group>"; };
+		D65C6A07232A0F8200A3C89C /* checksum_plugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = checksum_plugin.h; sourceTree = "<group>"; };
+		D65C6A08232A0F8200A3C89C /* patch_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = patch_types.h; sourceTree = "<group>"; };
+		D65C6A09232A0F8200A3C89C /* patch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = patch.c; sourceTree = "<group>"; };
+		D65C6A0A232A0F8200A3C89C /* patch_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = patch_private.h; sourceTree = "<group>"; };
+		D65C6A0B232A0F8200A3C89C /* patch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = patch.h; sourceTree = "<group>"; };
+		D65C6A11232A89BB00A3C89C /* VirtualZipIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VirtualZipIO.h; sourceTree = "<group>"; };
+		D65C6A21232E5F0100A3C89C /* file_for_dirDiff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = file_for_dirDiff.h; path = ../../../ApkDiffPatch/HDiffPatch/dirDiffPatch/dir_diff/file_for_dirDiff.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D65C69C223293AB300A3C89C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D65C6A0E232A0FBB00A3C89C /* liblzma.a in Frameworks */,
+				D65C6A0F232A0FBB00A3C89C /* libzlib.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D65C69BC23293AB300A3C89C = {
+			isa = PBXGroup;
+			children = (
+				D65C69D9232A0E5900A3C89C /* ApkDiffPatch */,
+				D65C69D023293AFA00A3C89C /* patch */,
+				D65C69D6232A065600A3C89C /* main.cpp */,
+				D65C69C623293AB300A3C89C /* Products */,
+				D65C6A0D232A0FBB00A3C89C /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		D65C69C623293AB300A3C89C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D65C69C523293AB300A3C89C /* VirtualApkPatch */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D65C69D023293AFA00A3C89C /* patch */ = {
+			isa = PBXGroup;
+			children = (
+				D65C69D123293AFA00A3C89C /* virtual_apk_patch.cpp */,
+				D65C69D223293AFA00A3C89C /* virtual_apk_patch.h */,
+			);
+			name = patch;
+			path = ../../patch;
+			sourceTree = "<group>";
+		};
+		D65C69D9232A0E5900A3C89C /* ApkDiffPatch */ = {
+			isa = PBXGroup;
+			children = (
+				D65C69EB232A0EF400A3C89C /* lzma.xcodeproj */,
+				D65C69F1232A0EF400A3C89C /* zlib.xcodeproj */,
+				D65C69F7232A0F0D00A3C89C /* hpatch */,
+				D65C69DA232A0EA100A3C89C /* patch */,
+			);
+			name = ApkDiffPatch;
+			sourceTree = "<group>";
+		};
+		D65C69DA232A0EA100A3C89C /* patch */ = {
+			isa = PBXGroup;
+			children = (
+				D65C6A11232A89BB00A3C89C /* VirtualZipIO.h */,
+				D65C69DB232A0EA100A3C89C /* Zipper.h */,
+				D65C69E1232A0EA100A3C89C /* Zipper.cpp */,
+				D65C69DC232A0EA100A3C89C /* Patcher.h */,
+				D65C69E3232A0EA100A3C89C /* Patcher.cpp */,
+				D65C69DD232A0EA100A3C89C /* patch_types.h */,
+				D65C69E2232A0EA100A3C89C /* OldStream.h */,
+				D65C69DE232A0EA100A3C89C /* OldStream.cpp */,
+				D65C69E4232A0EA100A3C89C /* ZipDiffData.h */,
+				D65C69DF232A0EA100A3C89C /* ZipDiffData.cpp */,
+				D65C69E5232A0EA100A3C89C /* NewStream.h */,
+				D65C69E0232A0EA100A3C89C /* NewStream.cpp */,
+			);
+			name = patch;
+			path = ../../../ApkDiffPatch/src/patch;
+			sourceTree = "<group>";
+		};
+		D65C69EC232A0EF400A3C89C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D65C69F0232A0EF400A3C89C /* liblzma.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D65C69F2232A0EF400A3C89C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D65C69F6232A0EF400A3C89C /* libzlib.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D65C69F7232A0F0D00A3C89C /* hpatch */ = {
+			isa = PBXGroup;
+			children = (
+				D65C6A06232A0F8200A3C89C /* HPatch */,
+				D65C6A00232A0F6900A3C89C /* compress_plugin_demo.h */,
+				D65C6A01232A0F6900A3C89C /* decompress_plugin_demo.h */,
+				D65C69FE232A0F6900A3C89C /* file_for_patch.c */,
+				D65C6A1E232E5E3300A3C89C /* dir_diff */,
+				D65C69F8232A0F6900A3C89C /* libParallel */,
+			);
+			name = hpatch;
+			sourceTree = "<group>";
+		};
+		D65C69F8232A0F6900A3C89C /* libParallel */ = {
+			isa = PBXGroup;
+			children = (
+				D65C69F9232A0F6900A3C89C /* parallel_channel.cpp */,
+				D65C69FA232A0F6900A3C89C /* parallel_import.h */,
+				D65C69FB232A0F6900A3C89C /* parallel_import.cpp */,
+				D65C69FC232A0F6900A3C89C /* parallel_channel.h */,
+			);
+			name = libParallel;
+			path = ../../../ApkDiffPatch/HDiffPatch/libParallel;
+			sourceTree = "<group>";
+		};
+		D65C6A06232A0F8200A3C89C /* HPatch */ = {
+			isa = PBXGroup;
+			children = (
+				D65C6A07232A0F8200A3C89C /* checksum_plugin.h */,
+				D65C6A08232A0F8200A3C89C /* patch_types.h */,
+				D65C6A09232A0F8200A3C89C /* patch.c */,
+				D65C6A0A232A0F8200A3C89C /* patch_private.h */,
+				D65C6A0B232A0F8200A3C89C /* patch.h */,
+			);
+			name = HPatch;
+			path = ../../../ApkDiffPatch/HDiffPatch/libHDiffPatch/HPatch;
+			sourceTree = "<group>";
+		};
+		D65C6A0D232A0FBB00A3C89C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D65C6A1E232E5E3300A3C89C /* dir_diff */ = {
+			isa = PBXGroup;
+			children = (
+				D65C6A21232E5F0100A3C89C /* file_for_dirDiff.h */,
+			);
+			name = dir_diff;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D65C69C423293AB300A3C89C /* VirtualApkPatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D65C69CC23293AB300A3C89C /* Build configuration list for PBXNativeTarget "VirtualApkPatch" */;
+			buildPhases = (
+				D65C69C123293AB300A3C89C /* Sources */,
+				D65C69C223293AB300A3C89C /* Frameworks */,
+				D65C69C323293AB300A3C89C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VirtualApkPatch;
+			productName = VirtualApkPatch;
+			productReference = D65C69C523293AB300A3C89C /* VirtualApkPatch */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D65C69BD23293AB300A3C89C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1030;
+				ORGANIZATIONNAME = sisong;
+				TargetAttributes = {
+					D65C69C423293AB300A3C89C = {
+						CreatedOnToolsVersion = 10.3;
+					};
+				};
+			};
+			buildConfigurationList = D65C69C023293AB300A3C89C /* Build configuration list for PBXProject "VirtualApkPatch" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D65C69BC23293AB300A3C89C;
+			productRefGroup = D65C69C623293AB300A3C89C /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = D65C69EC232A0EF400A3C89C /* Products */;
+					ProjectRef = D65C69EB232A0EF400A3C89C /* lzma.xcodeproj */;
+				},
+				{
+					ProductGroup = D65C69F2232A0EF400A3C89C /* Products */;
+					ProjectRef = D65C69F1232A0EF400A3C89C /* zlib.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				D65C69C423293AB300A3C89C /* VirtualApkPatch */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		D65C69F0232A0EF400A3C89C /* liblzma.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = liblzma.a;
+			remoteRef = D65C69EF232A0EF400A3C89C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D65C69F6232A0EF400A3C89C /* libzlib.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libzlib.a;
+			remoteRef = D65C69F5232A0EF400A3C89C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D65C69C123293AB300A3C89C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D65C6A0C232A0F8200A3C89C /* patch.c in Sources */,
+				D65C69D7232A065600A3C89C /* main.cpp in Sources */,
+				D65C69E9232A0EA100A3C89C /* Zipper.cpp in Sources */,
+				D65C6A02232A0F6900A3C89C /* parallel_channel.cpp in Sources */,
+				D65C69D423293AFA00A3C89C /* virtual_apk_patch.cpp in Sources */,
+				D65C69E7232A0EA100A3C89C /* ZipDiffData.cpp in Sources */,
+				D65C69EA232A0EA100A3C89C /* Patcher.cpp in Sources */,
+				D65C6A03232A0F6900A3C89C /* parallel_import.cpp in Sources */,
+				D65C69E6232A0EA100A3C89C /* OldStream.cpp in Sources */,
+				D65C6A05232A0F6900A3C89C /* file_for_patch.c in Sources */,
+				D65C69E8232A0EA100A3C89C /* NewStream.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		D65C69CA23293AB300A3C89C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					"_IS_NEED_VIRTUAL_ZIP=1",
+					"_IS_NEED_FIXED_ZLIB_VERSION=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		D65C69CB23293AB300A3C89C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_POSTPROCESSING = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"_IS_NEED_VIRTUAL_ZIP=1",
+					"_IS_NEED_FIXED_ZLIB_VERSION=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		D65C69CD23293AB300A3C89C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D65C69CE23293AB300A3C89C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D65C69C023293AB300A3C89C /* Build configuration list for PBXProject "VirtualApkPatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D65C69CA23293AB300A3C89C /* Debug */,
+				D65C69CB23293AB300A3C89C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D65C69CC23293AB300A3C89C /* Build configuration list for PBXNativeTarget "VirtualApkPatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D65C69CD23293AB300A3C89C /* Debug */,
+				D65C69CE23293AB300A3C89C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D65C69BD23293AB300A3C89C /* Project object */;
+}

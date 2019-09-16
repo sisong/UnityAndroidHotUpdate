@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:HotCacheLibDemo.xcodeproj">
+      location = "self:VirtualApkPatch.xcodeproj">
    </FileRef>
 </Workspace>
