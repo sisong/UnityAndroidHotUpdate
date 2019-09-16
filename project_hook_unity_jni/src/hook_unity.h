@@ -5,8 +5,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    void hook_unity_doHook(const char* apkPath,const char* soDir,
-                           const char* newApkPath,const char* soCacheDir);
+    void hook_unity_doHook(const char* baseApkPath,const char* baseSoDir,
+                           const char* hotApkPath,const char* hotSoDir);
 #ifdef __cplusplus
 }
 #endif

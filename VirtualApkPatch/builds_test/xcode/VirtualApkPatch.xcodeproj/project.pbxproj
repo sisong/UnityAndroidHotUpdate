@@ -16,7 +16,6 @@
 		D65C69EA232A0EA100A3C89C /* Patcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D65C69E3232A0EA100A3C89C /* Patcher.cpp */; };
 		D65C6A02232A0F6900A3C89C /* parallel_channel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D65C69F9232A0F6900A3C89C /* parallel_channel.cpp */; };
 		D65C6A03232A0F6900A3C89C /* parallel_import.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D65C69FB232A0F6900A3C89C /* parallel_import.cpp */; };
-		D65C6A04232A0F6900A3C89C /* compress_parallel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D65C69FD232A0F6900A3C89C /* compress_parallel.cpp */; };
 		D65C6A05232A0F6900A3C89C /* file_for_patch.c in Sources */ = {isa = PBXBuildFile; fileRef = D65C69FE232A0F6900A3C89C /* file_for_patch.c */; };
 		D65C6A0C232A0F8200A3C89C /* patch.c in Sources */ = {isa = PBXBuildFile; fileRef = D65C6A09232A0F8200A3C89C /* patch.c */; };
 		D65C6A0E232A0FBB00A3C89C /* liblzma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D65C69F0232A0EF400A3C89C /* liblzma.a */; };
@@ -56,7 +55,6 @@
 		D65C69C523293AB300A3C89C /* VirtualApkPatch */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = VirtualApkPatch; sourceTree = BUILT_PRODUCTS_DIR; };
 		D65C69D123293AFA00A3C89C /* virtual_apk_patch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = virtual_apk_patch.cpp; sourceTree = "<group>"; };
 		D65C69D223293AFA00A3C89C /* virtual_apk_patch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = virtual_apk_patch.h; sourceTree = "<group>"; };
-		D65C69D323293AFA00A3C89C /* virtual_apk_patch_jni.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = virtual_apk_patch_jni.cpp; sourceTree = "<group>"; };
 		D65C69D6232A065600A3C89C /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		D65C69DB232A0EA100A3C89C /* Zipper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Zipper.h; sourceTree = "<group>"; };
 		D65C69DC232A0EA100A3C89C /* Patcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Patcher.h; sourceTree = "<group>"; };
@@ -75,9 +73,7 @@
 		D65C69FA232A0F6900A3C89C /* parallel_import.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parallel_import.h; sourceTree = "<group>"; };
 		D65C69FB232A0F6900A3C89C /* parallel_import.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = parallel_import.cpp; sourceTree = "<group>"; };
 		D65C69FC232A0F6900A3C89C /* parallel_channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parallel_channel.h; sourceTree = "<group>"; };
-		D65C69FD232A0F6900A3C89C /* compress_parallel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = compress_parallel.cpp; path = ../../../ApkDiffPatch/HDiffPatch/compress_parallel.cpp; sourceTree = "<group>"; };
 		D65C69FE232A0F6900A3C89C /* file_for_patch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = file_for_patch.c; path = ../../../ApkDiffPatch/HDiffPatch/file_for_patch.c; sourceTree = "<group>"; };
-		D65C69FF232A0F6900A3C89C /* compress_parallel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = compress_parallel.h; path = ../../../ApkDiffPatch/HDiffPatch/compress_parallel.h; sourceTree = "<group>"; };
 		D65C6A00232A0F6900A3C89C /* compress_plugin_demo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = compress_plugin_demo.h; path = ../../../ApkDiffPatch/HDiffPatch/compress_plugin_demo.h; sourceTree = "<group>"; };
 		D65C6A01232A0F6900A3C89C /* decompress_plugin_demo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = decompress_plugin_demo.h; path = ../../../ApkDiffPatch/HDiffPatch/decompress_plugin_demo.h; sourceTree = "<group>"; };
 		D65C6A07232A0F8200A3C89C /* checksum_plugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = checksum_plugin.h; sourceTree = "<group>"; };
@@ -126,7 +122,6 @@
 			children = (
 				D65C69D123293AFA00A3C89C /* virtual_apk_patch.cpp */,
 				D65C69D223293AFA00A3C89C /* virtual_apk_patch.h */,
-				D65C69D323293AFA00A3C89C /* virtual_apk_patch_jni.cpp */,
 			);
 			name = patch;
 			path = ../../patch;
@@ -183,8 +178,6 @@
 			isa = PBXGroup;
 			children = (
 				D65C6A06232A0F8200A3C89C /* HPatch */,
-				D65C69FD232A0F6900A3C89C /* compress_parallel.cpp */,
-				D65C69FF232A0F6900A3C89C /* compress_parallel.h */,
 				D65C6A00232A0F6900A3C89C /* compress_plugin_demo.h */,
 				D65C6A01232A0F6900A3C89C /* decompress_plugin_demo.h */,
 				D65C69FE232A0F6900A3C89C /* file_for_patch.c */,
@@ -320,7 +313,6 @@
 				D65C6A0C232A0F8200A3C89C /* patch.c in Sources */,
 				D65C69D7232A065600A3C89C /* main.cpp in Sources */,
 				D65C69E9232A0EA100A3C89C /* Zipper.cpp in Sources */,
-				D65C6A04232A0F6900A3C89C /* compress_parallel.cpp in Sources */,
 				D65C6A02232A0F6900A3C89C /* parallel_channel.cpp in Sources */,
 				D65C69D423293AFA00A3C89C /* virtual_apk_patch.cpp in Sources */,
 				D65C69E7232A0EA100A3C89C /* ZipDiffData.cpp in Sources */,
@@ -428,7 +420,9 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEPLOYMENT_POSTPROCESSING = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;

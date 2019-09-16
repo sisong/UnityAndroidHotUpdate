@@ -29,14 +29,14 @@ extern "C" {
     static const char kDirTag='/';
     
     static bool g_isMapPath =false;
-    static char g_apkPath[kMaxPathLen+1]={0};
-    static  int g_apkPathLen=0;
-    static char g_soDir[kMaxPathLen+1]={0};
-    static  int g_soDirLen=0;
-    static char g_newApkPath[kMaxPathLen+1]={0};
-    static  int g_newApkPathLen=0;
-    static char g_soCacheDir[kMaxPathLen+1]={0};
-    static  int g_soCacheDirLen=0;
+    static char g_baseApkPath[kMaxPathLen+1]={0};
+    static  int g_baseApkPathLen=0;
+    static char g_baseSoDir[kMaxPathLen+1]={0};
+    static  int g_baseSoDirLen=0;
+    static char g_hotApkPath[kMaxPathLen+1]={0};
+    static  int g_hotApkPathLen=0;
+    static char g_hotSoDir[kMaxPathLen+1]={0};
+    static  int g_hotSoDirLen=0;
     
     
     static const char*  getFileName(const char* filePath){
@@ -99,13 +99,13 @@ extern "C" {
     
     static const char* map_path(const char* path,char* newPath,const int newPathSize,bool* isSoDirCanMap){
         const int pathLen=strlen(path);
-        path=map_path(g_apkPath,g_apkPathLen,g_newApkPath,g_newApkPathLen,
+        path=map_path(g_baseApkPath,g_baseApkPathLen,g_hotApkPath,g_hotApkPathLen,
                       path,pathLen,newPath,newPathSize,false,NULL,-1);
         if ((path==NULL)||(path==newPath)) return path;
-        path=map_path(g_soDir,g_soDirLen,g_soCacheDir,g_soCacheDirLen,
+        path=map_path(g_baseSoDir,g_baseSoDirLen,g_hotSoDir,g_hotSoDirLen,
                       path,pathLen,newPath,newPathSize,true,isSoDirCanMap,-1);
         if ((path==NULL)||(path==newPath)) return path;
-        return map_path(kLibUnity,kLibUnityLen,g_soCacheDir,g_soCacheDirLen,
+        return map_path(kLibUnity,kLibUnityLen,g_hotSoDir,g_hotSoDirLen,
                         path,pathLen,newPath,newPathSize,true,NULL,0);
     }
 
@@ -211,7 +211,7 @@ extern "C" {
     static bool loadUnityLib(const char* libName,bool isMustLoad,bool isMustHookOk){
         char libPath[kMaxPathLen+1];
         if (!appendPath(libPath,sizeof(libPath),
-                        g_soDir,g_soDirLen,libName,(int)strlen(libName))) return false;
+                        g_baseSoDir,g_baseSoDirLen,libName,(int)strlen(libName))) return false;
         
         const int flags= RTLD_NOW;
         void* result=my_new_dlopen(libPath,flags,isMustLoad,isMustHookOk);
@@ -235,19 +235,16 @@ extern "C" {
             { LOG_ERROR("hook_unity_doHook() strlen("#src") %d",dst##Len); _ERR_RETURN(); } \
         memcpy(dst,src,dst##Len+1); }
     
-    void hook_unity_doHook(const char* apkPath,const char* soDir,
-                           const char* newApkPath,const char* soCacheDir){
-        LOG_INFO("hook_unity_doHook() from: %s  %s",apkPath,soDir);
-        LOG_INFO("hook_unity_doHook() to: %s  %s",newApkPath,soCacheDir);
+    void hook_unity_doHook(const char* baseApkPath,const char* baseSoDir,
+                           const char* hotApkPath,const char* hotSoDir){
+        LOG_INFO("hook_unity_doHook() from: %s  %s",baseApkPath,baseSoDir);
+        LOG_INFO("hook_unity_doHook() to: %s  %s",hotApkPath,hotSoDir);
         
-        _COPY_PATH(g_apkPath,apkPath);
-        _COPY_PATH(g_soDir,soDir);
-        _COPY_PATH(g_newApkPath,newApkPath);
-        _COPY_PATH(g_soCacheDir,soCacheDir);
+        _COPY_PATH(g_baseApkPath,baseApkPath);
+        _COPY_PATH(g_baseSoDir,baseSoDir);
+        _COPY_PATH(g_hotApkPath,hotApkPath);
+        _COPY_PATH(g_hotSoDir,hotSoDir);
         
-        bool isDoHook=(g_newApkPathLen>0)&&pathIsExists(g_newApkPath)
-                    &&(g_soCacheDirLen>0)&&pathIsExists(g_soCacheDir);
-        if (!isDoHook) { LOG_INFO("hook_unity_doHook() %s","not do hook"); return; }
         g_isMapPath=true;
         if (!loadUnityLibs()) _ERR_RETURN();
     }

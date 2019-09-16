@@ -9,17 +9,17 @@ extern "C" {
     
     JNIEXPORT void
     Java_com_github_sisong_HotUnity_doHot(JNIEnv* jenv,jobject jobj,
-                                          jstring apkPath,jstring libDir,
-                                          jstring newApkPath,jstring libCacheDir){
-        const char* cApkPath    = jenv->GetStringUTFChars(apkPath, NULL);
-        const char* clibDir     = jenv->GetStringUTFChars(libDir, NULL);
-        const char* cNewApkPath = jenv->GetStringUTFChars(newApkPath, NULL);
-        const char* clibCacheDir= jenv->GetStringUTFChars(libCacheDir, NULL);
-        hook_unity_doHook(cApkPath,clibDir,cNewApkPath,clibCacheDir);
-        jenv->ReleaseStringUTFChars(libCacheDir,clibCacheDir);
-        jenv->ReleaseStringUTFChars(newApkPath,cNewApkPath);
-        jenv->ReleaseStringUTFChars(libDir,clibDir);
-        jenv->ReleaseStringUTFChars(apkPath,cApkPath);
+                                          jstring baseApkPath,jstring baseSoDir,
+                                          jstring hotApkPath,jstring hotSoDir){
+        const char* cBaseApkPath= jenv->GetStringUTFChars(baseApkPath, NULL);
+        const char* cBaseSoDir  = jenv->GetStringUTFChars(baseSoDir, NULL);
+        const char* cHotApkPath = jenv->GetStringUTFChars(hotApkPath, NULL);
+        const char* cHotSoDir= jenv->GetStringUTFChars(hotSoDir, NULL);
+        hook_unity_doHook(cBaseApkPath,cBaseSoDir,cHotApkPath,cHotSoDir);
+        jenv->ReleaseStringUTFChars(hotSoDir,cHotSoDir);
+        jenv->ReleaseStringUTFChars(hotApkPath,cHotApkPath);
+        jenv->ReleaseStringUTFChars(baseSoDir,cBaseSoDir);
+        jenv->ReleaseStringUTFChars(baseApkPath,cBaseApkPath);
     }
 
 #ifdef __cplusplus
