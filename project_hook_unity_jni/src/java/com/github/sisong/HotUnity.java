@@ -19,8 +19,8 @@ import java.io.File;
 public class HotUnity{
     private static native void doHot(String baseApk,String baseSoDir,String hotApk,String hotSoDir);
     public  static native int  virtualApkPatch(String baseApk,String baseSoDir,
-                                               String hotApk,String hotSoDir,
-                                               String out_newApk,String out_newSoDir,
+                                               String hotApk,String hotSoDir, //first patch hotApk,hotSoDir can not exist or ""
+                                               String out_newApk,String out_newSoDir,//for install(apk) out_newSoDir set "", not cache libs
                                                String zipDiffPath,int threadNum);
     private static native int  virtualApkMerge(String baseApk,String baseSoDir,
                                                String hotApk,String hotSoDir,
