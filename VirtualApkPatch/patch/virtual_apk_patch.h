@@ -13,7 +13,7 @@ extern "C" {
         kVApkPatch_apkFileError,
         kVApkPatch_abiError,
         kVApkPatch_tempFileError,
-        kVApkPatch_mkMewSoDirDirError,
+        kVApkPatch_mkNewSoDirError,
         kVApkPatch_catchedUnknowError,
         kVApkPatch_newApkBadError,
         

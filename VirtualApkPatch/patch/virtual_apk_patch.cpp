@@ -376,7 +376,7 @@ static int _virtual_apk_patch(const char* baseApk,const char* baseSoDir,
         }
         //virtual_out
         if (out_newChangedSoDir){
-            if (!hpatch_makeNewDir(out_newChangedSoDir)) return kVApkPatch_mkMewSoDirDirError;
+            if (!hpatch_makeNewDir(out_newChangedSoDir)) return kVApkPatch_mkNewSoDirError;
             t_IVirtualZip_out_set(&virtual_out,libDir,baseSoDir,hotSoDir,out_newChangedSoDir);
         }
         
@@ -528,9 +528,11 @@ static int _virtual_apk_merge(const char* baseApk,const char* baseSoDir,
         if (!UnZipper_close(&apk)) _rt_err(kVApkMerge_baseApkFileError);
         UnZipper_init(&apk);
         //delete .so files in hotSoDir and not in newApk
-        if (!UnZipper_openFile(&apk,newApk)) _rt_err(kVApkMerge_newApkFileError);
-        if (!removeLibFilesNotInApk(hotSoDir,&apk,libDir)) _rt_err(kVApkMerge_removeLibFilesError);
-        if (!UnZipper_close(&apk)) _rt_err(kVApkMerge_newApkFileError);
+        if (dirIsExists(hotSoDir)){
+            if (!UnZipper_openFile(&apk,newApk)) _rt_err(kVApkMerge_newApkFileError);
+            if (!removeLibFilesNotInApk(hotSoDir,&apk,libDir)) _rt_err(kVApkMerge_removeLibFilesError);
+            if (!UnZipper_close(&apk)) _rt_err(kVApkMerge_newApkFileError);
+        }
         //merge .so files
         if (!dirIsExists(newChangedSoDir)) break; //ok //WARNING: no .so file changed?
         if (!dirIsExists(hotSoDir)){//rename newChangedSoDir to hotSoDir
