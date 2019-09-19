@@ -31,9 +31,11 @@ public class HotUnity{
     public static void hotUnity(Context app){
         String baseApk=app.getPackageResourcePath();
         String baseSoDir=app.getApplicationInfo().nativeLibraryDir;
-        String hotApk=app.getFilesDir().getPath() + "/HotUpdate/update.apk";
+        String updateDir=app.getFilesDir().getPath() + "/HotUpdate";
+        if (!makeDir(updateDir)) { runByBaseApk(); return; }
+        String hotApk=updateDir+"/update.apk";
         String hotSoDir=hotApk+"_lib";
-        String newApk=app.getFilesDir().getPath() + "/HotUpdate/new_update.apk";//ApkPatch temp out
+        String newApk=updateDir+"/new_update.apk";//ApkPatch temp out
         String newSoDir=newApk+"_lib";
         //for DEBUG test
         testHotUpdate(app, baseApk,baseSoDir,hotApk,hotSoDir,newApk,newSoDir);
@@ -44,17 +46,20 @@ public class HotUnity{
             restartApp(app);
         }
         
-        if (pathIsExists(hotApk)&&pathIsExists(hotSoDir)){ //run app by hot update
+        if (pathIsExists(hotApk)&&pathIsExists(hotSoDir)){ //run by hotApk
             mapPathLoadLib(hotSoDir,"main");
             mapPathLoadLib(hotSoDir,"unity");
             mapPathLoadLib(hotSoDir,kHotUnityLib);
             //note: You can load other your lib(not unity's) by mapPathLoadLib, can use newVersion lib;
             
             doHot(baseApk,baseSoDir,hotApk,hotSoDir);
-        }else{ //run base apk
-            System.loadLibrary("main");
-            System.loadLibrary(kHotUnityLib);
+        }else{
+            runByBaseApk();
         }
+    }
+    private  static void  runByBaseApk(){
+        System.loadLibrary("main");
+        System.loadLibrary(kHotUnityLib);
     }
     
     private static void restartApp(Context app) {
@@ -75,7 +80,7 @@ public class HotUnity{
                                       String newApk,String newSoDir){
         if (pathIsExists(newApk)||(pathIsExists(newSoDir))) return;
         String testDir=app.getExternalFilesDir("testHotUpdate").getAbsolutePath();
-        //String testDir="/sdcard/Android/data/<your-app-id>/files/testHotUpdate";
+        //default: testDir=="/sdcard/Android/data/<your-app-id>/files/testHotUpdate";
         //NOTE: put the files you need test into the testDir directory
         String testPatFile=testDir+"/new.pat"; //test pat file
         if (!pathIsExists(testPatFile)) return;
@@ -91,6 +96,7 @@ public class HotUnity{
                                  newApk,newSoDir,testPatFile,3);
         Log.w("PATCH", "virtualApkPatch() result " +String.valueOf(ret));
         if ((ret==0) && removeFile(testPatFile)){ //update ok
+            Log.w("PATCH", "testHotUpdate() ok, restartApp");
             restartApp(app);
         }else{
             Log.w("PATCH", "testHotUpdate() ERROR, exitApp");
@@ -106,11 +112,13 @@ public class HotUnity{
                                            String hotApk,String hotSoDir,
                                            String newApk,String newSoDir){
         if (!pathIsExists(hotApk)) {
-            if (pathIsExists(hotSoDir)) removeLibDirWithLibs(hotSoDir);
+            if (pathIsExists(hotSoDir))
+                removeLibDirWithLibs(hotSoDir);
         }
         if (!pathIsExists(newApk)) {
-            if (pathIsExists(newSoDir)) removeLibDirWithLibs(newSoDir);
-            return true;
+            if (pathIsExists(newSoDir))
+                removeLibDirWithLibs(newSoDir);
+            return true; //can continue run app
         }
         
         if (!mergeHotUnityLib(newSoDir,hotSoDir)){
@@ -126,6 +134,15 @@ public class HotUnity{
         return true;
     }
     
+    private static boolean mergeHotUnityLib(String newSoDir,String hotSoDir){
+        String newLibHotUnity=getLibPath(newSoDir,kHotUnityLib);
+        if  (!pathIsExists(newLibHotUnity)) return true;
+        if (!makeDir(hotSoDir)) return false;
+        String hotLibHotUnity=getLibPath(hotSoDir,kHotUnityLib);
+        if (!removeFile(hotLibHotUnity)) return false;
+        return moveFileTo(newLibHotUnity,hotLibHotUnity);
+    }
+    
     private static void removeLibDirWithLibs(String libDir) {
         File dir=new File(libDir);
         String[] files=dir.list();
@@ -134,16 +151,6 @@ public class HotUnity{
             if ((fileName=="."||(fileName==".."))) continue;
             removeFile(fileName);
         }
-    }
-    
-    private static boolean mergeHotUnityLib(String newSoDir,String hotSoDir){
-        mapPathLoadLib(hotSoDir,kHotUnityLib);
-        String newLibHotUnity=getLibPath(newSoDir,kHotUnityLib);
-        if  (!pathIsExists(newLibHotUnity)) return true;
-        if (!makeLibDir(hotSoDir)) return false;
-        String hotLibHotUnity=getLibPath(hotSoDir,kHotUnityLib);
-        if (!removeFile(hotLibHotUnity)) return false;
-        return moveFileTo(newLibHotUnity,hotLibHotUnity);
     }
     
     private static boolean moveFileTo(String oldFilePath,String newFilePath) {
@@ -157,8 +164,8 @@ public class HotUnity{
         return df.delete();
     }
     
-    private static boolean makeLibDir(String libDir) {
-        File df=new File(libDir);
+    private static boolean makeDir(String dirPath) {
+        File df=new File(dirPath);
         if (df.exists()) return true;
         if (!df.mkdir()) return false;
         return true;
