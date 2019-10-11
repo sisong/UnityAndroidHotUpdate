@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXContainerItemProxy section */
+		D63B9886233333AA003D38A5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D63B987F233333A9003D38A5 /* VirtualApkPatch.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D65C69C523293AB300A3C89C;
+			remoteInfo = VirtualApkPatch;
+		};
 		D658935023331568003BB2F4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D658934C23331567003BB2F4 /* FixUnityJar.xcodeproj */;
@@ -29,6 +36,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D63B987F233333A9003D38A5 /* VirtualApkPatch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = VirtualApkPatch.xcodeproj; path = ../../VirtualApkPatch/builds_test/xcode/VirtualApkPatch.xcodeproj; sourceTree = "<group>"; };
 		D658934C23331567003BB2F4 /* FixUnityJar.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FixUnityJar.xcodeproj; path = ../../project_fix_unity_jar/fix_unity_jar/builds/xcode/FixUnityJar.xcodeproj; sourceTree = "<group>"; };
 		D6703D082314D8420095F791 /* hook_unity_src_xcode */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hook_unity_src_xcode; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6703D122314D87E0095F791 /* build_libs.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = build_libs.sh; sourceTree = "<group>"; };
@@ -48,6 +56,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D63B9880233333A9003D38A5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D63B9887233333AA003D38A5 /* VirtualApkPatch */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		D658934D23331567003BB2F4 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -59,6 +75,7 @@
 		D6703CFF2314D8420095F791 = {
 			isa = PBXGroup;
 			children = (
+				D63B987F233333A9003D38A5 /* VirtualApkPatch.xcodeproj */,
 				D658934C23331567003BB2F4 /* FixUnityJar.xcodeproj */,
 				D6703D152314D8A10095F791 /* src */,
 				D6703D132314D87E0095F791 /* Android.mk */,
@@ -125,6 +142,10 @@
 					ProductGroup = D658934D23331567003BB2F4 /* Products */;
 					ProjectRef = D658934C23331567003BB2F4 /* FixUnityJar.xcodeproj */;
 				},
+				{
+					ProductGroup = D63B9880233333A9003D38A5 /* Products */;
+					ProjectRef = D63B987F233333A9003D38A5 /* VirtualApkPatch.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -134,6 +155,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		D63B9887233333AA003D38A5 /* VirtualApkPatch */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = VirtualApkPatch;
+			remoteRef = D63B9886233333AA003D38A5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		D658935123331568003BB2F4 /* FixUnityJar */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.executable";
