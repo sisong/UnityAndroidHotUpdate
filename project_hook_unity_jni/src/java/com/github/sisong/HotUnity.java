@@ -19,8 +19,8 @@ import java.io.File;
 public class HotUnity{
     private static native void doHot(String baseApk,String baseSoDir,String hotApk,String hotSoDir);
     private static native int  virtualApkPatch(String baseApk,String baseSoDir,
-                                               String hotApk,String hotSoDir, //first patch hotApk,hotSoDir can not exist or ""
-                                               String out_newApk,String out_newSoDir,//for install(apk) out_newSoDir set "", not cache libs
+                                               String hotApk,String hotSoDir,
+                                               String out_newApk,String out_newSoDir,//if need install(out_newApk), out_newSoDir set ""
                                                String zipDiffPath,int threadNum);
     private static native int  virtualApkMerge(String baseApk,String baseSoDir,
                                                String hotApk,String hotSoDir,
@@ -28,22 +28,28 @@ public class HotUnity{
     
     private static final String kHotUnityLib ="hotunity";
     private static final String kLogTag ="HotUnity";
-    public static void hotUnity(Context app){
-        String baseApk=app.getPackageResourcePath();
-        String baseSoDir=app.getApplicationInfo().nativeLibraryDir;
+    private static Context app=null;
+    private static String baseApk=null;
+    private static String baseSoDir=null;
+    private static String hotApk=null;
+    private static String hotSoDir=null;
+    private static String newApk=null;
+    private static String newSoDir=null;
+    public static void hotUnity(Context _app){
+        app=_app;
+        baseApk=app.getPackageResourcePath();
+        baseSoDir=app.getApplicationInfo().nativeLibraryDir;
         String updateDir=app.getFilesDir().getPath() + "/HotUpdate";
         if (!makeDir(updateDir)) { runByBaseApk(); return; }
-        String hotApk=updateDir+"/update.apk";
-        String hotSoDir=hotApk+"_lib";
-        String newApk=updateDir+"/new_update.apk";//ApkPatch temp out
-        String newSoDir=newApk+"_lib";
+        hotApk=updateDir+"/update.apk";
+        hotSoDir=hotApk+"_lib";
+        newApk=updateDir+"/new_update.apk";//ApkPatch temp out
+        newSoDir=newApk+"_lib";
         //for DEBUG test
         testHotUpdate(app, baseApk,baseSoDir,hotApk,hotSoDir,newApk,newSoDir);
         //merge new to hot for patch result
         if (!mergeNewUpdate(baseApk,baseSoDir,hotApk,hotSoDir,newApk,newSoDir)){
-            removeFile(newApk);
-            removeFile(hotApk);
-            restartApp(app);
+            revertToBaseApk();
         }
         
         if (pathIsExists(hotApk)&&pathIsExists(hotSoDir)){ //run by hotApk
@@ -62,16 +68,25 @@ public class HotUnity{
         System.loadLibrary(kHotUnityLib);
     }
     
-    private static void restartApp(Context app) {
+    public static void restartApp() {
         Intent intent = app.getPackageManager().getLaunchIntentForPackage(app.getPackageName());
-        PendingIntent restartIntent = PendingIntent.getActivity(app.getApplicationContext(),
+        PendingIntent contentIntent = PendingIntent.getActivity(app.getApplicationContext(),
                                                                 0, intent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager mgr = (AlarmManager)app.getSystemService(Context.ALARM_SERVICE);
-        mgr.set(AlarmManager.RTC,System.currentTimeMillis() + 200, restartIntent);
+        mgr.set(AlarmManager.RTC,System.currentTimeMillis() + 200, contentIntent);
         System.exit(0);
     }
-    private static void exitApp(Context app,int errCode) {
-        throw new RuntimeException("exit code: "+String.valueOf(errCode));
+    public static void exitApp(int errCode) {
+        Intent mainIntent = new Intent(Intent.ACTION_MAIN);
+        mainIntent.addCategory(Intent.CATEGORY_HOME);
+        mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        app.startActivity(mainIntent);
+        System.exit(errCode);
+    }
+    public static void revertToBaseApk(){
+        removeFile(newApk);
+        removeFile(hotApk);
+        restartApp();
     }
     
     private static void testHotUpdate(Context app,
@@ -79,7 +94,7 @@ public class HotUnity{
                                       String hotApk,String hotSoDir,
                                       String newApk,String newSoDir){
         if (pathIsExists(newApk)||(pathIsExists(newSoDir))) return;
-        String testDir=app.getExternalFilesDir("testHotUpdate").getAbsolutePath();
+        String testDir=app.getExternalFilesDir("").getAbsolutePath()+"/testHotUpdate";
         //default: testDir=="/sdcard/Android/data/<your-app-id>/files/testHotUpdate";
         //NOTE: put the files you need test into the testDir directory
         String testPatFile=testDir+"/new.pat"; //test pat file
@@ -87,24 +102,26 @@ public class HotUnity{
         Log.w("PATCH", "testHotUpdate() with "+testPatFile);
         mapPathLoadLib(hotSoDir,kHotUnityLib); //for native function: virtualApkPatch()
         
-        baseApk  =findTestPath(baseApk,  testDir+"/base.apk");
-        baseSoDir=findTestPath(baseSoDir,testDir+"/base.apk_lib");
-        hotApk   =findTestPath(hotApk,   testDir+"/update.apk");
-        hotSoDir =findTestPath(hotSoDir, testDir+"/update.apk_lib");
-        
+        String testBase=testDir+"/base.apk";
+        if (pathIsExists(testBase)) {
+            baseApk  = testBase;
+            baseSoDir= testBase + "_lib";
+        }
+        String testHot=testDir+"/update.apk";
+        if (pathIsExists(testBase)||pathIsExists(testHot)) {
+            hotApk  = testHot;
+            hotSoDir= testHot + "_lib";
+        }
         int  ret=virtualApkPatch(baseApk,baseSoDir,hotApk,hotSoDir,
                                  newApk,newSoDir,testPatFile,3);
         Log.w("PATCH", "virtualApkPatch() result " +String.valueOf(ret));
         if ((ret==0) && removeFile(testPatFile)){ //update ok
             Log.w("PATCH", "testHotUpdate() ok, restartApp");
-            restartApp(app);
+            restartApp();
         }else{
             Log.w("PATCH", "testHotUpdate() ERROR, exitApp");
-            exitApp(app,ret);
+            exitApp(ret);
         }
-    }
-    private static String findTestPath(String oldPath,String testPath){
-        return pathIsExists(testPath)?testPath:oldPath;
     }
     
     // merge new to hot
@@ -118,7 +135,7 @@ public class HotUnity{
         if (!pathIsExists(newApk)) {
             if (pathIsExists(newSoDir))
                 removeLibDirWithLibs(newSoDir);
-            return true; //can continue run app
+            return true; //not need merge, continue run app
         }
         
         if (!mergeHotUnityLib(newSoDir,hotSoDir)){
@@ -151,6 +168,7 @@ public class HotUnity{
             if ((fileName=="."||(fileName==".."))) continue;
             removeFile(fileName);
         }
+        dir.delete();
     }
     
     private static boolean moveFileTo(String oldFilePath,String newFilePath) {
