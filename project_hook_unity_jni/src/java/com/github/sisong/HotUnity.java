@@ -4,6 +4,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.Log;
 import java.io.File;
 
@@ -45,6 +47,7 @@ public class HotUnity{
         hotSoDir=hotApk+"_lib";
         newApk=updateDir+"/new_update.apk";//ApkPatch temp out
         newSoDir=newApk+"_lib";
+        
         //for DEBUG test
         testHotUpdate(app, baseApk,baseSoDir,hotApk,hotSoDir,newApk,newSoDir);
         //merge new to hot for patch result
@@ -52,20 +55,40 @@ public class HotUnity{
             revertToBaseApk();
         }
         
-        if (pathIsExists(hotApk)&&pathIsExists(hotSoDir)){ //run by hotApk
-            mapPathLoadLib(hotSoDir,"main");
-            mapPathLoadLib(hotSoDir,"unity");
-            mapPathLoadLib(hotSoDir,kHotUnityLib);
-            //note: You can load other your lib(not unity's) by mapPathLoadLib, can use newVersion lib;
-            
-            doHot(baseApk,baseSoDir,hotApk,hotSoDir);
-        }else{
-            runByBaseApk();
+        boolean isRunHot=pathIsExists(hotApk)&&pathIsExists(hotSoDir);
+        //version check: hotApk version >= baseApk version
+        if (isRunHot){
+            boolean isVersionRise;
+            try {
+                String hotApkVersion=getVersionNameFromApk(app, hotApk);
+                String baseApkVersion=getVersionName(app, app.getPackageName());
+                isVersionRise = compareVersion(hotApkVersion,baseApkVersion)>=0;
+            }catch (Exception _){
+                isVersionRise=false;
+            }
+            if (!isVersionRise){
+                removeFile(hotApk);
+                removeLibDirWithLibs(hotSoDir);
+                isRunHot=false;
+            }
         }
+        
+        if (isRunHot)
+            runByHotApk();
+        else
+            runByBaseApk();
     }
     private  static void  runByBaseApk(){
         System.loadLibrary("main");
         System.loadLibrary(kHotUnityLib);
+    }
+    private  static void  runByHotApk(){
+        mapPathLoadLib(hotSoDir,"main");
+        mapPathLoadLib(hotSoDir,"unity");
+        mapPathLoadLib(hotSoDir,kHotUnityLib);
+        //note: You can load other your lib(not unity's) by mapPathLoadLib, can use newVersion lib;
+        
+        doHot(baseApk,baseSoDir,hotApk,hotSoDir);
     }
     
     //public funcs for call by C#
@@ -80,10 +103,17 @@ public class HotUnity{
     }
     public static void restartApp() {
         Intent intent = app.getPackageManager().getLaunchIntentForPackage(app.getPackageName());
-        PendingIntent contentIntent = PendingIntent.getActivity(app.getApplicationContext(),
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(app.getApplicationContext(),
                                                                 0, intent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager mgr = (AlarmManager)app.getSystemService(Context.ALARM_SERVICE);
-        mgr.set(AlarmManager.RTC,System.currentTimeMillis() + 200, contentIntent);
+        long alarmTimeMillis = System.currentTimeMillis() + 1000;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            mgr.setExactAndAllowWhileIdle(AlarmManager.RTC, alarmTimeMillis, pendingIntent);
+        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            mgr.setExact(AlarmManager.RTC, alarmTimeMillis, pendingIntent);
+        else
+            mgr.set(AlarmManager.RTC, alarmTimeMillis, pendingIntent);
         System.exit(0);
     }
     public static void exitApp(int errCode) {
@@ -215,5 +245,36 @@ public class HotUnity{
     private static boolean pathIsExists(String path) {
         File file = new File(path);
         return file.exists();
+    }
+    
+    private static String getVersionName(Context context,String packageName) throws PackageManager.NameNotFoundException {
+        return context.getPackageManager().getPackageInfo(packageName, 0).versionName;
+    }
+    private static String getVersionNameFromApk(Context context,String apkFilePath) {
+        return context.getPackageManager().
+        getPackageArchiveInfo(apkFilePath,PackageManager.GET_ACTIVITIES).versionName;
+    }
+    
+    public static int compareVersion(String v1, String v2) {
+        if (v1.equals(v2)) return 0;
+        String[] version1Array = v1.split("[._]");
+        String[] version2Array = v2.split("[._]");
+        int minLen = Math.min(version1Array.length, version2Array.length);
+        
+        for (int i = 0; i < minLen; ++i) {
+            long sub = Long.parseLong(version1Array[i]) - Long.parseLong(version2Array[i]);
+            if (sub != 0)
+                return (sub > 0) ? 1 : -1;
+        }
+        
+        for (int i = minLen; i < version1Array.length; ++i) {
+            if (Long.parseLong(version1Array[i]) > 0)
+                return 1;
+        }
+        for (int i = minLen; i < version2Array.length; ++i) {
+            if (Long.parseLong(version2Array[i]) > 0)
+                return -1;
+        }
+        return 0;
     }
 }
