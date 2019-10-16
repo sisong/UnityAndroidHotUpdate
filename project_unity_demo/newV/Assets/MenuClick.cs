@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class MenuClick : MonoBehaviour
 {
-
     void Start()
     {
         Button btn = GetComponent<Button>();
@@ -19,7 +18,7 @@ public class MenuClick : MonoBehaviour
     public void restartAppClick()
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
-        Debug.Log("btnRestartApp");
+        Debug.Log("restartAppClick");
         using (AndroidJavaClass HotUnity = new AndroidJavaClass("com.github.sisong.HotUnity"))
         {
             HotUnity.CallStatic("restartApp");
@@ -29,7 +28,7 @@ public class MenuClick : MonoBehaviour
     public void exitAppClick()
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
-        Debug.Log("btnExitApp");
+        Debug.Log("exitAppClick");
         using (AndroidJavaClass HotUnity = new AndroidJavaClass("com.github.sisong.HotUnity"))
         {
             int exitCode = 0;
@@ -40,7 +39,7 @@ public class MenuClick : MonoBehaviour
     public void revertAppClick()
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
-        Debug.Log("btnRevertApp");
+        Debug.Log("revertAppClick");
         using (AndroidJavaClass HotUnity = new AndroidJavaClass("com.github.sisong.HotUnity"))
         {
             HotUnity.CallStatic("revertToBaseApk");

@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 import java.io.File;
@@ -63,7 +64,7 @@ public class HotUnity{
                 String hotApkVersion=getVersionNameFromApk(app, hotApk);
                 String baseApkVersion=getVersionName(app, app.getPackageName());
                 isVersionRise = compareVersion(hotApkVersion,baseApkVersion)>=0;
-            }catch (Exception _){
+            }catch (Exception e){
                 isVersionRise=false;
             }
             if (!isVersionRise){
@@ -100,6 +101,14 @@ public class HotUnity{
                                  isHotUpdate?newApk:installApkPath,isHotUpdate?newSoDir:"",zipDiffPath,threadNum);
         Log.w(kLogTag, "virtualApkPatch() result " +String.valueOf(ret));
         return ret;
+    }
+    public static void installApk(String installApkPath) {
+        File apkFile=new File(installApkPath);
+        Intent intent=new Intent("android.intent.action.INSTALL_PACKAGE");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+        app.startActivity(intent);
     }
     public static void restartApp() {
         Intent intent = app.getPackageManager().getLaunchIntentForPackage(app.getPackageName());
