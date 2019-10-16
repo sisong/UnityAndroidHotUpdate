@@ -68,6 +68,16 @@ public class HotUnity{
         System.loadLibrary(kHotUnityLib);
     }
     
+    //public funcs for call by C#
+    
+    public static int apkPatch(String zipDiffPath,int threadNum,String installApkPath){
+        //kHotUnityLib is loaded, not need: mapPathLoadLib(hotSoDir,kHotUnityLib);
+        boolean isHotUpdate=(installApkPath==null)||(installApkPath.isEmpty());
+        int  ret=virtualApkPatch(baseApk,baseSoDir,hotApk,hotSoDir,
+                                 isHotUpdate?newApk:installApkPath,isHotUpdate?newSoDir:"",zipDiffPath,threadNum);
+        Log.w(kLogTag, "virtualApkPatch() result " +String.valueOf(ret));
+        return ret;
+    }
     public static void restartApp() {
         Intent intent = app.getPackageManager().getLaunchIntentForPackage(app.getPackageName());
         PendingIntent contentIntent = PendingIntent.getActivity(app.getApplicationContext(),
@@ -99,7 +109,7 @@ public class HotUnity{
         //NOTE: put the files you need test into the testDir directory
         String testPatFile=testDir+"/new.pat"; //test pat file
         if (!pathIsExists(testPatFile)) return;
-        Log.w("PATCH", "testHotUpdate() with "+testPatFile);
+        Log.w(kLogTag, "testHotUpdate() with "+testPatFile);
         mapPathLoadLib(hotSoDir,kHotUnityLib); //for native function: virtualApkPatch()
         
         String testBase=testDir+"/base.apk";
@@ -114,12 +124,12 @@ public class HotUnity{
         }
         int  ret=virtualApkPatch(baseApk,baseSoDir,hotApk,hotSoDir,
                                  newApk,newSoDir,testPatFile,3);
-        Log.w("PATCH", "virtualApkPatch() result " +String.valueOf(ret));
+        Log.w(kLogTag, "virtualApkPatch() result " +String.valueOf(ret));
         if ((ret==0) && removeFile(testPatFile)){ //update ok
-            Log.w("PATCH", "testHotUpdate() ok, restartApp");
+            Log.w(kLogTag, "testHotUpdate() ok, restartApp");
             restartApp();
         }else{
-            Log.w("PATCH", "testHotUpdate() ERROR, exitApp");
+            Log.w(kLogTag, "testHotUpdate() ERROR, exitApp");
             exitApp(ret);
         }
     }
