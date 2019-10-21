@@ -97,9 +97,19 @@ public class HotUnity{
     public static int apkPatch(String zipDiffPath,int threadNum,String installApkPath){
         boolean isHotUpdate=(installApkPath==null)||(installApkPath.isEmpty());
         //kHotUnityLib is loaded, not need: mapPathLoadLib(hotSoDir,kHotUnityLib);
+        String tempApkPath=updateDirPath+"/new_temp.apk";
+        removeFile(tempApkPath);
+        if ((!isHotUpdate)&&pathIsExists(installApkPath)) removeFile(installApkPath);
         int  ret=virtualApkPatch(baseApk,baseSoDir,hotApk,hotSoDir,
-                                 isHotUpdate?newApk:installApkPath,isHotUpdate?newSoDir:"",zipDiffPath,threadNum);
+                                 tempApkPath,isHotUpdate?newSoDir:"",zipDiffPath,threadNum);
         Log.w(kLogTag, "virtualApkPatch() result " +String.valueOf(ret));
+        if (ret!=0) {
+            removeFile(tempApkPath);
+            if (isHotUpdate) removeLibDirWithLibs(newSoDir);
+        }else {
+            if (!moveFileTo(tempApkPath,isHotUpdate?newApk:installApkPath))
+                return -1;
+        }
         return ret;
     }
     public static void installApk(String installApkPath) {
