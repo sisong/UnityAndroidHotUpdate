@@ -31,14 +31,14 @@ public class HotUnity{
     
     private static final String kHotUnityLib ="hotunity";
     private static final String kLogTag ="HotUnity";
-    private static Context app=null;
-    private static String baseApk=null;
-    private static String baseSoDir=null;
-    private static String updateDirPath=null;
-    private static String hotApk=null;
-    private static String hotSoDir=null;
-    private static String newApk=null;
-    private static String newSoDir=null;
+    public static Context app=null;
+    public static String baseApk=null;
+    public static String baseSoDir=null;
+    public static String updateDirPath=null;
+    public static String hotApk=null;
+    public static String hotSoDir=null;
+    public static String newApk=null;
+    public static String newSoDir=null;
     public static void hotUnity(Context _app){
         app=_app;
         baseApk=app.getPackageResourcePath();
@@ -94,9 +94,6 @@ public class HotUnity{
     }
     
     //public funcs for call by C#
-    public static String getUpdateDirPath(){
-        return updateDirPath;
-    }
     public static int apkPatch(String zipDiffPath,int threadNum,String installApkPath){
         boolean isHotUpdate=(installApkPath==null)||(installApkPath.isEmpty());
         //kHotUnityLib is loaded, not need: mapPathLoadLib(hotSoDir,kHotUnityLib);
