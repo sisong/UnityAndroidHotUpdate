@@ -34,6 +34,7 @@ public class HotUnity{
     private static Context app=null;
     private static String baseApk=null;
     private static String baseSoDir=null;
+    private static String updateDirPath=null;
     private static String hotApk=null;
     private static String hotSoDir=null;
     private static String newApk=null;
@@ -42,11 +43,11 @@ public class HotUnity{
         app=_app;
         baseApk=app.getPackageResourcePath();
         baseSoDir=app.getApplicationInfo().nativeLibraryDir;
-        String updateDir=app.getFilesDir().getPath() + "/HotUpdate";
-        if (!makeDir(updateDir)) { runByBaseApk(); return; }
-        hotApk=updateDir+"/update.apk";
+        updateDirPath=app.getFilesDir().getPath() + "/HotUpdate";
+        if (!makeDir(updateDirPath)) { runByBaseApk(); return; }
+        hotApk=updateDirPath+"/update.apk";
         hotSoDir=hotApk+"_lib";
-        newApk=updateDir+"/new_update.apk";//ApkPatch temp out
+        newApk=updateDirPath+"/new_update.apk";//ApkPatch temp out
         newSoDir=newApk+"_lib";
         
         //for DEBUG test
@@ -93,10 +94,12 @@ public class HotUnity{
     }
     
     //public funcs for call by C#
-    
+    public static String getUpdateDirPath(){
+        return updateDirPath;
+    }
     public static int apkPatch(String zipDiffPath,int threadNum,String installApkPath){
-        //kHotUnityLib is loaded, not need: mapPathLoadLib(hotSoDir,kHotUnityLib);
         boolean isHotUpdate=(installApkPath==null)||(installApkPath.isEmpty());
+        //kHotUnityLib is loaded, not need: mapPathLoadLib(hotSoDir,kHotUnityLib);
         int  ret=virtualApkPatch(baseApk,baseSoDir,hotApk,hotSoDir,
                                  isHotUpdate?newApk:installApkPath,isHotUpdate?newSoDir:"",zipDiffPath,threadNum);
         Log.w(kLogTag, "virtualApkPatch() result " +String.valueOf(ret));
