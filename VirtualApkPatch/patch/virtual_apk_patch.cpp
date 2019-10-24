@@ -210,10 +210,10 @@ static bool t_IVirtualZip_in_beginVirtual(struct IVirtualZip_in* _self,const UnZ
         int fIndex=self->soMapList[i].indexInApk;
         if (fIndex>=apkFileCount) return false; //error
         const char* fileDir=self->soMapList[i].type==kTLibCache_inHotSoDir?self->hotSoDir:self->baseSoDir;
-        const char* _fileName=UnZipper_file_nameBegin(apk,fIndex);
+        const char* _filePathName=UnZipper_file_nameBegin(apk,fIndex);
         int         fileNameLen=UnZipper_file_nameLen(apk,fIndex);
-        const char* fileName=getFileName(_fileName,fileNameLen);
-        fileNameLen-=(fileName-_fileName);
+        const char* fileName=getFileName(_filePathName,fileNameLen);
+        fileNameLen-=(fileName-_filePathName);
         char filePath[kMaxPathLen+1];
         if (!getPath(fileDir,fileName,fileNameLen,filePath,sizeof(filePath))) return false;
         if (!hpatch_TFileStreamInput_open(&self->_fileStreamList[i],filePath)) return false;

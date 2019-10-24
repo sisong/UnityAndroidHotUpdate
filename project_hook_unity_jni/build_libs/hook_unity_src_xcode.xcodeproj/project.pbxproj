@@ -21,6 +21,27 @@
 			remoteGlobalIDString = D6D0B8262327427D00E4FDD0;
 			remoteInfo = FixUnityJar;
 		};
+		D6BA8F74235FDA4100AFC34A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D6BA8F6E235FDA4100AFC34A /* ZipDiff.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D651191B2041ADA900805001;
+			remoteInfo = ZipDiff;
+		};
+		D6BA8F7A235FDA4100AFC34A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D6BA8F76235FDA4100AFC34A /* ApkNormalized.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D65119312041AF8400805001;
+			remoteInfo = ApkNormalized;
+		};
+		D6BA8F80235FDA9300AFC34A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D6BA8F7C235FDA9300AFC34A /* HDiffPatch.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D62A9FC22054020C00A61D43;
+			remoteInfo = HDiffPatch;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -43,6 +64,9 @@
 		D6703D132314D87E0095F791 /* Android.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Android.mk; sourceTree = "<group>"; };
 		D6703D142314D87E0095F791 /* Application.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Application.mk; sourceTree = "<group>"; };
 		D6703D152314D8A10095F791 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = ../src; sourceTree = "<group>"; };
+		D6BA8F6E235FDA4100AFC34A /* ZipDiff.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZipDiff.xcodeproj; path = ../../ApkDiffPatch/builds/xcode/ZipDiff.xcodeproj; sourceTree = "<group>"; };
+		D6BA8F76235FDA4100AFC34A /* ApkNormalized.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ApkNormalized.xcodeproj; path = ../../ApkDiffPatch/builds/xcode/ApkNormalized.xcodeproj; sourceTree = "<group>"; };
+		D6BA8F7C235FDA9300AFC34A /* HDiffPatch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = HDiffPatch.xcodeproj; path = ../../ApkDiffPatch/builds/xcode/HDiffPatch.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,7 +99,10 @@
 		D6703CFF2314D8420095F791 = {
 			isa = PBXGroup;
 			children = (
+				D6BA8F7C235FDA9300AFC34A /* HDiffPatch.xcodeproj */,
 				D63B987F233333A9003D38A5 /* VirtualApkPatch.xcodeproj */,
+				D6BA8F76235FDA4100AFC34A /* ApkNormalized.xcodeproj */,
+				D6BA8F6E235FDA4100AFC34A /* ZipDiff.xcodeproj */,
 				D658934C23331567003BB2F4 /* FixUnityJar.xcodeproj */,
 				D6703D152314D8A10095F791 /* src */,
 				D6703D132314D87E0095F791 /* Android.mk */,
@@ -89,6 +116,30 @@
 			isa = PBXGroup;
 			children = (
 				D6703D082314D8420095F791 /* hook_unity_src_xcode */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D6BA8F6F235FDA4100AFC34A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D6BA8F75235FDA4100AFC34A /* ZipDiff */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D6BA8F77235FDA4100AFC34A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D6BA8F7B235FDA4100AFC34A /* ApkNormalized */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D6BA8F7D235FDA9300AFC34A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D6BA8F81235FDA9300AFC34A /* libHDiffPatch.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -139,12 +190,24 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = D6BA8F77235FDA4100AFC34A /* Products */;
+					ProjectRef = D6BA8F76235FDA4100AFC34A /* ApkNormalized.xcodeproj */;
+				},
+				{
 					ProductGroup = D658934D23331567003BB2F4 /* Products */;
 					ProjectRef = D658934C23331567003BB2F4 /* FixUnityJar.xcodeproj */;
 				},
 				{
+					ProductGroup = D6BA8F7D235FDA9300AFC34A /* Products */;
+					ProjectRef = D6BA8F7C235FDA9300AFC34A /* HDiffPatch.xcodeproj */;
+				},
+				{
 					ProductGroup = D63B9880233333A9003D38A5 /* Products */;
 					ProjectRef = D63B987F233333A9003D38A5 /* VirtualApkPatch.xcodeproj */;
+				},
+				{
+					ProductGroup = D6BA8F6F235FDA4100AFC34A /* Products */;
+					ProjectRef = D6BA8F6E235FDA4100AFC34A /* ZipDiff.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -167,6 +230,27 @@
 			fileType = "compiled.mach-o.executable";
 			path = FixUnityJar;
 			remoteRef = D658935023331568003BB2F4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D6BA8F75235FDA4100AFC34A /* ZipDiff */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = ZipDiff;
+			remoteRef = D6BA8F74235FDA4100AFC34A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D6BA8F7B235FDA4100AFC34A /* ApkNormalized */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = ApkNormalized;
+			remoteRef = D6BA8F7A235FDA4100AFC34A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D6BA8F81235FDA9300AFC34A /* libHDiffPatch.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libHDiffPatch.a;
+			remoteRef = D6BA8F80235FDA9300AFC34A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
