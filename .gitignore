@@ -41,3 +41,6 @@ project_fix_unity_jar/null_lib/libs
 xcshareddata
 Debug
 Release
+project_fix_unity_jar/fix_unity_jar/builds/codeblocks/bin
+FixUnityJar.depend
+FixUnityJar.layout
