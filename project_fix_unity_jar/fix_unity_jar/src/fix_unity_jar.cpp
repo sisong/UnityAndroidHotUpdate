@@ -5,11 +5,9 @@
 #include <assert.h>
 #include <string>
 #include <vector>
+#include <algorithm>
 #include "../../../ApkDiffPatch/src/patch/Zipper.h"
 #include "../../../ApkDiffPatch/HDiffPatch/file_for_patch.h"
-#ifdef __cplusplus
-extern "C" {
-#endif
 
     static const char* kUnityPlayer_class="com/unity3d/player/UnityPlayer.class";
     
@@ -126,8 +124,5 @@ extern "C" {
         check(Zipper_close(&zipper), kFixUnityJar_outputJarFileError);
         return result;
     }
-    
-#ifdef __cplusplus
-}
-#endif
+
 

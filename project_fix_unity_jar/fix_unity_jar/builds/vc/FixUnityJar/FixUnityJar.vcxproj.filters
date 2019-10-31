@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="zipper">
+      <UniqueIdentifier>{5232775d-fe73-4dc1-8e6d-8b1d0db39c7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="zlib">
+      <UniqueIdentifier>{63dfd856-c2d5-4bcd-b54b-e61432b223e9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\src\fix_unity_jar.cpp" />
+    <ClCompile Include="..\..\..\src\fix_unity_jar_main.cpp" />
+    <ClCompile Include="..\..\..\..\..\ApkDiffPatch\src\patch\Zipper.cpp">
+      <Filter>zipper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\ApkDiffPatch\HDiffPatch\file_for_patch.c">
+      <Filter>zipper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\ApkDiffPatch\HDiffPatch\libHDiffPatch\HPatch\patch.c">
+      <Filter>zipper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\ApkDiffPatch\zlib1.2.11\adler32.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\ApkDiffPatch\zlib1.2.11\compress.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\ApkDiffPatch\zlib1.2.11\crc32.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\ApkDiffPatch\zlib1.2.11\deflate.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\ApkDiffPatch\zlib1.2.11\infback.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\ApkDiffPatch\zlib1.2.11\inffast.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\ApkDiffPatch\zlib1.2.11\inflate.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\ApkDiffPatch\zlib1.2.11\inftrees.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\ApkDiffPatch\zlib1.2.11\trees.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\ApkDiffPatch\zlib1.2.11\uncompr.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\ApkDiffPatch\zlib1.2.11\zutil.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\fix_unity_jar.h" />
+    <ClInclude Include="..\..\..\..\..\ApkDiffPatch\src\patch\Zipper.h">
+      <Filter>zipper</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

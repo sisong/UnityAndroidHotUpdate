@@ -39,3 +39,5 @@ tool_hot_cache_lib/build_demos/android_ndk_jni_mk/obj
 project_fix_unity_jar/null_lib/libs
 # xcode
 xcshareddata
+Debug
+Release
