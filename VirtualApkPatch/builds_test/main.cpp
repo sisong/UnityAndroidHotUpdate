@@ -5,14 +5,20 @@
 //  Created by sisong on 2019/09/12.
 //  Copyright © 2019 sisong. All rights reserved.
 //
-#include "../../patch/virtual_apk_patch.h"
-#include "../../../ApkDiffPatch/HDiffPatch/_clock_for_demo.h"
+#include "../patch/virtual_apk_patch.h"
+#include "../../ApkDiffPatch/HDiffPatch/_clock_for_demo.h"
 
 #include <iostream>
 
 int main(int argc, const char * argv[]) {
     double time0=clock_s();
-    if (argc!=1+9) return -1;
+    if (argc!=1+9){
+        printf("  virtual_apk_patch()\\virtual_apk_merge() is run on android;\n"
+               "    VirtualApkPatch for test them on PC;\n"
+               "usage: VirtualApkPatch baseApk baseSoDir hotApk hotSoDir"
+               " out_newApk out_newChangedSoDir zipDiffPath arch_abi threadNum\n");
+        return -1;
+    }
     int threadNum=atoi(argv[9]);
     const char* hotApk=argv[3];
     const char* newSoDir=argv[6];

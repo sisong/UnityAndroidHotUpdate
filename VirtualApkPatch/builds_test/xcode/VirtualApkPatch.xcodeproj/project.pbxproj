@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		D65C69D423293AFA00A3C89C /* virtual_apk_patch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D65C69D123293AFA00A3C89C /* virtual_apk_patch.cpp */; };
-		D65C69D7232A065600A3C89C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D65C69D6232A065600A3C89C /* main.cpp */; };
 		D65C69E6232A0EA100A3C89C /* OldStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D65C69DE232A0EA100A3C89C /* OldStream.cpp */; };
 		D65C69E7232A0EA100A3C89C /* ZipDiffData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D65C69DF232A0EA100A3C89C /* ZipDiffData.cpp */; };
 		D65C69E8232A0EA100A3C89C /* NewStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D65C69E0232A0EA100A3C89C /* NewStream.cpp */; };
@@ -20,6 +19,7 @@
 		D65C6A0C232A0F8200A3C89C /* patch.c in Sources */ = {isa = PBXBuildFile; fileRef = D65C6A09232A0F8200A3C89C /* patch.c */; };
 		D65C6A0E232A0FBB00A3C89C /* liblzma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D65C69F0232A0EF400A3C89C /* liblzma.a */; };
 		D65C6A0F232A0FBB00A3C89C /* libzlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D65C69F6232A0EF400A3C89C /* libzlib.a */; };
+		D698B4D0236AD0BB00FC04E9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D698B4CF236AD0BB00FC04E9 /* main.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,7 +55,6 @@
 		D65C69C523293AB300A3C89C /* VirtualApkPatch */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = VirtualApkPatch; sourceTree = BUILT_PRODUCTS_DIR; };
 		D65C69D123293AFA00A3C89C /* virtual_apk_patch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = virtual_apk_patch.cpp; sourceTree = "<group>"; };
 		D65C69D223293AFA00A3C89C /* virtual_apk_patch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = virtual_apk_patch.h; sourceTree = "<group>"; };
-		D65C69D6232A065600A3C89C /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		D65C69DB232A0EA100A3C89C /* Zipper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Zipper.h; sourceTree = "<group>"; };
 		D65C69DC232A0EA100A3C89C /* Patcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Patcher.h; sourceTree = "<group>"; };
 		D65C69DD232A0EA100A3C89C /* patch_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = patch_types.h; sourceTree = "<group>"; };
@@ -83,6 +82,7 @@
 		D65C6A0B232A0F8200A3C89C /* patch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = patch.h; sourceTree = "<group>"; };
 		D65C6A11232A89BB00A3C89C /* VirtualZipIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VirtualZipIO.h; sourceTree = "<group>"; };
 		D65C6A21232E5F0100A3C89C /* file_for_dirDiff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = file_for_dirDiff.h; path = ../../../ApkDiffPatch/HDiffPatch/dirDiffPatch/dir_diff/file_for_dirDiff.h; sourceTree = "<group>"; };
+		D698B4CF236AD0BB00FC04E9 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,9 +101,9 @@
 		D65C69BC23293AB300A3C89C = {
 			isa = PBXGroup;
 			children = (
+				D698B4CF236AD0BB00FC04E9 /* main.cpp */,
 				D65C69D9232A0E5900A3C89C /* ApkDiffPatch */,
 				D65C69D023293AFA00A3C89C /* patch */,
-				D65C69D6232A065600A3C89C /* main.cpp */,
 				D65C69C623293AB300A3C89C /* Products */,
 				D65C6A0D232A0FBB00A3C89C /* Frameworks */,
 			);
@@ -311,10 +311,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D65C6A0C232A0F8200A3C89C /* patch.c in Sources */,
-				D65C69D7232A065600A3C89C /* main.cpp in Sources */,
 				D65C69E9232A0EA100A3C89C /* Zipper.cpp in Sources */,
 				D65C6A02232A0F6900A3C89C /* parallel_channel.cpp in Sources */,
 				D65C69D423293AFA00A3C89C /* virtual_apk_patch.cpp in Sources */,
+				D698B4D0236AD0BB00FC04E9 /* main.cpp in Sources */,
 				D65C69E7232A0EA100A3C89C /* ZipDiffData.cpp in Sources */,
 				D65C69EA232A0EA100A3C89C /* Patcher.cpp in Sources */,
 				D65C6A03232A0F6900A3C89C /* parallel_import.cpp in Sources */,
