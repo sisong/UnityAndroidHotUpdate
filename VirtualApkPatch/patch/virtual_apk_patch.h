@@ -45,6 +45,7 @@ extern "C" {
     // baseApk&baseSoDir read only
     // out_newChangedSoDir can NULL or "", meen no need cache .so files
     // if first patch hotApk/hotSoDir can NULL or "", and not need use merge
+    // if threadNum>1 then used more and more memory, you need test it
     int virtual_apk_patch(const char* baseApk,const char* baseSoDir,
                           const char* hotApk,const char* hotSoDir,
                           const char* out_newApk,const char* out_newChangedSoDir,

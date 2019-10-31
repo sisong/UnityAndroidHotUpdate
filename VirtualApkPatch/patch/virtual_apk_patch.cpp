@@ -48,7 +48,7 @@ static bool findLibDir(const UnZipper* apk,const char* arch_abi,
     const int arch_abiLen=(int)strlen(arch_abi);
     if (arch_abiLen<=0) return false;
     const int dirLen=4+arch_abiLen+1;
-    if (dirLen+1>libDirBufSize) return false;
+    if (dirLen+1>(int)libDirBufSize) return false;
     memcpy(outLibDir,"lib/",4);
     memcpy(outLibDir+4,arch_abi,arch_abiLen);
     memcpy(outLibDir+4+arch_abiLen,"/\0",1+1);

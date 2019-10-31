@@ -101,9 +101,9 @@
 		D65C69BC23293AB300A3C89C = {
 			isa = PBXGroup;
 			children = (
-				D698B4CF236AD0BB00FC04E9 /* main.cpp */,
 				D65C69D9232A0E5900A3C89C /* ApkDiffPatch */,
 				D65C69D023293AFA00A3C89C /* patch */,
+				D698B4CF236AD0BB00FC04E9 /* main.cpp */,
 				D65C69C623293AB300A3C89C /* Products */,
 				D65C6A0D232A0FBB00A3C89C /* Frameworks */,
 			);

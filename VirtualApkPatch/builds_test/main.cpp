@@ -8,13 +8,16 @@
 #include "../patch/virtual_apk_patch.h"
 #include "../../ApkDiffPatch/HDiffPatch/_clock_for_demo.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <iostream>
 
 int main(int argc, const char * argv[]) {
     double time0=clock_s();
     if (argc!=1+9){
         printf("  virtual_apk_patch()\\virtual_apk_merge() is run on android;\n"
-               "    VirtualApkPatch for test them on PC;\n"
+               "  VirtualApkPatch for test them on PC;\n"
                "usage: VirtualApkPatch baseApk baseSoDir hotApk hotSoDir"
                " out_newApk out_newChangedSoDir zipDiffPath arch_abi threadNum\n");
         return -1;
