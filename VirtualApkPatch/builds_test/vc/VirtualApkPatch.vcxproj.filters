@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\patch\virtual_apk_patch.cpp" />
+    <ClCompile Include="..\main.cpp" />
+    <ClCompile Include="..\..\..\ApkDiffPatch\src\patch\NewStream.cpp">
+      <Filter>ApkDiffPatch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ApkDiffPatch\src\patch\OldStream.cpp">
+      <Filter>ApkDiffPatch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ApkDiffPatch\src\patch\Patcher.cpp">
+      <Filter>ApkDiffPatch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ApkDiffPatch\src\patch\ZipDiffData.cpp">
+      <Filter>ApkDiffPatch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ApkDiffPatch\src\patch\Zipper.cpp">
+      <Filter>ApkDiffPatch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ApkDiffPatch\lzma\C\LzFind.c">
+      <Filter>lzma</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ApkDiffPatch\lzma\C\LzmaDec.c">
+      <Filter>lzma</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ApkDiffPatch\zlib1.2.11\adler32.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ApkDiffPatch\zlib1.2.11\compress.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ApkDiffPatch\zlib1.2.11\crc32.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ApkDiffPatch\zlib1.2.11\deflate.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ApkDiffPatch\zlib1.2.11\infback.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ApkDiffPatch\zlib1.2.11\inffast.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ApkDiffPatch\zlib1.2.11\inflate.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ApkDiffPatch\zlib1.2.11\inftrees.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ApkDiffPatch\zlib1.2.11\trees.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ApkDiffPatch\zlib1.2.11\uncompr.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ApkDiffPatch\zlib1.2.11\zutil.c">
+      <Filter>zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ApkDiffPatch\HDiffPatch\file_for_patch.c">
+      <Filter>HDiffPatch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ApkDiffPatch\HDiffPatch\libHDiffPatch\HPatch\patch.c">
+      <Filter>HDiffPatch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ApkDiffPatch\HDiffPatch\libParallel\parallel_channel.cpp">
+      <Filter>HDiffPatch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ApkDiffPatch\HDiffPatch\libParallel\parallel_import.cpp">
+      <Filter>HDiffPatch</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\patch\virtual_apk_patch.h" />
+    <ClInclude Include="..\..\..\ApkDiffPatch\src\patch\NewStream.h">
+      <Filter>ApkDiffPatch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ApkDiffPatch\src\patch\OldStream.h">
+      <Filter>ApkDiffPatch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ApkDiffPatch\src\patch\patch_types.h">
+      <Filter>ApkDiffPatch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ApkDiffPatch\src\patch\Patcher.h">
+      <Filter>ApkDiffPatch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ApkDiffPatch\src\patch\VirtualZipIO.h">
+      <Filter>ApkDiffPatch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ApkDiffPatch\src\patch\ZipDiffData.h">
+      <Filter>ApkDiffPatch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ApkDiffPatch\src\patch\Zipper.h">
+      <Filter>ApkDiffPatch</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="ApkDiffPatch">
+      <UniqueIdentifier>{172e7ddf-de29-421e-a9bf-8f08b5bae838}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lzma">
+      <UniqueIdentifier>{12a0cb01-8df8-41fa-a174-7094b245cfa4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="zlib">
+      <UniqueIdentifier>{52c2d553-1c2e-46d7-853e-9fad42537d0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDiffPatch">
+      <UniqueIdentifier>{2f4024ec-afe5-4867-aaec-ab4607a6095d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -312,7 +312,7 @@ static bool t_IVirtualZip_out_endVirtual(IVirtualZip_out* _self){
     hpatch_BOOL rt=hpatch_TFileStreamOutput_close(&self->_fileStream);
     if (rt) hpatch_TFileStreamOutput_init(&self->_fileStream);
     self->base.virtualStream=0;
-    return (bool)rt;
+    return (rt!=0);
 }
 
 
