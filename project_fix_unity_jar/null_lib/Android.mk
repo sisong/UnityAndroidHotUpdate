@@ -8,5 +8,5 @@ Src_Files := $(LOCAL_PATH)/null_lib_jni.cpp
 LOCAL_SRC_FILES  := $(Src_Files)
 
 LOCAL_LDLIBS     := -landroid
-LOCAL_CFLAGS     := -DANDROID_NDK
+LOCAL_CFLAGS     := -Os -DANDROID_NDK
 include $(BUILD_SHARED_LIBRARY)

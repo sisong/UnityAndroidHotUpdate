@@ -48,7 +48,7 @@ Src_Files := $(LOCAL_PATH)/../src/hook_unity.cpp \
 LOCAL_SRC_FILES  := $(Src_Files) $(xHook_Files) $(Lzma_Files) $(Zlib_Files) $(Hdp_Files) $(Adp_Files)
 
 LOCAL_LDLIBS     := -llog -landroid
-LOCAL_CFLAGS     := -DANDROID_NDK  -DTARGET_ARCH_ABI=\"$(TARGET_ARCH_ABI)\"  \
+LOCAL_CFLAGS     := -Os -DANDROID_NDK  -DTARGET_ARCH_ABI=\"$(TARGET_ARCH_ABI)\"  \
                     -D_7ZIP_ST -D_IS_USED_MULTITHREAD=1 -D_IS_USED_PTHREAD=1 \
                     -D_IS_NEED_FIXED_ZLIB_VERSION=1 -D_IS_NEED_VIRTUAL_ZIP=1
 
