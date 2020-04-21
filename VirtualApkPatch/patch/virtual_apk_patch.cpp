@@ -188,12 +188,35 @@ struct t_IVirtualZip_in{
     TLibCacheInfo*  soMapList;
     const char*     baseSoDir;
     const char*     hotSoDir;
+    const char*     baseApk;
     TZipEntryData*           _entryList;
     hpatch_TFileStreamInput* _fileStreamList;
 };
 static uint32_t t_IVirtualZip_getCrc32(const struct IVirtualZip_in* virtual_in,const UnZipper* apk,
                                        int fileIndex, const TZipEntryData* entryData){
     return UnZipper_file_crc32(apk,fileIndex);
+}
+
+ static ZipFilePos_t _t_IVirtualZip_getSavedCompressedSize(struct t_IVirtualZip_in* self,
+                                                           const UnZipper* apk,int fIndex,UnZipper* baseApk){
+     ZipFilePos_t result=UnZipper_file_compressedSize(apk,fIndex);
+     if ((result>0)||(self->baseApk==0)||(baseApk==0)) return result;
+     if (baseApk->_vce==0){
+         if (!UnZipper_openFile(baseApk,self->baseApk)){
+             self->baseApk=0;
+             return false;
+         }
+     }
+     const char* filePathName=UnZipper_file_nameBegin(apk,fIndex);
+     int  fileNameLen=UnZipper_file_nameLen(apk,fIndex);
+     int fIndexInBase;
+     if (UnZipper_file_is_sameName(baseApk,fIndex,filePathName,fileNameLen))
+         fIndexInBase=fIndex;
+     else
+         fIndexInBase=UnZipper_searchFileIndexByName(baseApk,filePathName,fileNameLen);
+     if (fIndexInBase<0) return result;
+     result=UnZipper_file_compressedSize(baseApk,fIndexInBase);
+     return result;
 }
 
 static bool t_IVirtualZip_in_beginVirtual(struct IVirtualZip_in* _self,const UnZipper* apk,
@@ -219,13 +242,20 @@ static bool t_IVirtualZip_in_beginVirtual(struct IVirtualZip_in* _self,const UnZ
         if (!hpatch_TFileStreamInput_open(&self->_fileStreamList[i],filePath)) return false;
     }
     
+    UnZipper baseApk;
+    UnZipper_init(&baseApk);
     for (int i=0; i<self->soMapListCount; ++i) {
         self->_entryList[i].isCompressed=false;
         self->_entryList[i].dataStream=&self->_fileStreamList[i].base;
         self->_entryList[i].uncompressedSize=(ZipFilePos_t)self->_entryList[i].dataStream->streamSize;
         int fIndex=self->soMapList[i].indexInApk;
+        if (self->_entryList[i].uncompressedSize>0){
+            UnZipper* pbaseApk=(self->soMapList[i].type==kTLibCache_inBaseSoDir)?&baseApk:0;
+            self->_entryList[i].savedCompressedSize=_t_IVirtualZip_getSavedCompressedSize(self,apk,fIndex,pbaseApk);
+        }
         out_entryDatas[fIndex]=&self->_entryList[i];
     }
+    if (!UnZipper_close(&baseApk)) return false;
     return true;
 }
 static bool t_IVirtualZip_in_endVirtual(IVirtualZip_in* _self){
@@ -245,9 +275,11 @@ static bool t_IVirtualZip_in_endVirtual(IVirtualZip_in* _self){
     return result;
 }
 
-static void t_IVirtualZip_in_set(t_IVirtualZip_in* self,const char* baseSoDir,const char* hotSoDir){
+static void t_IVirtualZip_in_set(t_IVirtualZip_in* self,const char* baseSoDir,const char* hotSoDir,
+                                 const char* baseApk){
     self->baseSoDir=baseSoDir;
     self->hotSoDir=hotSoDir;
+    self->baseApk=baseApk;
     self->base.virtualImport=self;
     self->base.getCrc32=t_IVirtualZip_getCrc32;
     self->base.beginVirtual=t_IVirtualZip_in_beginVirtual;
@@ -372,7 +404,7 @@ static int _virtual_apk_patch(const char* baseApk,const char* baseSoDir,
                                 &virtual_in.soMapList,&virtual_in.soMapListCount);
             if (rt!=kVApkPatch_ok) _rt_err(rt);
             if (!UnZipper_close(&apk)) _rt_err(kVApkPatch_apkFileError);
-            t_IVirtualZip_in_set(&virtual_in,baseSoDir,hotSoDir);
+            t_IVirtualZip_in_set(&virtual_in,baseSoDir,hotSoDir,(curApk==baseApk)?0:baseApk);
         }
         //virtual_out
         if (out_newChangedSoDir){
