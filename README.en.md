@@ -52,6 +52,19 @@ add libhotunity.so(rebuild in path ```project_hook_unity_jni```) to project jniL
 add ```com/github/sisong/HotUnity.java``` to project; (You can add the .so in this file that need hot update, which will be loaded if exist new version;)   
 edit file UnityPlayerActivity.java in project; add code: ```import com.github.sisong.HotUnity;```, and add code: ```HotUnity.hotUnity(this);``` before ```mUnityPlayer = new UnityPlayer(this);```   
 * If you need to support upgrading little(RELEASE) version of Unity, you need to use the FixUnityJar program(code in path ```project_fix_unity_jar/fix_unity_jar```) to modify the file unity-classes.jar in the export project, and add libnull.so(rebuild in path ```project_fix_unity_jar/null_lib ```) to project jniLibs;   
+* APK installation for compatibility with Android 10, create ```{AndroidProject}/launcher/src/main/res/xml/filepaths.xml```, Enter the following content:  
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-path name="external" path="."/>
+</paths>
+```
+Edit ```{AndroidProject}/unityLibrary/src/main/AndroidManifest.xml``` file's ```application``` node, add:
+```xml
+<provider android:name="androidx.core.content.FileProvider" android:authorities="{YourAppPackageName}.fileprovider" android:exported="false" android:grantUriPermissions="true">
+      <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/filepaths" />
+</provider>
+```
 * Package the test project by Android Studio (you can automate the process of exporting modifying and packaging in Unity with the editor extension), the app should be able to running normally on the device; now you need test the app "hot" update to a new version;   
 * Manual hot update test process: you have a new version app named update.apk, placed it in the HotUpdate subdirectory of the ```getApplicationContext().getFilesDir().getPath()``` (device path ```/data/data/<appid>/files/HotUpdate/```); Decompress the *.so file in ```lib/<this test device abi>/``` from update.apk, and place it in the directory ```HotUpdate/update.apk_lib/``` (can also dispose only changed .so file); restart the app on the device, you should be able to see that the new version is already running!   
 

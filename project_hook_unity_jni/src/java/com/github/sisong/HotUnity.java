@@ -8,6 +8,9 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
+
+import androidx.core.content.FileProvider;
+
 import java.io.File;
 
 /*
@@ -120,7 +123,14 @@ public class HotUnity{
         Intent intent=new Intent("android.intent.action.INSTALL_PACKAGE");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setAction(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            Uri uri = FileProvider.getUriForFile(app, app.getApplicationContext().getPackageName() + ".fileprovider", apkFile);
+            intent.setDataAndType(uri, "application/vnd.android.package-archive");
+        } else {
+            intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+        }
         app.startActivity(intent);
     }
     public static void restartApp() {
@@ -210,6 +220,7 @@ public class HotUnity{
             Log.w(kLogTag,"virtualApkMerge() error code "+String.valueOf(rt)+"! "+newApk);
             return false;
         }
+        clearIl2cppCache();
         return true;
     }
     
@@ -220,6 +231,14 @@ public class HotUnity{
         String hotLibHotUnity=getLibPath(hotSoDir,kHotUnityLib);
         if (!removeFile(hotLibHotUnity)) return false;
         return moveFileTo(newLibHotUnity,hotLibHotUnity);
+    }
+
+    private static void clearIl2cppCache() {
+        Log.i(kLogTag, "clearIl2cppCache");
+        File fileDir = app.getExternalFilesDir("il2cpp");
+        if (fileDir != null) {
+            removeDir(fileDir);
+        }
     }
     
     private static void removeLibDirWithLibs(String libDir) {
@@ -242,6 +261,33 @@ public class HotUnity{
         File df=new File(fileName);
         if (!df.exists()) return true;
         return df.delete();
+    }
+
+    private static boolean removeDir(File dir) {
+        if (null == dir || !dir.exists())
+            return false;
+        if (!dir.isDirectory())
+            throw new RuntimeException("\"" + dir.getAbsolutePath() + "\" should be a directory!");
+        File[] files = dir.listFiles();
+        boolean re = false;
+        if (null != files) {
+            if (files.length == 0)
+                return dir.delete();
+            for (File f : files) {
+                if (f.isDirectory())
+                    re |= removeDir(f);
+                else
+                    re |= removeFile(f);
+            }
+            re |= dir.delete();
+        }
+        return re;
+    }
+
+    public static boolean removeFile(File f) {
+        if (null == f)
+            return false;
+        return f.delete();
     }
     
     private static boolean makeDir(String dirPath) {
