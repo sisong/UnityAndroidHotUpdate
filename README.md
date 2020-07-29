@@ -54,6 +54,19 @@
  将```com/github/sisong/HotUnity.java```文件复制到项目源代码的java相应路径中； (可以在这个文件中添加你需要支持热更的.so，这会立即加载可能存在的新版本库)   
  在项目的UnityPlayerActivity.java文件中```import com.github.sisong.HotUnity;```，并且在```mUnityPlayer = new UnityPlayer(this);```代码之前添加代码```HotUnity.hotUnity(this);```   
 * 如果你需要支持升级发布用的Unity的小版本，那么需要用FixUnityJar程序(代码在```project_fix_unity_jar/fix_unity_jar```路径里)修改导出项目中文件unity-classes.jar，并且将libnull.so文件(build项目在```project_fix_unity_jar/null_lib```目录里)复制到项目的jniLibs下的相应子目录中；   
+* 为了兼容Android10安装APK，创建```{安卓工程}/launcher/src/main/res/xml/filepaths.xml```，内容为：
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-path name="external" path="."/>
+</paths>
+```
+在```{安卓工程}/unityLibrary/src/main/AndroidManifest.xml```文件的```application```节点中添加
+```xml
+<provider android:name="androidx.core.content.FileProvider" android:authorities="{你的APP包名}.fileprovider" android:exported="false" android:grantUriPermissions="true">
+      <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/filepaths" />
+</provider>
+```
 * 用Android Studio打包测试项目（你可以把这个导出、修改、打包的过程在Unity中利用编辑器扩展自动化下来；后续本仓库会更新到Demo中），app在设备上应该能够正常运行; 现在你需要测试热更新到一个新版本；   
 * 手工热更新测试过程：假设有了修改过的新版本apk命名成update.apk,放置到```getApplicationContext().getFilesDir().getPath()```目录的HotUpdate子目录下（一般设备上路径```/data/data/<appid>/files/HotUpdate/```）； 将update.apk包中```lib/<本测试设备abi>/```中的*.so文件解压后直接放置到```HotUpdate/update.apk_lib/```目录下（可以只放置有修改过的.so文件）； 重新运行设备上安装的app，你应该可以看到，已经运行的是新版本！   
 
