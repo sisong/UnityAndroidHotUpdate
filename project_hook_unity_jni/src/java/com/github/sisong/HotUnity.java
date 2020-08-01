@@ -8,10 +8,10 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
-
-import androidx.core.content.FileProvider;
-
 import java.io.File;
+
+import android.support.v4.content.FileProvider;
+//import androidx.core.content.FileProvider;
 
 /*
  customize edit for Unity export android project:
@@ -235,21 +235,17 @@ public class HotUnity{
 
     private static void clearIl2cppCache() {
         Log.i(kLogTag, "clearIl2cppCache");
-        File fileDir = app.getExternalFilesDir("il2cpp");
-        if (fileDir != null) {
-            removeDir(fileDir);
+        File cacheDir = app.getExternalFilesDir("il2cpp");
+        if (!removeDir(cacheDir)){
+            Log.w(kLogTag,"clearIl2cppCache() error, can't clear dir \""+cacheDir.getPath()+"\"! ");
         }
     }
     
     private static void removeLibDirWithLibs(String libDir) {
-        File dir=new File(libDir);
-        String[] files=dir.list();
-        for (int i=0;i<files.length;++i) {
-            String fileName=files[i];
-            if ((fileName=="."||(fileName==".."))) continue;
-            removeFile(fileName);
+        File soDir=new File(libDir);
+        if (!removeDir(soDir)){
+            Log.w(kLogTag,"removeLibDirWithLibs() error, can't clear dir \""+libDir+"\"! ");
         }
-        dir.delete();
     }
     
     private static boolean moveFileTo(String oldFilePath,String newFilePath) {
@@ -259,35 +255,26 @@ public class HotUnity{
     }
     private static boolean removeFile(String fileName) {
         File df=new File(fileName);
-        if (!df.exists()) return true;
+        if ((df==null)||(!df.exists()))
+            return true;
         return df.delete();
     }
-
     private static boolean removeDir(File dir) {
-        if (null == dir || !dir.exists())
-            return false;
+        if ((null == dir) || (!dir.exists()))
+            return true;
         if (!dir.isDirectory())
             throw new RuntimeException("\"" + dir.getAbsolutePath() + "\" should be a directory!");
+        boolean result=true;
         File[] files = dir.listFiles();
-        boolean re = false;
-        if (null != files) {
-            if (files.length == 0)
-                return dir.delete();
+        if ((null != files)&&(files.length>0)) {
             for (File f : files) {
                 if (f.isDirectory())
-                    re |= removeDir(f);
+                    result &=removeDir(f);
                 else
-                    re |= removeFile(f);
+                    result &=f.delete();
             }
-            re |= dir.delete();
         }
-        return re;
-    }
-
-    public static boolean removeFile(File f) {
-        if (null == f)
-            return false;
-        return f.delete();
+        return result & dir.delete();
     }
     
     private static boolean makeDir(String dirPath) {

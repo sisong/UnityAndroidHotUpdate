@@ -60,10 +60,13 @@
 		D63B987F233333A9003D38A5 /* VirtualApkPatch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = VirtualApkPatch.xcodeproj; path = ../../VirtualApkPatch/builds_test/xcode/VirtualApkPatch.xcodeproj; sourceTree = "<group>"; };
 		D658934C23331567003BB2F4 /* FixUnityJar.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FixUnityJar.xcodeproj; path = ../../project_fix_unity_jar/fix_unity_jar/builds/xcode/FixUnityJar.xcodeproj; sourceTree = "<group>"; };
 		D6703D082314D8420095F791 /* hook_unity_src_xcode */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hook_unity_src_xcode; sourceTree = BUILT_PRODUCTS_DIR; };
-		D6703D122314D87E0095F791 /* build_libs.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = build_libs.sh; sourceTree = "<group>"; };
-		D6703D132314D87E0095F791 /* Android.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Android.mk; sourceTree = "<group>"; };
-		D6703D142314D87E0095F791 /* Application.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = Application.mk; sourceTree = "<group>"; };
 		D6703D152314D8A10095F791 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = ../src; sourceTree = "<group>"; };
+		D689587E24D4FC4F009D8CD3 /* README.en.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.en.md; path = ../../../README.en.md; sourceTree = "<group>"; };
+		D689587F24D4FC4F009D8CD3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../../../README.md; sourceTree = "<group>"; };
+		D689588024D5085C009D8CD3 /* Application.mk */ = {isa = PBXFileReference; lastKnownFileType = file; path = Application.mk; sourceTree = SOURCE_ROOT; };
+		D689588124D5085C009D8CD3 /* build_libs.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = build_libs.sh; sourceTree = SOURCE_ROOT; };
+		D689588224D5085C009D8CD3 /* build_libs.bat */ = {isa = PBXFileReference; lastKnownFileType = file; path = build_libs.bat; sourceTree = SOURCE_ROOT; };
+		D689588324D5085C009D8CD3 /* Android.mk */ = {isa = PBXFileReference; lastKnownFileType = file; path = Android.mk; sourceTree = SOURCE_ROOT; };
 		D6BA8F6E235FDA4100AFC34A /* ZipDiff.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZipDiff.xcodeproj; path = ../../ApkDiffPatch/builds/xcode/ZipDiff.xcodeproj; sourceTree = "<group>"; };
 		D6BA8F76235FDA4100AFC34A /* ApkNormalized.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ApkNormalized.xcodeproj; path = ../../ApkDiffPatch/builds/xcode/ApkNormalized.xcodeproj; sourceTree = "<group>"; };
 		D6BA8F7C235FDA9300AFC34A /* HDiffPatch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = HDiffPatch.xcodeproj; path = ../../ApkDiffPatch/builds/xcode/HDiffPatch.xcodeproj; sourceTree = "<group>"; };
@@ -105,9 +108,7 @@
 				D6BA8F6E235FDA4100AFC34A /* ZipDiff.xcodeproj */,
 				D658934C23331567003BB2F4 /* FixUnityJar.xcodeproj */,
 				D6703D152314D8A10095F791 /* src */,
-				D6703D132314D87E0095F791 /* Android.mk */,
-				D6703D142314D87E0095F791 /* Application.mk */,
-				D6703D122314D87E0095F791 /* build_libs.sh */,
+				D689587824D4FC16009D8CD3 /* sets */,
 				D6703D092314D8420095F791 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -118,6 +119,19 @@
 				D6703D082314D8420095F791 /* hook_unity_src_xcode */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		D689587824D4FC16009D8CD3 /* sets */ = {
+			isa = PBXGroup;
+			children = (
+				D689588324D5085C009D8CD3 /* Android.mk */,
+				D689588024D5085C009D8CD3 /* Application.mk */,
+				D689588224D5085C009D8CD3 /* build_libs.bat */,
+				D689588124D5085C009D8CD3 /* build_libs.sh */,
+				D689587E24D4FC4F009D8CD3 /* README.en.md */,
+				D689587F24D4FC4F009D8CD3 /* README.md */,
+			);
+			path = sets;
 			sourceTree = "<group>";
 		};
 		D6BA8F6F235FDA4100AFC34A /* Products */ = {
