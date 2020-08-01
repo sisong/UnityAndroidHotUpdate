@@ -52,19 +52,22 @@ add libhotunity.so(rebuild in path ```project_hook_unity_jni```) to project jniL
 add ```com/github/sisong/HotUnity.java``` to project; (You can add the .so in this file that need hot update, which will be loaded if exist new version;)   
 edit file UnityPlayerActivity.java in project; add code: ```import com.github.sisong.HotUnity;```, and add code: ```HotUnity.hotUnity(this);``` before ```mUnityPlayer = new UnityPlayer(this);```   
 * If you need to support upgrading little(RELEASE) version of Unity, you need to use the FixUnityJar program(code in path ```project_fix_unity_jar/fix_unity_jar```) to modify the file unity-classes.jar in the export project, and add libnull.so(rebuild in path ```project_fix_unity_jar/null_lib ```) to project jniLibs;   
-* APK installation for compatibility with Android 10, create ```{AndroidProject}/launcher/src/main/res/xml/filepaths.xml```, Enter the following content:  
+* APK installation for compatibility with Android 10, need:
+   Edit AndroidProject's ```AndroidManifest.xml``` file's ```application``` node, add:
 ```xml
-<?xml version="1.0" encoding="utf-8"?>
-<paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <external-path name="external" path="."/>
-</paths>
-```
-Edit ```{AndroidProject}/unityLibrary/src/main/AndroidManifest.xml``` file's ```application``` node, add:
-```xml
-<provider android:name="androidx.core.content.FileProvider" android:authorities="{YourAppPackageName}.fileprovider" android:exported="false" android:grantUriPermissions="true">
-      <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/filepaths" />
+<!-- if androidx: provider android:name="androidx.core.content.FileProvider" -->
+<provider 
+android:name="android.support.v4.content.FileProvider" android:authorities="{YourAppPackageName}.fileprovider" android:exported="false" android:grantUriPermissions="true">
+      <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/update_files" />
 </provider>
 ```
+   Create ```/xml/update_files.xml``` file in AndroidProject's  ```res``` path, Enter the following content:  
+  ```xml
+  <?xml version="1.0" encoding="utf-8"?>
+  <paths xmlns:android="http://schemas.android.com/apk/res/android">
+      <external-path name="external" path="."/>
+  </paths>
+  ```
 * Package the test project by Android Studio (you can automate the process of exporting modifying and packaging in Unity with the editor extension), the app should be able to running normally on the device; now you need test the app "hot" update to a new version;   
 * Manual hot update test process: you have a new version app named update.apk, placed it in the HotUpdate subdirectory of the ```getApplicationContext().getFilesDir().getPath()``` (device path ```/data/data/<appid>/files/HotUpdate/```); Decompress the *.so file in ```lib/<this test device abi>/``` from update.apk, and place it in the directory ```HotUpdate/update.apk_lib/``` (can also dispose only changed .so file); restart the app on the device, you should be able to see that the new version is already running!   
 
@@ -107,7 +110,7 @@ This new version and patch release process needs to be automated: normalized apk
 
 
 ## Defect   
-* After changed the Unity main(MAJOR & MINOR) version, apk can't be hot update, the new apk needs to be installed, and the same Unity main version can continue to hot update;    
+* After changed API between Java and Unity, apk can't be hot update, the new apk needs to be installed; After changed the Unity main(MAJOR & MINOR) version, apk can't be hot update, and the same Unity main version can continue to hot update;    
 * Can not switch between il2cpp and mono backend apks by hot update, the new apk needs to be installed;   
 * The solution can only support Android and can't be applied on iOS; (The app developed by Unity run on PC, if needs difference update, you can using [HDiffPatch] to diff&patch between directory.)   
 * The diff&patch algorithm selected [ApkDiffPatch], which may not support this situation: apk must support [v2+ sign], but released apk cannot be signed by self, then it is impossible to version control and diff;   

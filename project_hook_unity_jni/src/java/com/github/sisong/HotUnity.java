@@ -8,10 +8,10 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
-
-import androidx.core.content.FileProvider;
-
 import java.io.File;
+
+import android.support.v4.content.FileProvider;
+//import androidx.core.content.FileProvider;
 
 /*
  customize edit for Unity export android project:
