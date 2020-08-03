@@ -254,10 +254,13 @@ public class HotUnity{
         return df.renameTo(newdf);
     }
     private static boolean removeFile(String fileName) {
-        File df=new File(fileName);
-        if ((df==null)||(!df.exists()))
+        File f=new File(fileName);
+        return removeFile(f);
+    }
+    private static boolean removeFile(File f) {
+        if ((f==null)||(!f.exists()))
             return true;
-        return df.delete();
+        return f.delete();
     }
     private static boolean removeDir(File dir) {
         if ((null == dir) || (!dir.exists()))
@@ -271,7 +274,7 @@ public class HotUnity{
                 if (f.isDirectory())
                     result &=removeDir(f);
                 else
-                    result &=f.delete();
+                    result &=removeFile(f);
             }
         }
         return result & dir.delete();
