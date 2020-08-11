@@ -166,9 +166,9 @@ PlayerSettings:
   applicationIdentifier:
     Android: com.testHU.UnityHotUpdate
   buildNumber: {}
-  AndroidBundleVersionCode: 1
+  AndroidBundleVersionCode: 2
   AndroidMinSdkVersion: 16
-  AndroidTargetSdkVersion: 23
+  AndroidTargetSdkVersion: 28
   AndroidPreferredInstallLocation: 1
   aotOptions: 
   stripEngineCode: 1
