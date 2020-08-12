@@ -116,16 +116,62 @@ static const char* getFileName(const char* filePath,int pathLen){
     return filePath+(i+1);
 }
 
-static bool libIsInDir(const UnZipper* apk,int fi,const char* cacheSoDir){
+static bool _libInDir_getPath(char* out_path,int pathBufSize,
+                              const UnZipper* apk,int fi,const char* cacheSoDir){
     const char* _fileName=UnZipper_file_nameBegin(apk,fi);
     int nameLen=UnZipper_file_nameLen(apk,fi);
     const char* fileName=getFileName(_fileName,nameLen);
     nameLen-=(fileName-_fileName);
+    return getPath(cacheSoDir,fileName,nameLen,out_path,pathBufSize);
+}
+
+static inline bool libIsInDir(const UnZipper* apk,int fi,const char* cacheSoDir){
     char path[kMaxPathLen+1];
-    if (!getPath(cacheSoDir,fileName,nameLen,path,sizeof(path))) return false;
+    if (!_libInDir_getPath(path,sizeof(path),apk,fi,cacheSoDir)) return false;
     return fileIsExists(path);
 }
 
+static bool getStreamCrc32(const hpatch_TStreamInput* stream,uint32_t* out_cacheCrc){
+    const size_t kBufCacheSize=1024*16;
+    unsigned char buf[kBufCacheSize];
+    uLong crc = crc32(0L, Z_NULL, 0);
+    hpatch_StreamPos_t curPos=0;
+    while (curPos<stream->streamSize) {
+        uInt len=kBufCacheSize;
+        if (curPos+len>stream->streamSize)
+            len=(uInt)(stream->streamSize-curPos);
+        if (!stream->read(stream,curPos,buf,buf+len))
+            return false; //error
+        crc = crc32(crc,buf,len);
+        curPos+=len;
+    }
+    *out_cacheCrc=(uint32_t)crc;
+    return true;
+}
+
+static bool getFileCrc32(const char* fname,uint32_t* out_cacheCrc,
+                         hpatch_StreamPos_t crcDataSize){
+    hpatch_TFileStreamInput f;
+    hpatch_TFileStreamInput_init(&f);
+    if (!hpatch_TFileStreamInput_open(&f,fname))
+        return false; //error
+    bool result=(crcDataSize==f.base.streamSize)&&getStreamCrc32(&f.base,out_cacheCrc);
+    hpatch_TFileStreamInput_close(&f);
+    return result;
+}
+
+//check CRC32(.so in apk)==CRC32(.so in sysCacheSoDir)
+//  for prevent system edit(optimize or hook ... ?) .so file in sysCacheSoDir
+static bool checkLibCrc(const UnZipper* apk,int fi,const char* cacheSoDir){
+    char path[kMaxPathLen+1];
+    if (!_libInDir_getPath(path,sizeof(path),apk,fi,cacheSoDir)) return false;
+    hpatch_StreamPos_t crcDataSize=UnZipper_file_uncompressedSize(apk,fi);
+    uint32_t cacheCrc;
+    if (!getFileCrc32(path,&cacheCrc,crcDataSize))
+        return false;
+    uint32_t baseCrc=UnZipper_file_crc32(apk,fi);
+    return cacheCrc==baseCrc;
+}
 
 enum TLibCacheType {
     kTLibCache_inApk =0,
@@ -159,7 +205,7 @@ static int getSoMapList(UnZipper* apk,const char* libDir,const char* baseSoDir,c
                 TLibCacheType type=kTLibCache_inApk;
                 if ((hotSoDir!=0)&&libIsInDir(apk,i,hotSoDir))
                     type=kTLibCache_inHotSoDir;
-                else if (libIsInDir(apk,i,baseSoDir))
+                else if (libIsInDir(apk,i,baseSoDir)&&checkLibCrc(apk,i,baseSoDir))
                     type=kTLibCache_inBaseSoDir;
                 if (type!=kTLibCache_inApk){
                     soMapList[insert].indexInApk=i;
