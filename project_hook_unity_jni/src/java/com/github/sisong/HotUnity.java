@@ -31,7 +31,7 @@ public class HotUnity{
     private static native int  virtualApkMerge(String baseApk,String baseSoDir,
                                                String hotApk,String hotSoDir,
                                                String newApk,String newSoDir);
-    
+
     private static final String kHotUnityLib ="hotunity";
     private static final String kLogTag ="HotUnity";
     public static Context app=null;
@@ -55,34 +55,36 @@ public class HotUnity{
         
         //for DEBUG test
         testHotUpdate(app, baseApk,baseSoDir,hotApk,hotSoDir,newApk,newSoDir);
+        
         //merge new to hot for patch result
-        if (!mergeNewUpdate(baseApk,baseSoDir,hotApk,hotSoDir,newApk,newSoDir)){
+        if (!mergeNewUpdate(baseApk,baseSoDir,hotApk,hotSoDir,newApk,newSoDir))
             revertToBaseApk();
-        }
-        
+
         boolean isRunHot=pathIsExists(hotApk)&&pathIsExists(hotSoDir);
-        //version check: hotApk version >= baseApk version
         if (isRunHot){
-            boolean isVersionRise;
-            try {
-                String hotApkVersion=getVersionNameFromApk(app, hotApk);
-                String baseApkVersion=getVersionName(app, app.getPackageName());
-                isVersionRise = compareVersion(hotApkVersion,baseApkVersion)>=0;
-            }catch (Exception e){
-                isVersionRise=false;
-            }
-            if (!isVersionRise){
-                removeFile(hotApk);
-                removeLibDirWithLibs(hotSoDir);
+            if (!isVersionRise())
                 isRunHot=false;
-            }
         }
-        
-        if (isRunHot)
+        if (isRunHot) {
             runByHotApk();
-        else
+        }else{
+            removeHotToBaseApk();
             runByBaseApk();
+        }
     }
+
+    //version check: hotApk's versionCode > baseApk's versionCode
+    private static boolean isVersionRise() {
+        boolean isRise=false;
+        try {
+            int hotApkVersion=getVersionCodeFromApk(app, hotApk);
+            int baseApkVersion=getVersionCode(app, app.getPackageName());
+            isRise = hotApkVersion>baseApkVersion;
+        }catch (Exception e){
+        }
+        return isRise;
+    }
+
     private  static void  runByBaseApk(){
         System.loadLibrary("main");
         System.loadLibrary(kHotUnityLib);
@@ -92,19 +94,21 @@ public class HotUnity{
         mapPathLoadLib(hotSoDir,"unity");
         mapPathLoadLib(hotSoDir,kHotUnityLib);
         //note: You can load other your lib(not unity's) by mapPathLoadLib, can use newVersion lib;
-        
+
         doHot(baseApk,baseSoDir,hotApk,hotSoDir);
     }
-    
+
     //public funcs for call by C#
     public static int apkPatch(String zipDiffPath,int threadNum,String installApkPath){
+        removeFile(newApk);
+        removeLibDirWithLibs(newSoDir);
         boolean isHotUpdate=(installApkPath==null)||(installApkPath.isEmpty());
         //kHotUnityLib is loaded, not need: mapPathLoadLib(hotSoDir,kHotUnityLib);
         String tempApkPath=isHotUpdate?(updateDirPath+"/new_apk.tmp"):(installApkPath+".tmp");
         removeFile(tempApkPath);
         if ((!isHotUpdate)&&pathIsExists(installApkPath)) removeFile(installApkPath);
         int  ret=virtualApkPatch(baseApk,baseSoDir,hotApk,hotSoDir,
-                                 tempApkPath,isHotUpdate?newSoDir:"",zipDiffPath,threadNum);
+                tempApkPath,isHotUpdate?newSoDir:"",zipDiffPath,threadNum);
         Log.w(kLogTag, "virtualApkPatch() result " +String.valueOf(ret));
         if (ret!=0) {
             removeFile(tempApkPath);
@@ -115,6 +119,7 @@ public class HotUnity{
                 Log.w(kLogTag, tempApkPath + " moveFileTo " + targetApkFile + " failed.");
                 return -1;
             }
+            if (isHotUpdate) makeDir(hotSoDir);
         }
         return ret;
     }
@@ -137,7 +142,7 @@ public class HotUnity{
         Intent intent = app.getPackageManager().getLaunchIntentForPackage(app.getPackageName());
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(app.getApplicationContext(),
-                                                                0, intent, PendingIntent.FLAG_ONE_SHOT);
+                0, intent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager mgr = (AlarmManager)app.getSystemService(Context.ALARM_SERVICE);
         long alarmTimeMillis = System.currentTimeMillis() + 1000;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
@@ -155,12 +160,18 @@ public class HotUnity{
         app.startActivity(mainIntent);
         System.exit(errCode);
     }
-    public static void revertToBaseApk(){
+    private static void removeHotToBaseApk(){
         removeFile(newApk);
+        removeLibDirWithLibs(newSoDir);
         removeFile(hotApk);
+        removeLibDirWithLibs(hotSoDir);
+        clearCache();
+    }
+    public static void revertToBaseApk() {
+        removeHotToBaseApk();
         restartApp();
     }
-    
+
     private static void testHotUpdate(Context app,
                                       String baseApk,String baseSoDir,
                                       String hotApk,String hotSoDir,
@@ -173,7 +184,7 @@ public class HotUnity{
         if (!pathIsExists(testPatFile)) return;
         Log.w(kLogTag, "testHotUpdate() with "+testPatFile);
         mapPathLoadLib(hotSoDir,kHotUnityLib); //for native function: virtualApkPatch()
-        
+
         String testBase=testDir+"/base.apk";
         if (pathIsExists(testBase)) {
             baseApk  = testBase;
@@ -185,31 +196,28 @@ public class HotUnity{
             hotSoDir= testHot + "_lib";
         }
         int  ret=virtualApkPatch(baseApk,baseSoDir,hotApk,hotSoDir,
-                                 newApk,newSoDir,testPatFile,3);
+                 newApk,newSoDir,testPatFile,3);
         Log.w(kLogTag, "virtualApkPatch() result " +String.valueOf(ret));
         if ((ret==0) && removeFile(testPatFile)){ //update ok
-            Log.w(kLogTag, "testHotUpdate() ok, restartApp");
-            restartApp();
+            Log.w(kLogTag, "testHotUpdate() ok");
         }else{
             Log.w(kLogTag, "testHotUpdate() ERROR, exitApp");
             exitApp(ret);
         }
     }
-    
+
     // merge new to hot
     private static  boolean mergeNewUpdate(String baseApk,String baseSoDir,
                                            String hotApk,String hotSoDir,
                                            String newApk,String newSoDir){
-        if (!pathIsExists(hotApk)) {
-            if (pathIsExists(hotSoDir))
-                removeLibDirWithLibs(hotSoDir);
-        }
+        if (!pathIsExists(hotApk))
+            removeLibDirWithLibs(hotSoDir); //continue
         if (!pathIsExists(newApk)) {
-            if (pathIsExists(newSoDir))
-                removeLibDirWithLibs(newSoDir);
+            removeLibDirWithLibs(newSoDir);
             return true; //not need merge, continue run app
         }
-        
+
+        clearCache();
         if (!mergeHotUnityLib(newSoDir,hotSoDir)){
             Log.w(kLogTag,"mergeHotUnityLib() error! "+newSoDir);
             return false;
@@ -220,10 +228,9 @@ public class HotUnity{
             Log.w(kLogTag,"virtualApkMerge() error code "+String.valueOf(rt)+"! "+newApk);
             return false;
         }
-        clearIl2cppCache();
         return true;
     }
-    
+
     private static boolean mergeHotUnityLib(String newSoDir,String hotSoDir){
         String newLibHotUnity=getLibPath(newSoDir,kHotUnityLib);
         if  (!pathIsExists(newLibHotUnity)) return true;
@@ -233,21 +240,19 @@ public class HotUnity{
         return moveFileTo(newLibHotUnity,hotLibHotUnity);
     }
 
-    private static void clearIl2cppCache() {
-        Log.i(kLogTag, "clearIl2cppCache");
+    private static void clearCache() {
+        Log.i(kLogTag, "clearCache");
         File cacheDir = app.getExternalFilesDir("il2cpp");
-        if (!removeDir(cacheDir)){
-            Log.w(kLogTag,"clearIl2cppCache() error, can't clear dir \""+cacheDir.getPath()+"\"! ");
-        }
+        if (!removeDir(cacheDir))
+            Log.w(kLogTag, "clearCache() error, can't clear dir \"" + cacheDir.getPath() + "\"! ");
     }
-    
+
     private static void removeLibDirWithLibs(String libDir) {
         File soDir=new File(libDir);
-        if (!removeDir(soDir)){
+        if (!removeDir(soDir))
             Log.w(kLogTag,"removeLibDirWithLibs() error, can't clear dir \""+libDir+"\"! ");
-        }
     }
-    
+
     private static boolean moveFileTo(String oldFilePath,String newFilePath) {
         File df=new File(oldFilePath);
         File newdf=new File(newFilePath);
@@ -279,14 +284,14 @@ public class HotUnity{
         }
         return result & dir.delete();
     }
-    
+
     private static boolean makeDir(String dirPath) {
         File df=new File(dirPath);
         if (df.exists()) return true;
         if (!df.mkdir()) return false;
         return true;
     }
-    
+
     private static void mapPathLoadLib(String hotSoDir, String libName){
         String cachedLibPath=getLibPath(hotSoDir,libName);
         if (pathIsExists(cachedLibPath)) {
@@ -302,37 +307,14 @@ public class HotUnity{
     }
     private static boolean pathIsExists(String path) {
         File file = new File(path);
-        return file.exists();
+        return (file!=null)&&file.exists();
     }
-    
-    private static String getVersionName(Context context,String packageName) throws PackageManager.NameNotFoundException {
-        return context.getPackageManager().getPackageInfo(packageName, 0).versionName;
+
+    private static int getVersionCode(Context context,String packageName) throws PackageManager.NameNotFoundException {
+        return context.getPackageManager().getPackageInfo(packageName, 0).versionCode;
     }
-    private static String getVersionNameFromApk(Context context,String apkFilePath) {
+    private static int getVersionCodeFromApk(Context context,String apkFilePath) {
         return context.getPackageManager().
-        getPackageArchiveInfo(apkFilePath,PackageManager.GET_ACTIVITIES).versionName;
-    }
-    
-    public static int compareVersion(String v1, String v2) {
-        if (v1.equals(v2)) return 0;
-        String[] version1Array = v1.split("[._]");
-        String[] version2Array = v2.split("[._]");
-        int minLen = Math.min(version1Array.length, version2Array.length);
-        
-        for (int i = 0; i < minLen; ++i) {
-            long sub = Long.parseLong(version1Array[i]) - Long.parseLong(version2Array[i]);
-            if (sub != 0)
-                return (sub > 0) ? 1 : -1;
-        }
-        
-        for (int i = minLen; i < version1Array.length; ++i) {
-            if (Long.parseLong(version1Array[i]) > 0)
-                return 1;
-        }
-        for (int i = minLen; i < version2Array.length; ++i) {
-            if (Long.parseLong(version2Array[i]) > 0)
-                return -1;
-        }
-        return 0;
+                getPackageArchiveInfo(apkFilePath,PackageManager.GET_ACTIVITIES).versionCode;
     }
 }
