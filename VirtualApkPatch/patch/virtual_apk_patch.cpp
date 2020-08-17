@@ -149,13 +149,12 @@ static bool getStreamCrc32(const hpatch_TStreamInput* stream,uint32_t* out_cache
     return true;
 }
 
-static bool getFileCrc32(const char* fname,uint32_t* out_cacheCrc,
-                         hpatch_StreamPos_t crcDataSize){
+static bool getFileCrc32(const char* fname,uint32_t* out_cacheCrc){
     hpatch_TFileStreamInput f;
     hpatch_TFileStreamInput_init(&f);
     if (!hpatch_TFileStreamInput_open(&f,fname))
         return false; //error
-    bool result=(crcDataSize==f.base.streamSize)&&getStreamCrc32(&f.base,out_cacheCrc);
+    bool result=getStreamCrc32(&f.base,out_cacheCrc);
     hpatch_TFileStreamInput_close(&f);
     return result;
 }
@@ -165,9 +164,8 @@ static bool getFileCrc32(const char* fname,uint32_t* out_cacheCrc,
 static bool checkLibCrc(const UnZipper* apk,int fi,const char* cacheSoDir){
     char path[kMaxPathLen+1];
     if (!_libInDir_getPath(path,sizeof(path),apk,fi,cacheSoDir)) return false;
-    hpatch_StreamPos_t crcDataSize=UnZipper_file_uncompressedSize(apk,fi);
     uint32_t cacheCrc;
-    if (!getFileCrc32(path,&cacheCrc,crcDataSize))
+    if (!getFileCrc32(path,&cacheCrc))
         return false;
     uint32_t baseCrc=UnZipper_file_crc32(apk,fi);
     return cacheCrc==baseCrc;
@@ -196,7 +194,7 @@ static int getSoMapList(UnZipper* apk,const char* libDir,const char* baseSoDir,c
         const int libDirLen=(int)strlen(libDir);
         
         if (soMapListCount==0) break;
-        soMapList=(TLibCacheInfo*)malloc(soMapListCount);
+        soMapList=(TLibCacheInfo*)malloc(sizeof(TLibCacheInfo)*soMapListCount);
         if (soMapList==0) _rt_err(kVApkPatch_memError);
         int insert=0;
         int fileCount=UnZipper_fileCount(apk);
