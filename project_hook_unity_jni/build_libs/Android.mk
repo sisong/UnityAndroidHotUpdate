@@ -5,7 +5,11 @@ LOCAL_MODULE := hotunity
 
 ADP_PATH   := $(LOCAL_PATH)/../../ApkDiffPatch
  
-Lzma_Files := $(ADP_PATH)/lzma/C/LzmaDec.c 
+Lzma_Files := $(ADP_PATH)/lzma/C/LzmaDec.c \
+              $(ADP_PATH)/lzma/C/Lzma2Dec.c
+ifeq ($(TARGET_ARCH_ABI),arm64-v8a)
+  Lzma_Files += $(ADP_PATH)/lzma/Asm/arm64/LzmaDecOpt.S
+endif
 
 ZLIB_PATH  := $(ADP_PATH)/zlib1.2.11
 Zlib_Files := $(ZLIB_PATH)/crc32.c    \
@@ -47,9 +51,13 @@ Src_Files := $(LOCAL_PATH)/../src/hook_unity.cpp \
 
 LOCAL_SRC_FILES  := $(Src_Files) $(xHook_Files) $(Lzma_Files) $(Zlib_Files) $(Hdp_Files) $(Adp_Files)
 
-LOCAL_LDLIBS     := -llog -landroid
-LOCAL_CFLAGS     := -Os -DANDROID_NDK  -DTARGET_ARCH_ABI=\"$(TARGET_ARCH_ABI)\"  \
-                    -D_7ZIP_ST -D_IS_USED_MULTITHREAD=1 -D_IS_USED_PTHREAD=1 \
-                    -D_IS_NEED_FIXED_ZLIB_VERSION=1 -D_IS_NEED_VIRTUAL_ZIP=1
+DEF_FLAGS := -O2 -D_7ZIP_ST -D_IS_USED_MULTITHREAD=1 -D_IS_USED_PTHREAD=1 \
+             -D_IS_NEED_FIXED_ZLIB_VERSION=1 -D_IS_NEED_VIRTUAL_ZIP=1
+ifeq ($(TARGET_ARCH_ABI),arm64-v8a)
+  DEF_FLAGS += -D_LZMA_DEC_OPT 
+endif
+
+LOCAL_LDLIBS := -llog -landroid
+LOCAL_CFLAGS := -DANDROID_NDK -DTARGET_ARCH_ABI=\"$(TARGET_ARCH_ABI)\" $(DEF_FLAGS)
 
 include $(BUILD_SHARED_LIBRARY)

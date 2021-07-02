@@ -149,7 +149,7 @@
     <ClCompile Include="..\..\..\ApkDiffPatch\HDiffPatch\libHDiffPatch\HPatch\patch.c" />
     <ClCompile Include="..\..\..\ApkDiffPatch\HDiffPatch\libParallel\parallel_channel.cpp" />
     <ClCompile Include="..\..\..\ApkDiffPatch\HDiffPatch\libParallel\parallel_import.cpp" />
-    <ClCompile Include="..\..\..\ApkDiffPatch\lzma\C\LzFind.c" />
+    <ClCompile Include="..\..\..\ApkDiffPatch\lzma\C\Lzma2Dec.c" />
     <ClCompile Include="..\..\..\ApkDiffPatch\lzma\C\LzmaDec.c" />
     <ClCompile Include="..\..\..\ApkDiffPatch\src\patch\NewStream.cpp" />
     <ClCompile Include="..\..\..\ApkDiffPatch\src\patch\OldStream.cpp" />

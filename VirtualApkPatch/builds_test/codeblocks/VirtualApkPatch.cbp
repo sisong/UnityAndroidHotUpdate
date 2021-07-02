@@ -72,10 +72,10 @@
 		</Unit>
 		<Unit filename="../../../ApkDiffPatch/HDiffPatch/libParallel/parallel_channel.cpp" />
 		<Unit filename="../../../ApkDiffPatch/HDiffPatch/libParallel/parallel_import.cpp" />
-		<Unit filename="../../../ApkDiffPatch/lzma/C/LzFind.c">
+		<Unit filename="../../../ApkDiffPatch/lzma/C/LzmaDec.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../../../ApkDiffPatch/lzma/C/LzmaDec.c">
+		<Unit filename="../../../ApkDiffPatch/lzma/C/Lzma2Dec.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../../ApkDiffPatch/src/patch/NewStream.cpp" />
