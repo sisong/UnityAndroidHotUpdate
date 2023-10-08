@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0DA952AD2AB02AD300C3A4F0 /* liblzma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA952AA2AB02AA600C3A4F0 /* liblzma.a */; };
 		D65C69D423293AFA00A3C89C /* virtual_apk_patch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D65C69D123293AFA00A3C89C /* virtual_apk_patch.cpp */; };
 		D65C69E6232A0EA100A3C89C /* OldStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D65C69DE232A0EA100A3C89C /* OldStream.cpp */; };
 		D65C69E7232A0EA100A3C89C /* ZipDiffData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D65C69DF232A0EA100A3C89C /* ZipDiffData.cpp */; };
@@ -17,18 +18,24 @@
 		D65C6A03232A0F6900A3C89C /* parallel_import.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D65C69FB232A0F6900A3C89C /* parallel_import.cpp */; };
 		D65C6A05232A0F6900A3C89C /* file_for_patch.c in Sources */ = {isa = PBXBuildFile; fileRef = D65C69FE232A0F6900A3C89C /* file_for_patch.c */; };
 		D65C6A0C232A0F8200A3C89C /* patch.c in Sources */ = {isa = PBXBuildFile; fileRef = D65C6A09232A0F8200A3C89C /* patch.c */; };
-		D65C6A0E232A0FBB00A3C89C /* liblzma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D65C69F0232A0EF400A3C89C /* liblzma.a */; };
 		D65C6A0F232A0FBB00A3C89C /* libzlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D65C69F6232A0EF400A3C89C /* libzlib.a */; };
 		D698B4D0236AD0BB00FC04E9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D698B4CF236AD0BB00FC04E9 /* main.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		D65C69EF232A0EF400A3C89C /* PBXContainerItemProxy */ = {
+		0DA952A92AB02AA600C3A4F0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = D65C69EB232A0EF400A3C89C /* lzma.xcodeproj */;
+			containerPortal = 0DA952A42AB02AA600C3A4F0 /* lzma.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = D68B02C7205A4409001F3C40;
+			remoteGlobalIDString = D690ABCE1F208EA80089DC57;
 			remoteInfo = lzma;
+		};
+		0DA952AB2AB02AA600C3A4F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0DA952A42AB02AA600C3A4F0 /* lzma.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0D225ACF2A98EBB300DBD5B1;
+			remoteInfo = lzma_arm64;
 		};
 		D65C69F5232A0EF400A3C89C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +59,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0DA952A42AB02AA600C3A4F0 /* lzma.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = lzma.xcodeproj; path = ../../../ApkDiffPatch/HDiffPatch/builds/xcode/lzma.xcodeproj; sourceTree = "<group>"; };
 		D65C69C523293AB300A3C89C /* VirtualApkPatch */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = VirtualApkPatch; sourceTree = BUILT_PRODUCTS_DIR; };
 		D65C69D123293AFA00A3C89C /* virtual_apk_patch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = virtual_apk_patch.cpp; sourceTree = "<group>"; };
 		D65C69D223293AFA00A3C89C /* virtual_apk_patch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = virtual_apk_patch.h; sourceTree = "<group>"; };
@@ -66,7 +74,6 @@
 		D65C69E3232A0EA100A3C89C /* Patcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Patcher.cpp; sourceTree = "<group>"; };
 		D65C69E4232A0EA100A3C89C /* ZipDiffData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipDiffData.h; sourceTree = "<group>"; };
 		D65C69E5232A0EA100A3C89C /* NewStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewStream.h; sourceTree = "<group>"; };
-		D65C69EB232A0EF400A3C89C /* lzma.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = lzma.xcodeproj; path = ../../../ApkDiffPatch/builds/xcode/lzma.xcodeproj; sourceTree = "<group>"; };
 		D65C69F1232A0EF400A3C89C /* zlib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = zlib.xcodeproj; path = ../../../ApkDiffPatch/builds/xcode/zlib.xcodeproj; sourceTree = "<group>"; };
 		D65C69F9232A0F6900A3C89C /* parallel_channel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = parallel_channel.cpp; sourceTree = "<group>"; };
 		D65C69FA232A0F6900A3C89C /* parallel_import.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parallel_import.h; sourceTree = "<group>"; };
@@ -90,17 +97,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D65C6A0E232A0FBB00A3C89C /* liblzma.a in Frameworks */,
 				D65C6A0F232A0FBB00A3C89C /* libzlib.a in Frameworks */,
+				0DA952AD2AB02AD300C3A4F0 /* liblzma.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0DA952A52AB02AA600C3A4F0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0DA952AA2AB02AA600C3A4F0 /* liblzma.a */,
+				0DA952AC2AB02AA600C3A4F0 /* liblzma_arm64.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		D65C69BC23293AB300A3C89C = {
 			isa = PBXGroup;
 			children = (
+				0DA952A42AB02AA600C3A4F0 /* lzma.xcodeproj */,
+				D65C69F1232A0EF400A3C89C /* zlib.xcodeproj */,
 				D65C69D9232A0E5900A3C89C /* ApkDiffPatch */,
 				D65C69D023293AFA00A3C89C /* patch */,
 				D698B4CF236AD0BB00FC04E9 /* main.cpp */,
@@ -130,8 +148,6 @@
 		D65C69D9232A0E5900A3C89C /* ApkDiffPatch */ = {
 			isa = PBXGroup;
 			children = (
-				D65C69EB232A0EF400A3C89C /* lzma.xcodeproj */,
-				D65C69F1232A0EF400A3C89C /* zlib.xcodeproj */,
 				D65C69F7232A0F0D00A3C89C /* hpatch */,
 				D65C69DA232A0EA100A3C89C /* patch */,
 			);
@@ -156,14 +172,6 @@
 			);
 			name = patch;
 			path = ../../../ApkDiffPatch/src/patch;
-			sourceTree = "<group>";
-		};
-		D65C69EC232A0EF400A3C89C /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				D65C69F0232A0EF400A3C89C /* liblzma.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		D65C69F2232A0EF400A3C89C /* Products */ = {
@@ -274,8 +282,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = D65C69EC232A0EF400A3C89C /* Products */;
-					ProjectRef = D65C69EB232A0EF400A3C89C /* lzma.xcodeproj */;
+					ProductGroup = 0DA952A52AB02AA600C3A4F0 /* Products */;
+					ProjectRef = 0DA952A42AB02AA600C3A4F0 /* lzma.xcodeproj */;
 				},
 				{
 					ProductGroup = D65C69F2232A0EF400A3C89C /* Products */;
@@ -290,11 +298,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		D65C69F0232A0EF400A3C89C /* liblzma.a */ = {
+		0DA952AA2AB02AA600C3A4F0 /* liblzma.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = liblzma.a;
-			remoteRef = D65C69EF232A0EF400A3C89C /* PBXContainerItemProxy */;
+			remoteRef = 0DA952A92AB02AA600C3A4F0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0DA952AC2AB02AA600C3A4F0 /* liblzma_arm64.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = liblzma_arm64.a;
+			remoteRef = 0DA952AB2AB02AA600C3A4F0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		D65C69F6232A0EF400A3C89C /* libzlib.a */ = {
@@ -332,7 +347,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = x86_64;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -394,7 +409,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = x86_64;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

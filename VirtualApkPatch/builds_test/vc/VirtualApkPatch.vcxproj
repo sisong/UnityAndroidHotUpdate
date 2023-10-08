@@ -30,12 +30,14 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <CLRSupport>false</CLRSupport>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CLRSupport>false</CLRSupport>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -43,6 +45,7 @@
     <CLRSupport>false</CLRSupport>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -50,6 +53,7 @@
     <CLRSupport>false</CLRSupport>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -119,7 +123,7 @@
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <AdditionalDependencies>
       </AdditionalDependencies>
     </Link>
@@ -134,7 +138,7 @@
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <AdditionalDependencies>
       </AdditionalDependencies>
     </Link>
@@ -149,8 +153,6 @@
     <ClCompile Include="..\..\..\ApkDiffPatch\HDiffPatch\libHDiffPatch\HPatch\patch.c" />
     <ClCompile Include="..\..\..\ApkDiffPatch\HDiffPatch\libParallel\parallel_channel.cpp" />
     <ClCompile Include="..\..\..\ApkDiffPatch\HDiffPatch\libParallel\parallel_import.cpp" />
-    <ClCompile Include="..\..\..\ApkDiffPatch\lzma\C\Lzma2Dec.c" />
-    <ClCompile Include="..\..\..\ApkDiffPatch\lzma\C\LzmaDec.c" />
     <ClCompile Include="..\..\..\ApkDiffPatch\src\patch\NewStream.cpp" />
     <ClCompile Include="..\..\..\ApkDiffPatch\src\patch\OldStream.cpp" />
     <ClCompile Include="..\..\..\ApkDiffPatch\src\patch\Patcher.cpp" />
@@ -179,6 +181,11 @@
     <ClInclude Include="..\..\..\ApkDiffPatch\src\patch\ZipDiffData.h" />
     <ClInclude Include="..\..\..\ApkDiffPatch\src\patch\Zipper.h" />
     <ClInclude Include="..\..\patch\virtual_apk_patch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\ApkDiffPatch\HDiffPatch\builds\vc\lzma.vcxproj">
+      <Project>{0849cd0e-1b9b-44eb-8937-a278b6a7e2cf}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

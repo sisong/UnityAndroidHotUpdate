@@ -18,12 +18,6 @@
     <ClCompile Include="..\..\..\ApkDiffPatch\src\patch\Zipper.cpp">
       <Filter>ApkDiffPatch</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\ApkDiffPatch\lzma\C\LzFind.c">
-      <Filter>lzma</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\ApkDiffPatch\lzma\C\LzmaDec.c">
-      <Filter>lzma</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\ApkDiffPatch\zlib1.2.11\adler32.c">
       <Filter>zlib</Filter>
     </ClCompile>
@@ -97,9 +91,6 @@
   <ItemGroup>
     <Filter Include="ApkDiffPatch">
       <UniqueIdentifier>{172e7ddf-de29-421e-a9bf-8f08b5bae838}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lzma">
-      <UniqueIdentifier>{12a0cb01-8df8-41fa-a174-7094b245cfa4}</UniqueIdentifier>
     </Filter>
     <Filter Include="zlib">
       <UniqueIdentifier>{52c2d553-1c2e-46d7-853e-9fad42537d0e}</UniqueIdentifier>
