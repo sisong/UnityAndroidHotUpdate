@@ -86,7 +86,7 @@
         check(UnZipper_openFile(&unzipper,unity_classes_jar), kFixUnityJar_inputJarFileError);
         fileCount=UnZipper_fileCount(&unzipper);
         
-        check(Zipper_openFile(&zipper,out_new_jar,fileCount,kZipAlignSize,
+        check(Zipper_openFile(&zipper,out_new_jar,fileCount,kZipAlignSize,false,
                               kCompressLevel,kDefaultMemLevel), kFixUnityJar_outputJarFileError);
         
         for (int i=0; i<fileCount; ++i) {
